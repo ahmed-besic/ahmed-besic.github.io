@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Investment Calculator</h1>
+        
+        <div class="main-layout">
+            <!-- Left column - Calculator inputs -->
+            <div class="calculator">
+                <h2>Investment Parameters</h2>
+                <div class="form-group">
+                    <label for="startingAmount">Starting Amount ($):</label>
+                    <input type="number" id="startingAmount" value="1000" min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label for="returnRate">Annual Return Rate (%):</label>
+                    <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="compoundFrequency">Compound Frequency:</label>
+                    <select id="compoundFrequency">
+                        <option value="1">Annually</option>
+                        <option value="4">Quarterly</option>
+                        <option value="12">Monthly</option>
+                        <option value="365">Daily</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contributionAmount">Additional Contribution ($):</label>
+                    <input type="number" id="contributionAmount" value="100" min="0" step="50">
+                </div>
+                <div class="form-group">
+                    <label for="contributionTiming">Contribution Timing:</label>
+                    <select id="contributionTiming">
+                        <option value="beginning">Beginning of Period</option>
+                        <option value="end">End of Period</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contributionFrequency">Contribution Frequency:</label>
+                    <select id="contributionFrequency">
+                        <option value="12">Monthly</option>
+                        <option value="1">Yearly</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="years">Number of Years:</label>
+                    <input type="number" id="years" value="10" min="1" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="inflationRate">Inflation Rate (%):</label>
+                    <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
+                </div>
+                <button id="calculate" class="calculate-btn">Calculate</button>
+                
+                <!-- Save/Load section -->
+                <div class="save-scenario">
+                    <div class="form-group">
+                        <input type="text" id="scenarioName" placeholder="Scenario name">
+                        <button id="saveScenario" class="small-btn">Save</button>
+                    </div>
+                    <div class="form-group">
+                        <select id="savedScenarios">
+                            <option value="">-- Saved Scenarios --</option>
+                        </select>
+                        <button id="loadScenario" class="small-btn">Load</button>
+                        <button id="deleteScenario" class="small-btn danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column - Chart visualization -->
+            <div class="chart-section">
+                <h2>Investment Growth Chart</h2>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+                
+                <div class="chart-options">
+                    <div class="form-row">
+                        <label for="chartType">Chart Type:</label>
+                        <select id="chartType">
+                            <option value="line">Line Chart</option>
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart (Final Values)</option>
+                        </select>
+                    </div>
+                    <div class="chart-checkboxes">
+                        <div>
+                            <input type="checkbox" id="showContributions" checked>
+                            <label for="showContributions">Show Contributions</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="showInterest" checked>
+                            <label for="showInterest">Show Interest</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="showInflationAdjusted" checked>
+                            <label for="showInflationAdjusted">Show Inflation-Adjusted Value</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary">
+                    <div class="summary-item">
+                        <h3>Final Balance</h3>
+                        <p id="finalBalance">$0</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>Total Contributions</h3>
+                        <p id="totalContributions">$0</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>Total Interest</h3>
+                        <p id="totalInterest">$0</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>Inflation-Adjusted</h3>
+                        <p id="inflationAdjusted">$0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom section for detailed results -->
+        <div class="results" id="results">
+            <div class="view-toggle">
+                <button id="tableViewBtn" class="view-btn active">Table View</button>
+                <button id="compareBtn" class="view-btn">Compare Scenarios</button>
+                <button id="exportBtn" class="view-btn">Export Data</button>
+            </div>
+
+            <div id="tableView" class="view-content active">
+                <h2>Detailed Results</h2>
+                <div class="table-container">
+                    <table id="growthTable">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Starting Balance</th>
+                                <th>Contributions</th>
+                                <th>Interest</th>
+                                <th>Ending Balance</th>
+                                <th>Inflation-Adjusted</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="compareView" class="view-content">
+                <h2>Scenario Comparison</h2>
+                <div class="compare-scenarios">
+                    <select id="scenario1" class="compare-select">
+                        <option value="current">Current Scenario</option>
+                    </select>
+                    <select id="scenario2" class="compare-select">
+                        <option value="">Select Scenario</option>
+                    </select>
+                </div>
+                <div class="compare-chart-container">
+                    <canvas id="compareChart"></canvas>
+                </div>
+                <div class="compare-summary" id="compareSummary">
+                    <!-- Comparison summary will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
