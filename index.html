@@ -384,6 +384,7 @@
                 <button class="random-tab-button active" data-random-tab="coinFlip">Coin Flip</button>
                 <button class="random-tab-button" data-random-tab="diceRoller">Dice Roller</button>
                 <button class="random-tab-button" data-random-tab="randomNumber">Random Number</button>
+                <button class="random-tab-button" data-random-tab="rouletteWheel">Roulette Wheel</button>
             </div>
             
             <!-- Random Tools Tab Content -->
@@ -500,6 +501,51 @@
                         <div class="button-group">
                             <button class="calculate-btn" id="generateNumbers">Generate</button>
                             <button class="small-btn" id="copyNumbers">Copy to Clipboard</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roulette Wheel Tool -->
+                <div class="random-tab-content" id="rouletteWheel">
+                    <div class="random-tool">
+                        <h3>Roulette Wheel</h3>
+                        
+                        <div class="roulette-container">
+                            <div class="roulette-wheel-container">
+                                <div class="wheel-pointer"></div>
+                                <div class="roulette-wheel" id="rouletteWheelCanvas">
+                                    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="roulette-controls">
+                                <div class="form-group">
+                                    <label for="itemInput">Add Item:</label>
+                                    <input type="text" id="itemInput" placeholder="Enter item name">
+                                    <button class="small-btn" id="addItemBtn">Add</button>
+                                </div>
+                                
+                                <div class="items-list-container">
+                                    <h4>Items on Wheel</h4>
+                                    <ul id="itemsList" class="items-list"></ul>
+                                </div>
+                                
+                                <div class="button-row">
+                                    <button class="small-btn" id="removeSelectedBtn">Remove Selected</button>
+                                    <button class="small-btn danger" id="clearWheelBtn">Clear All</button>
+                                </div>
+                                
+                                <button class="calculate-btn" id="spinWheelBtn">Spin the Wheel</button>
+                            </div>
+                        </div>
+                        
+                        <div class="result-display roulette-result">
+                            <h4>Result:</h4>
+                            <div id="spinResult" class="spin-result">Spin the wheel to get a result</div>
+                            <div id="resultHistory" class="result-history">
+                                <h4>Previous Results:</h4>
+                                <ul id="historyList"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>

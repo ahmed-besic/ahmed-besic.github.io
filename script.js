@@ -1328,6 +1328,312 @@ function initializeRandomGenerators() {
     
     // Initialize with defaults
     dice2.style.display = diceCountSelect.value === '1' ? 'none' : 'block';
+
+    // Roulette Wheel Implementation
+    const wheelCanvas = document.getElementById('wheelCanvas');
+    const ctx = wheelCanvas.getContext('2d');
+    const itemInput = document.getElementById('itemInput');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const itemsList = document.getElementById('itemsList');
+    const removeSelectedBtn = document.getElementById('removeSelectedBtn');
+    const clearWheelBtn = document.getElementById('clearWheelBtn');
+    const spinWheelBtn = document.getElementById('spinWheelBtn');
+    const spinResult = document.getElementById('spinResult');
+    const historyList = document.getElementById('historyList');
+    
+    // Initialize with empty wheel instead of default items
+    let wheelItems = [];  // Changed from ['Option 1', 'Option 2', 'Option 3', 'Option 4']
+    let selectedItems = [];
+    let currentAngle = 0;
+    let isSpinning = false;
+    
+    // Colors for the wheel
+    const colors = [
+        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+        '#9966FF', '#FF9F40', '#8AC054', '#5D9CEC',
+        '#48CFAD', '#EC87C0', '#FC6E51'
+    ];
+    
+    // Initialize the wheel
+    drawWheel();
+    updateItemsList();
+    
+    // Add a new item to the wheel
+    addItemBtn.addEventListener('click', () => {
+        const item = itemInput.value.trim();
+        if (item) {
+            wheelItems.push(item);
+            itemInput.value = '';
+            drawWheel();
+            updateItemsList();
+        }
+    });
+
+    // Allow enter key to add item
+    itemInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            addItemBtn.click();
+        }
+    });
+    
+    // Handle item selection in the list
+    itemsList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'LI') {
+            e.target.classList.toggle('selected');
+            const index = parseInt(e.target.dataset.index);
+            
+            if (e.target.classList.contains('selected')) {
+                selectedItems.push(index);
+            } else {
+                const idx = selectedItems.indexOf(index);
+                if (idx !== -1) {
+                    selectedItems.splice(idx, 1);
+                }
+            }
+        }
+    });
+    
+    // Remove selected items
+    removeSelectedBtn.addEventListener('click', () => {
+        if (selectedItems.length === 0) return;
+        
+        // Sort indices in reverse order to avoid shifting issues when splicing
+        selectedItems.sort((a, b) => b - a);
+        
+        selectedItems.forEach(index => {
+            wheelItems.splice(index, 1);
+        });
+        
+        selectedItems = [];
+        drawWheel();
+        updateItemsList();
+    });
+    
+    // Clear all items
+    clearWheelBtn.addEventListener('click', () => {
+        wheelItems = [];
+        selectedItems = [];
+        drawWheel();
+        updateItemsList();
+    });
+    
+    // Spin the wheel
+    spinWheelBtn.addEventListener('click', () => {
+        if (wheelItems.length < 2) {
+            spinResult.textContent = 'Add at least 2 items to spin the wheel';
+            return;
+        }
+        
+        if (isSpinning) return;
+        
+        isSpinning = true;
+        spinWheelBtn.disabled = true;
+        spinResult.textContent = 'Spinning...';
+        
+        // Random number of rotations (3-8 full rotations)
+        const rotations = 3 + Math.random() * 5;
+        const targetAngle = currentAngle + (rotations * 360);
+        
+        let startTime = null;
+        const spinDuration = 5000; // 5 seconds
+        
+        function animateSpin(timestamp) {
+            if (!startTime) startTime = timestamp;
+            
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / spinDuration, 1);
+            
+            // Easing function for smooth deceleration
+            const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+            const rotation = currentAngle + easeOut(progress) * (targetAngle - currentAngle);
+            
+            drawWheel(rotation);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animateSpin);
+            } else {
+                finishSpin(rotation);
+            }
+        }
+        
+        requestAnimationFrame(animateSpin);
+    });
+    
+    // Draw the wheel with items
+    function drawWheel(rotation = currentAngle) {
+        const centerX = wheelCanvas.width / 2;
+        const centerY = wheelCanvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 5;
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+        
+        if (wheelItems.length === 0) {
+            // Draw empty wheel
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#f0f0f0';
+            ctx.fill();
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw text
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#999';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Add items to the wheel', centerX, centerY);
+            return;
+        }
+        
+        const anglePerItem = (2 * Math.PI) / wheelItems.length;
+        const rotationInRadians = (rotation * Math.PI) / 180;
+        
+        // Draw wheel segments
+        for (let i = 0; i < wheelItems.length; i++) {
+            const startAngle = i * anglePerItem + rotationInRadians;
+            const endAngle = (i + 1) * anglePerItem + rotationInRadians;
+            
+            // Draw segment
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            
+            // Fill segment
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.fill();
+            
+            // Draw segment border
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw text
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(startAngle + anglePerItem / 2);
+            
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Arial';
+            
+            // Adjust text size based on item name length
+            const maxTextLength = radius * 0.8;
+            let fontSize = 14;
+            ctx.font = `${fontSize}px Arial`;
+            
+            if (ctx.measureText(wheelItems[i]).width > maxTextLength) {
+                const ratio = maxTextLength / ctx.measureText(wheelItems[i]).width;
+                fontSize *= ratio;
+                ctx.font = `${Math.max(fontSize, 8)}px Arial`;
+            }
+            
+            // Draw text rotated properly
+            ctx.textBaseline = 'middle';
+            ctx.fillText(wheelItems[i], radius - 10, 0);
+            ctx.restore();
+        }
+        
+        // Draw center circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.1, 0, 2 * Math.PI);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+    
+    // Update the list of items
+    function updateItemsList() {
+        itemsList.innerHTML = '';
+        
+        if (wheelItems.length === 0) {
+            const emptyItem = document.createElement('li');
+            emptyItem.textContent = 'No items added yet';
+            emptyItem.style.fontStyle = 'italic';
+            emptyItem.style.color = '#999';
+            itemsList.appendChild(emptyItem);
+            return;
+        }
+        
+        wheelItems.forEach((item, index) => {
+            const li = document.createElement('li');
+            
+            // Create item text span
+            const textSpan = document.createElement('span');
+            textSpan.textContent = item;
+            textSpan.className = 'item-text';
+            li.appendChild(textSpan);
+            
+            // Create remove button
+            const removeBtn = document.createElement('span');
+            removeBtn.textContent = '×';
+            removeBtn.className = 'item-remove';
+            removeBtn.title = 'Remove this item';
+            removeBtn.dataset.index = index;
+            li.appendChild(removeBtn);
+            
+            li.dataset.index = index;
+            
+            if (selectedItems.includes(index)) {
+                li.classList.add('selected');
+            }
+            
+            itemsList.appendChild(li);
+        });
+        
+        // Add event listeners for quick remove buttons
+        document.querySelectorAll('.item-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering the li click event
+                const index = parseInt(e.target.dataset.index);
+                wheelItems.splice(index, 1);
+                if (selectedItems.includes(index)) {
+                    selectedItems = selectedItems.filter(i => i !== index);
+                }
+                // Update indices in selectedItems array
+                selectedItems = selectedItems.map(i => i > index ? i - 1 : i);
+                drawWheel();
+                updateItemsList();
+            });
+        });
+    }
+    
+    // Finish spin and show result
+    function finishSpin(finalRotation) {
+        currentAngle = finalRotation % 360;
+        isSpinning = false;
+        spinWheelBtn.disabled = false;
+        
+        // Determine which item was selected based on the pointer at the right (90 degrees)
+        const anglePerItem = 360 / wheelItems.length;
+        
+        // Calculate the absolute angle in the wheel's reference frame
+        // The pointer is at the right side (0 degrees in standard polar coordinates)
+        let normalizedAngle = (360 - currentAngle) % 360;
+        
+        // Adjust to find which segment is at the right pointer position
+        const selectedIndex = Math.floor(normalizedAngle / anglePerItem) % wheelItems.length;
+        const selectedItem = wheelItems[selectedIndex];
+        
+        // Display result
+        spinResult.textContent = `Result: ${selectedItem}`;
+        
+        // Add to history
+        const historyItem = document.createElement('li');
+        historyItem.textContent = selectedItem;
+        historyList.prepend(historyItem);
+        
+        // Limit history to 10 items
+        if (historyList.children.length > 10) {
+            historyList.removeChild(historyList.lastChild);
+        }
+    }
+    
+    // Existing code...
 }
 
 // Your existing functions for investment calculator continue here...
