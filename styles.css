@@ -113,7 +113,7 @@ input, select {
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 12px 18px; /* Adjusted padding */
     font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
@@ -137,6 +137,11 @@ input, select {
     margin-top: 20px;
     border-top: 1px solid #eee;
     padding-top: 20px;
+}
+
+.save-scenario .small-btn {
+    margin-left: 5px; /* Reduced from 10px to 5px */
+    margin-right: 5px; /* Add right margin */
 }
 
 .chart-container {
@@ -975,6 +980,87 @@ tr:hover {
     .random-tool {
         max-width: 500px;
         width: 100%;
+    }
+
+    /* Center align text in summary items */
+    .summary-item {
+        text-align: center;
+    }
+
+    /* Center align the main heading */
+    h1 {
+        text-align: center;
+    }
+
+    /* Center align the view toggle buttons */
+    .view-toggle {
+        justify-content: center;
+    }
+
+    /* Center align the random tab navigation */
+    .random-tab-navigation {
+        justify-content: center;
+    }
+
+    /* Center align the roulette wheel container */
+    .roulette-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Center align the dice container */
+    .dice-container {
+        justify-content: center;
+    }
+
+    /* Center align the coin container */
+    .coin-container {
+        justify-content: center;
+    }
+
+    /* Center align the tip calculator container */
+    .tip-calculator-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Center align the BMI calculator container */
+    .bmi-calculator-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Modify main tab navigation for 2x2 grid */
+    .main-tab-navigation {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        border-bottom: none; /* Remove the border */
+    }
+
+    .main-tab-button {
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 5px; /* Add border-radius for each button */
+    }
+
+    /* Modify random tab navigation for 2x2 grid */
+    .random-tab-navigation {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        margin-top: 10px; /* Adjust top margin */
+        border-bottom: none; /* Remove the border */
+    }
+
+    .random-tab-button {
+        padding: 12px 15px; /* Increase padding */
+        font-size: 16px; /* Increase font size */
+        text-align: center;
+        border-radius: 5px; /* Add border-radius for each button */
     }
 }
 
