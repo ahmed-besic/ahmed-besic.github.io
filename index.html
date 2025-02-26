@@ -510,6 +510,12 @@
                     <div class="random-tool">
                         <h3>Roulette Wheel</h3>
                         
+                        <!-- Moved result display to the top -->
+                        <div class="result-display roulette-result">
+                            <h4>Result:</h4>
+                            <div id="spinResult" class="spin-result">Spin the wheel to get a result</div>
+                        </div>
+                        
                         <div class="roulette-container">
                             <div class="roulette-wheel-container">
                                 <div class="wheel-pointer"></div>
@@ -519,6 +525,8 @@
                             </div>
                             
                             <div class="roulette-controls">
+                                <button class="calculate-btn spin-wheel-btn" id="spinWheelBtn">Spin the Wheel</button>
+                                
                                 <div class="form-group">
                                     <label for="itemInput">Add Item:</label>
                                     <input type="text" id="itemInput" placeholder="Enter item name">
@@ -534,18 +542,13 @@
                                     <button class="small-btn" id="removeSelectedBtn">Remove Selected</button>
                                     <button class="small-btn danger" id="clearWheelBtn">Clear All</button>
                                 </div>
-                                
-                                <button class="calculate-btn" id="spinWheelBtn">Spin the Wheel</button>
                             </div>
                         </div>
                         
-                        <div class="result-display roulette-result">
-                            <h4>Result:</h4>
-                            <div id="spinResult" class="spin-result">Spin the wheel to get a result</div>
-                            <div id="resultHistory" class="result-history">
-                                <h4>Previous Results:</h4>
-                                <ul id="historyList"></ul>
-                            </div>
+                        <!-- History section remains at the bottom -->
+                        <div class="result-history">
+                            <h4>Previous Results:</h4>
+                            <ul id="historyList"></ul>
                         </div>
                     </div>
                 </div>

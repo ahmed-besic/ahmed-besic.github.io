@@ -872,6 +872,11 @@ tr:hover {
     text-align: center;
 }
 
+/* Specific margin for the roulette result display */
+.roulette-result {
+    margin-bottom: 20px;
+}
+
 .result-history {
     margin-top: 15px;
 }
@@ -971,4 +976,16 @@ tr:hover {
         max-width: 500px;
         width: 100%;
     }
+}
+
+/* New CSS class for spin button */
+.spin-wheel-btn {
+    font-size: 22px;
+    padding: 22px;
+    margin-bottom: 30px;
+    background-color: #2ecc71;
+}
+
+.spin-wheel-btn:hover {
+    background-color: #27ae60;
 }
