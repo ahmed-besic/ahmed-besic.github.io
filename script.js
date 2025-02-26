@@ -1,4 +1,88 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Add to the top of your existing script.js file
+
+    // Top-level tab switching functionality
+    const mainTabButtons = document.querySelectorAll('.main-tab-button');
+    const mainTabContents = document.querySelectorAll('.main-tab-content');
+    
+    mainTabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const mainTabId = button.getAttribute('data-main-tab');
+            
+            // Deactivate all main tabs
+            mainTabButtons.forEach(btn => btn.classList.remove('active'));
+            mainTabContents.forEach(content => content.classList.remove('active'));
+            
+            // Activate the selected main tab
+            button.classList.add('active');
+            document.getElementById(mainTabId).classList.add('active');
+        });
+    });
+
+    // Tip Calculator Functionality
+    const billAmountInput = document.getElementById('billAmount');
+    const tipPercentageInput = document.getElementById('tipPercentage');
+    const tipSlider = document.getElementById('tipSlider');
+    const splitCountInput = document.getElementById('splitCount');
+    const calculateTipButton = document.getElementById('calculateTip');
+    const presetTipButtons = document.querySelectorAll('.preset-tip-btn');
+    
+    // Synchronize tip percentage input and slider
+    tipPercentageInput.addEventListener('input', function() {
+        tipSlider.value = this.value;
+        calculateTip();
+    });
+    
+    tipSlider.addEventListener('input', function() {
+        tipPercentageInput.value = this.value;
+        calculateTip();
+    });
+    
+    // Handle preset tip buttons
+    presetTipButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tipValue = this.getAttribute('data-tip');
+            tipPercentageInput.value = tipValue;
+            tipSlider.value = tipValue;
+            
+            // Update active state
+            presetTipButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            calculateTip();
+        });
+    });
+    
+    // Calculate tip when inputs change or button is clicked
+    billAmountInput.addEventListener('input', calculateTip);
+    splitCountInput.addEventListener('input', calculateTip);
+    calculateTipButton.addEventListener('click', calculateTip);
+    
+    // Initialize tip calculation
+    calculateTip();
+    
+    function calculateTip() {
+        // Get values from inputs
+        const billAmount = parseFloat(billAmountInput.value) || 0;
+        const tipPercentage = parseFloat(tipPercentageInput.value) || 0;
+        const splitCount = parseInt(splitCountInput.value) || 1;
+        
+        // Calculate tip and total
+        const tipAmount = billAmount * (tipPercentage / 100);
+        const totalWithTip = billAmount + tipAmount;
+        const amountPerPerson = totalWithTip / splitCount;
+        
+        // Display results
+        document.getElementById('tipAmount').textContent = formatCurrency(tipAmount);
+        document.getElementById('totalWithTip').textContent = formatCurrency(totalWithTip);
+        document.getElementById('amountPerPerson').textContent = formatCurrency(amountPerPerson);
+        
+        // Show/hide per person row based on split count
+        const perPersonRow = document.getElementById('perPersonRow');
+        perPersonRow.style.display = splitCount > 1 ? 'flex' : 'none';
+    }
+
+    // Rest of your existing code continues below...
     // Initialize variables to store chart instances
     let growthChart = null;
     let compareChart = null;
@@ -91,6 +175,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Return Rate Calculator
     document.getElementById('calculateRate').addEventListener('click', calculateRequiredRate);
+
+    // Random Generator Tab Switching
+    const randomTabButtons = document.querySelectorAll('.random-tab-button');
+    const randomTabContents = document.querySelectorAll('.random-tab-content');
+    
+    randomTabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-random-tab');
+            
+            // Deactivate all random tabs
+            randomTabButtons.forEach(btn => btn.classList.remove('active'));
+            randomTabContents.forEach(content => content.classList.remove('active'));
+            
+            // Activate the selected random tab
+            button.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Random Generator Functionality
+    initializeRandomGenerators();
 
     // Main calculation function
     function calculateInvestment() {
@@ -896,3 +1001,336 @@ function updateChartWithLengthData(years, targetAmount, startingAmount, contribu
     // Add chart update logic if desired
     // This would show how the investment grows over the calculated time period
 }
+
+// Function to initialize all random generator tools
+function initializeRandomGenerators() {
+    // Coin Flip functionality
+    const coin = document.getElementById('coin');
+    const coinResult = document.getElementById('coinResult');
+    const flipCoinBtn = document.getElementById('flipCoin');
+    const resetCoinStatsBtn = document.getElementById('resetCoinStats');
+    const totalFlips = document.getElementById('totalFlips');
+    const headsCount = document.getElementById('headsCount');
+    const tailsCount = document.getElementById('tailsCount');
+    const headsPercentage = document.getElementById('headsPercentage');
+    const tailsPercentage = document.getElementById('tailsPercentage');
+    
+    let flips = 0;
+    let heads = 0;
+    let tails = 0;
+    let coinFlipping = false;
+    
+    flipCoinBtn.addEventListener('click', function() {
+        // If already flipping, just update stats without new animation
+        if (coinFlipping) {
+            quickCoinFlip();
+            return;
+        }
+        
+        coinFlipping = true;
+        
+        // Start animation
+        coin.style.animation = 'none';
+        const result = Math.random() < 0.5 ? 'heads' : 'tails';
+        
+        requestAnimationFrame(() => {
+            // Update coin visual
+            coin.className = 'coin';
+            void coin.offsetWidth; // Trigger reflow to restart animation
+            coin.classList.add('flip-' + result);
+            
+            // Update result display immediately
+            coinResult.textContent = result.charAt(0).toUpperCase() + result.slice(1);
+            
+            // Update stats
+            flips++;
+            if (result === 'heads') heads++;
+            else tails++;
+            
+            updateCoinStats();
+            
+            // Allow new full animation after current one completes
+            setTimeout(() => {
+                coinFlipping = false;
+            }, 550); // Reduced from 1000ms to 550ms for quicker response
+        });
+    });
+    
+    // Function for rapid coin flipping without animation delays
+    function quickCoinFlip() {
+        const result = Math.random() < 0.5 ? 'heads' : 'tails';
+        coinResult.textContent = result.charAt(0).toUpperCase() + result.slice(1);
+        
+        // Update stats
+        flips++;
+        if (result === 'heads') heads++;
+        else tails++;
+        
+        updateCoinStats();
+    }
+    
+    resetCoinStatsBtn.addEventListener('click', function() {
+        flips = 0;
+        heads = 0;
+        tails = 0;
+        updateCoinStats();
+    });
+    
+    function updateCoinStats() {
+        totalFlips.textContent = flips;
+        headsCount.textContent = heads;
+        tailsCount.textContent = tails;
+        headsPercentage.textContent = flips === 0 ? '0%' : Math.round((heads / flips) * 100) + '%';
+        tailsPercentage.textContent = flips === 0 ? '0%' : Math.round((tails / flips) * 100) + '%';
+    }
+    
+    // Dice Roller functionality
+    const dice1 = document.getElementById('dice1');
+    const dice2 = document.getElementById('dice2');
+    const diceResult = document.getElementById('diceResult');
+    const rollDiceBtn = document.getElementById('rollDice');
+    const diceCountSelect = document.getElementById('diceCount');
+    const diceSidesSelect = document.getElementById('diceSides');
+    let diceRolling = false;
+    
+    rollDiceBtn.addEventListener('click', function() {
+        // If already rolling dice, just update results without animation
+        if (diceRolling) {
+            quickDiceRoll();
+            return;
+        }
+        
+        diceRolling = true;
+        
+        const diceCount = parseInt(diceCountSelect.value);
+        const diceSides = parseInt(diceSidesSelect.value);
+        
+        // Hide second die if only one is selected
+        dice2.style.display = diceCount === 1 ? 'none' : 'block';
+        
+        // Start animation
+        dice1.classList.add('shake');
+        if (diceCount === 2) dice2.classList.add('shake');
+        
+        // Roll dice
+        const roll1 = Math.floor(Math.random() * diceSides) + 1;
+        const roll2 = Math.floor(Math.random() * diceSides) + 1;
+        const totalRoll = roll1 + (diceCount === 2 ? roll2 : 0);
+        
+        // Update result text immediately
+        diceResult.textContent = diceCount === 1 
+            ? `${roll1}` 
+            : `${roll1} + ${roll2} = ${totalRoll}`;
+        
+        // Update dice visuals after animation
+        setTimeout(() => {
+            updateDiceVisual(dice1, roll1, diceSides);
+            if (diceCount === 2) updateDiceVisual(dice2, roll2, diceSides);
+            
+            // Remove animation class
+            dice1.classList.remove('shake');
+            dice2.classList.remove('shake');
+            
+            // Allow new full animation after a short delay
+            setTimeout(() => {
+                diceRolling = false;
+            }, 100);
+        }, 400); // Reduced from 600ms to 400ms
+    });
+    
+    // Function for rapid dice rolling without animation delays
+    function quickDiceRoll() {
+        const diceCount = parseInt(diceCountSelect.value);
+        const diceSides = parseInt(diceSidesSelect.value);
+        
+        // Roll dice
+        const roll1 = Math.floor(Math.random() * diceSides) + 1;
+        const roll2 = Math.floor(Math.random() * diceSides) + 1;
+        const totalRoll = roll1 + (diceCount === 2 ? roll2 : 0);
+        
+        // Update result without waiting for animation
+        diceResult.textContent = diceCount === 1 
+            ? `${roll1}` 
+            : `${roll1} + ${roll2} = ${totalRoll}`;
+    }
+    
+    // Handle dice count change
+    diceCountSelect.addEventListener('change', function() {
+        const diceCount = parseInt(this.value);
+        dice2.style.display = diceCount === 1 ? 'none' : 'block';
+    });
+    
+    // Handle dice sides change
+    diceSidesSelect.addEventListener('change', function() {
+        const diceSides = parseInt(this.value);
+        
+        // Reset dice visuals when changing sides
+        resetDiceVisual(dice1);
+        resetDiceVisual(dice2);
+        
+        // Special UI adjustments for non-standard dice
+        if (diceSides !== 6) {
+            // For non-6-sided dice, hide the dots and show numbers instead
+            const dice = [dice1, dice2];
+            dice.forEach(die => {
+                Array.from(die.getElementsByClassName('dot')).forEach(dot => {
+                    dot.style.display = 'none';
+                });
+                
+                if (!die.querySelector('.dice-number')) {
+                    const numberElement = document.createElement('div');
+                    numberElement.className = 'dice-number';
+                    numberElement.style.position = 'absolute';
+                    numberElement.style.top = '50%';
+                    numberElement.style.left = '50%';
+                    numberElement.style.transform = 'translate(-50%, -50%)';
+                    numberElement.style.fontSize = '28px';
+                    numberElement.style.fontWeight = 'bold';
+                    die.appendChild(numberElement);
+                }
+            });
+        } else {
+            // Reset to standard 6-sided dice with dots
+            const dice = [dice1, dice2];
+            dice.forEach(die => {
+                const numberElement = die.querySelector('.dice-number');
+                if (numberElement) numberElement.remove();
+                
+                // Don't show dots yet, they'll be shown during roll
+                resetDiceVisual(die);
+            });
+        }
+    });
+    
+    function updateDiceVisual(dice, value, sides) {
+        // Clear previous state
+        resetDiceVisual(dice);
+        
+        if (sides === 6) {
+            // For standard 6-sided die, use dot patterns
+            switch (value) {
+                case 1:
+                    dice.querySelector('.center').classList.add('active');
+                    break;
+                case 2:
+                    dice.querySelector('.top-left').classList.add('active');
+                    dice.querySelector('.bottom-right').classList.add('active');
+                    break;
+                case 3:
+                    dice.querySelector('.top-left').classList.add('active');
+                    dice.querySelector('.center').classList.add('active');
+                    dice.querySelector('.bottom-right').classList.add('active');
+                    break;
+                case 4:
+                    dice.querySelector('.top-left').classList.add('active');
+                    dice.querySelector('.top-right').classList.add('active');
+                    dice.querySelector('.bottom-left').classList.add('active');
+                    dice.querySelector('.bottom-right').classList.add('active');
+                    break;
+                case 5:
+                    dice.querySelector('.top-left').classList.add('active');
+                    dice.querySelector('.top-right').classList.add('active');
+                    dice.querySelector('.center').classList.add('active');
+                    dice.querySelector('.bottom-left').classList.add('active');
+                    dice.querySelector('.bottom-right').classList.add('active');
+                    break;
+                case 6:
+                    dice.querySelector('.top-left').classList.add('active');
+                    dice.querySelector('.top-right').classList.add('active');
+                    dice.querySelector('.center-left').classList.add('active');
+                    dice.querySelector('.center-right').classList.add('active');
+                    dice.querySelector('.bottom-left').classList.add('active');
+                    dice.querySelector('.bottom-right').classList.add('active');
+                    break;
+            }
+        } else {
+            // For non-standard dice, display numbers
+            const numberElement = dice.querySelector('.dice-number');
+            if (numberElement) {
+                numberElement.textContent = value;
+                numberElement.style.display = 'block';
+            }
+        }
+    }
+    
+    function resetDiceVisual(dice) {
+        // Hide all dots
+        Array.from(dice.getElementsByClassName('dot')).forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        // Hide number if exists
+        const numberElement = dice.querySelector('.dice-number');
+        if (numberElement) numberElement.style.display = 'none';
+    }
+    
+    // Random Number Generator functionality
+    const minNumberInput = document.getElementById('minNumber');
+    const maxNumberInput = document.getElementById('maxNumber');
+    const decimalPlacesInput = document.getElementById('decimalPlaces');
+    const numberCountInput = document.getElementById('numberCount');
+    const randomNumbersDisplay = document.getElementById('randomNumbers');
+    const generateNumbersBtn = document.getElementById('generateNumbers');
+    const copyNumbersBtn = document.getElementById('copyNumbers');
+    
+    generateNumbersBtn.addEventListener('click', function() {
+        const min = parseFloat(minNumberInput.value);
+        const max = parseFloat(maxNumberInput.value);
+        const decimalPlaces = parseInt(decimalPlacesInput.value);
+        const count = parseInt(numberCountInput.value);
+        
+        // Validate inputs
+        if (isNaN(min) || isNaN(max) || isNaN(decimalPlaces) || isNaN(count)) {
+            alert('Please enter valid numbers for all fields.');
+            return;
+        }
+        
+        if (min >= max) {
+            alert('Maximum must be greater than minimum.');
+            return;
+        }
+        
+        if (count < 1 || count > 1000) {
+            alert('Number count must be between 1 and 1000.');
+            return;
+        }
+        
+        const randomNumbers = [];
+        for (let i = 0; i < count; i++) {
+            const randomNumber = Math.random() * (max - min) + min;
+            const roundedNumber = decimalPlaces === 0 
+                ? Math.floor(randomNumber) 
+                : parseFloat(randomNumber.toFixed(decimalPlaces));
+            randomNumbers.push(roundedNumber);
+        }
+        
+        randomNumbersDisplay.textContent = randomNumbers.join(', ');
+    });
+    
+    copyNumbersBtn.addEventListener('click', function() {
+        const text = randomNumbersDisplay.textContent;
+        if (text && text !== '-') {
+            navigator.clipboard.writeText(text).then(
+                function() {
+                    // Temporarily change button text to indicate success
+                    const originalText = copyNumbersBtn.textContent;
+                    copyNumbersBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyNumbersBtn.textContent = originalText;
+                    }, 1500);
+                },
+                function() {
+                    alert('Failed to copy to clipboard');
+                }
+            );
+        }
+    });
+    
+    // Initialize with defaults
+    dice2.style.display = diceCountSelect.value === '1' ? 'none' : 'block';
+}
+
+// Your existing functions for investment calculator continue here...
+// function formatCurrency(value) { ... }
+// function calculateInvestmentLength() { ... }
+// etc...

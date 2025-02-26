@@ -3,281 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Calculator</title>
+    <title>Financial Calculators</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Investment Calculator</h1>
+        <h1>Financial Calculators</h1>
         
-        <div class="main-layout">
-            <!-- Left column - Calculator inputs with tabs -->
-            <div class="calculator">
-                <!-- Tab navigation -->
-                <div class="tab-navigation">
-                    <button class="tab-button active" data-tab="growthCalculator">Growth Calculator</button>
-                    <button class="tab-button" data-tab="lengthCalculator">Investment Length</button>
-                    <button class="tab-button" data-tab="rateCalculator">Return Rate</button>
+        <!-- Top-level tab navigation -->
+        <div class="main-tab-navigation">
+            <button class="main-tab-button active" data-main-tab="investmentCalculator">Investment Calculator</button>
+            <button class="main-tab-button" data-main-tab="tipCalculator">Tip Calculator</button>
+            <button class="main-tab-button" data-main-tab="randomGenerator">Random Generator</button>
+        </div>
+        
+        <!-- Investment Calculator Content -->
+        <div class="main-tab-content active" id="investmentCalculator">
+            <div class="main-layout">
+                <!-- Left column - Calculator inputs with tabs -->
+                <div class="calculator">
+                    <!-- Tab navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-button active" data-tab="growthCalculator">Growth Calculator</button>
+                        <button class="tab-button" data-tab="lengthCalculator">Investment Length</button>
+                        <button class="tab-button" data-tab="rateCalculator">Return Rate</button>
+                    </div>
+                    
+                    <!-- Growth Calculator Tab (Original calculator) -->
+                    <div class="tab-content active" id="growthCalculator">
+                        <h2>Investment Parameters</h2>
+                        <div class="form-group">
+                            <label for="startingAmount">Starting Amount ($):</label>
+                            <input type="number" id="startingAmount" value="1000" min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="returnRate">Annual Return Rate (%):</label>
+                            <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="compoundFrequency">Compound Frequency:</label>
+                            <select id="compoundFrequency">
+                                <option value="1">Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contributionAmount">Additional Contribution ($):</label>
+                            <input type="number" id="contributionAmount" value="100" min="0" step="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="contributionTiming">Contribution Timing:</label>
+                            <select id="contributionTiming">
+                                <option value="beginning">Beginning of Period</option>
+                                <option value="end">End of Period</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contributionFrequency">Contribution Frequency:</label>
+                            <select id="contributionFrequency">
+                                <option value="12">Monthly</option>
+                                <option value="1">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="years">Number of Years:</label>
+                            <input type="number" id="years" value="10" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="inflationRate">Inflation Rate (%):</label>
+                            <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
+                        </div>
+                        <button id="calculate" class="calculate-btn">Calculate</button>
+                    </div>
+                    
+                    <!-- New Investment Length Calculator Tab -->
+                    <div class="tab-content" id="lengthCalculator">
+                        <h2>Calculate Investment Time</h2>
+                        <div class="form-group">
+                            <label for="length_target">Your Target ($):</label>
+                            <input type="number" id="length_target" value="10000" min="0" step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="length_startingAmount">Starting Amount ($):</label>
+                            <input type="number" id="length_startingAmount" value="1000" min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="length_returnRate">Return Rate (%):</label>
+                            <input type="number" id="length_returnRate" value="7" min="0" max="100" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="length_compoundFrequency">Compound Frequency:</label>
+                            <select id="length_compoundFrequency">
+                                <option value="1">Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="length_contributionAmount">Additional Contribution ($):</label>
+                            <input type="number" id="length_contributionAmount" value="100" min="0" step="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="length_contributionTiming">Contribution Timing:</label>
+                            <select id="length_contributionTiming">
+                                <option value="beginning">Beginning of Period</option>
+                                <option value="end">End of Period</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="length_contributionFrequency">Contribution Frequency:</label>
+                            <select id="length_contributionFrequency">
+                                <option value="12">Monthly</option>
+                                <option value="1">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="length_inflationRate">Inflation Rate (%):</label>
+                            <input type="number" id="length_inflationRate" value="2.5" min="0" max="20" step="0.1">
+                        </div>
+                        <button id="calculateLength" class="calculate-btn">Calculate Time to Target</button>
+                    </div>
+                    
+                    <!-- New Return Rate Calculator Tab -->
+                    <div class="tab-content" id="rateCalculator">
+                        <h2>Calculate Required Return Rate</h2>
+                        <div class="form-group">
+                            <label for="rate_target">Your Target ($):</label>
+                            <input type="number" id="rate_target" value="10000" min="0" step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_startingAmount">Starting Amount ($):</label>
+                            <input type="number" id="rate_startingAmount" value="1000" min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_years">After (years):</label>
+                            <input type="number" id="rate_years" value="10" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_compoundFrequency">Compound Frequency:</label>
+                            <select id="rate_compoundFrequency">
+                                <option value="1">Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_contributionAmount">Additional Contribution ($):</label>
+                            <input type="number" id="rate_contributionAmount" value="100" min="0" step="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_contributionTiming">Contribution Timing:</label>
+                            <select id="rate_contributionTiming">
+                                <option value="beginning">Beginning of Period</option>
+                                <option value="end">End of Period</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_contributionFrequency">Contribution Frequency:</label>
+                            <select id="rate_contributionFrequency">
+                                <option value="12">Monthly</option>
+                                <option value="1">Yearly</option>
+                            </select>
+                        </div>
+                        <button id="calculateRate" class="calculate-btn">Calculate Required Rate</button>
+                    </div>
+                    
+                    <!-- Save/Load section -->
+                    <div class="save-scenario">
+                        <div class="form-group">
+                            <input type="text" id="scenarioName" placeholder="Scenario name">
+                            <button id="saveScenario" class="small-btn">Save</button>
+                        </div>
+                        <div class="form-group">
+                            <select id="savedScenarios">
+                                <option value="">-- Saved Scenarios --</option>
+                            </select>
+                            <button id="loadScenario" class="small-btn">Load</button>
+                            <button id="deleteScenario" class="small-btn danger">Delete</button>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Growth Calculator Tab (Original calculator) -->
-                <div class="tab-content active" id="growthCalculator">
-                    <h2>Investment Parameters</h2>
-                    <div class="form-group">
-                        <label for="startingAmount">Starting Amount ($):</label>
-                        <input type="number" id="startingAmount" value="1000" min="0" step="100">
+                <!-- Right column - Chart visualization -->
+                <div class="chart-section">
+                    <h2>Investment Growth Chart</h2>
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
                     </div>
-                    <div class="form-group">
-                        <label for="returnRate">Annual Return Rate (%):</label>
-                        <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
+                    
+                    <div class="chart-options">
+                        <div class="form-row">
+                            <label for="chartType">Chart Type:</label>
+                            <select id="chartType">
+                                <option value="line">Line Chart</option>
+                                <option value="bar">Bar Chart</option>
+                                <option value="pie">Pie Chart (Final Values)</option>
+                            </select>
+                        </div>
+                        <div class="chart-checkboxes">
+                            <div>
+                                <input type="checkbox" id="showContributions" checked>
+                                <label for="showContributions">Show Contributions</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="showInterest" checked>
+                                <label for="showInterest">Show Interest</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="showInflationAdjusted" checked>
+                                <label for="showInflationAdjusted">Show Inflation-Adjusted Value</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="compoundFrequency">Compound Frequency:</label>
-                        <select id="compoundFrequency">
-                            <option value="1">Annually</option>
-                            <option value="4">Quarterly</option>
-                            <option value="12">Monthly</option>
-                            <option value="365">Daily</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="contributionAmount">Additional Contribution ($):</label>
-                        <input type="number" id="contributionAmount" value="100" min="0" step="50">
-                    </div>
-                    <div class="form-group">
-                        <label for="contributionTiming">Contribution Timing:</label>
-                        <select id="contributionTiming">
-                            <option value="beginning">Beginning of Period</option>
-                            <option value="end">End of Period</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="contributionFrequency">Contribution Frequency:</label>
-                        <select id="contributionFrequency">
-                            <option value="12">Monthly</option>
-                            <option value="1">Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="years">Number of Years:</label>
-                        <input type="number" id="years" value="10" min="1" max="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="inflationRate">Inflation Rate (%):</label>
-                        <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
-                    </div>
-                    <button id="calculate" class="calculate-btn">Calculate</button>
-                </div>
-                
-                <!-- New Investment Length Calculator Tab -->
-                <div class="tab-content" id="lengthCalculator">
-                    <h2>Calculate Investment Time</h2>
-                    <div class="form-group">
-                        <label for="length_target">Your Target ($):</label>
-                        <input type="number" id="length_target" value="10000" min="0" step="1000">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_startingAmount">Starting Amount ($):</label>
-                        <input type="number" id="length_startingAmount" value="1000" min="0" step="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_returnRate">Return Rate (%):</label>
-                        <input type="number" id="length_returnRate" value="7" min="0" max="100" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_compoundFrequency">Compound Frequency:</label>
-                        <select id="length_compoundFrequency">
-                            <option value="1">Annually</option>
-                            <option value="4">Quarterly</option>
-                            <option value="12">Monthly</option>
-                            <option value="365">Daily</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="length_contributionAmount">Additional Contribution ($):</label>
-                        <input type="number" id="length_contributionAmount" value="100" min="0" step="50">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_contributionTiming">Contribution Timing:</label>
-                        <select id="length_contributionTiming">
-                            <option value="beginning">Beginning of Period</option>
-                            <option value="end">End of Period</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="length_contributionFrequency">Contribution Frequency:</label>
-                        <select id="length_contributionFrequency">
-                            <option value="12">Monthly</option>
-                            <option value="1">Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="length_inflationRate">Inflation Rate (%):</label>
-                        <input type="number" id="length_inflationRate" value="2.5" min="0" max="20" step="0.1">
-                    </div>
-                    <button id="calculateLength" class="calculate-btn">Calculate Time to Target</button>
-                </div>
-                
-                <!-- New Return Rate Calculator Tab -->
-                <div class="tab-content" id="rateCalculator">
-                    <h2>Calculate Required Return Rate</h2>
-                    <div class="form-group">
-                        <label for="rate_target">Your Target ($):</label>
-                        <input type="number" id="rate_target" value="10000" min="0" step="1000">
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_startingAmount">Starting Amount ($):</label>
-                        <input type="number" id="rate_startingAmount" value="1000" min="0" step="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_years">After (years):</label>
-                        <input type="number" id="rate_years" value="10" min="1" max="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_compoundFrequency">Compound Frequency:</label>
-                        <select id="rate_compoundFrequency">
-                            <option value="1">Annually</option>
-                            <option value="4">Quarterly</option>
-                            <option value="12">Monthly</option>
-                            <option value="365">Daily</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_contributionAmount">Additional Contribution ($):</label>
-                        <input type="number" id="rate_contributionAmount" value="100" min="0" step="50">
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_contributionTiming">Contribution Timing:</label>
-                        <select id="rate_contributionTiming">
-                            <option value="beginning">Beginning of Period</option>
-                            <option value="end">End of Period</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="rate_contributionFrequency">Contribution Frequency:</label>
-                        <select id="rate_contributionFrequency">
-                            <option value="12">Monthly</option>
-                            <option value="1">Yearly</option>
-                        </select>
-                    </div>
-                    <button id="calculateRate" class="calculate-btn">Calculate Required Rate</button>
-                </div>
-                
-                <!-- Save/Load section -->
-                <div class="save-scenario">
-                    <div class="form-group">
-                        <input type="text" id="scenarioName" placeholder="Scenario name">
-                        <button id="saveScenario" class="small-btn">Save</button>
-                    </div>
-                    <div class="form-group">
-                        <select id="savedScenarios">
-                            <option value="">-- Saved Scenarios --</option>
-                        </select>
-                        <button id="loadScenario" class="small-btn">Load</button>
-                        <button id="deleteScenario" class="small-btn danger">Delete</button>
+                    
+                    <div class="summary">
+                        <div class="summary-item">
+                            <h3>Final Balance</h3>
+                            <p id="finalBalance">$0</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>Total Contributions</h3>
+                            <p id="totalContributions">$0</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>Total Interest</h3>
+                            <p id="totalInterest">$0</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>Inflation-Adjusted</h3>
+                            <p id="inflationAdjusted">$0</p>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Right column - Chart visualization -->
-            <div class="chart-section">
-                <h2>Investment Growth Chart</h2>
-                <div class="chart-container">
-                    <canvas id="growthChart"></canvas>
+            <!-- Bottom section for detailed results -->
+            <div class="results" id="results">
+                <div class="view-toggle">
+                    <button id="tableViewBtn" class="view-btn active">Table View</button>
+                    <button id="compareBtn" class="view-btn">Compare Scenarios</button>
+                    <button id="exportBtn" class="view-btn">Export Data</button>
                 </div>
-                
-                <div class="chart-options">
-                    <div class="form-row">
-                        <label for="chartType">Chart Type:</label>
-                        <select id="chartType">
-                            <option value="line">Line Chart</option>
-                            <option value="bar">Bar Chart</option>
-                            <option value="pie">Pie Chart (Final Values)</option>
+
+                <div id="tableView" class="view-content active">
+                    <h2>Detailed Results</h2>
+                    <div class="table-container">
+                        <table id="growthTable">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Starting Balance</th>
+                                    <th>Contributions</th>
+                                    <th>Interest</th>
+                                    <th>Ending Balance</th>
+                                    <th>Inflation-Adjusted</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="compareView" class="view-content">
+                    <h2>Scenario Comparison</h2>
+                    <div class="compare-scenarios">
+                        <select id="scenario1" class="compare-select">
+                            <option value="current">Current Scenario</option>
+                        </select>
+                        <select id="scenario2" class="compare-select">
+                            <option value="">Select Scenario</option>
                         </select>
                     </div>
-                    <div class="chart-checkboxes">
-                        <div>
-                            <input type="checkbox" id="showContributions" checked>
-                            <label for="showContributions">Show Contributions</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="showInterest" checked>
-                            <label for="showInterest">Show Interest</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="showInflationAdjusted" checked>
-                            <label for="showInflationAdjusted">Show Inflation-Adjusted Value</label>
-                        </div>
+                    <div class="compare-chart-container">
+                        <canvas id="compareChart"></canvas>
                     </div>
-                </div>
-                
-                <div class="summary">
-                    <div class="summary-item">
-                        <h3>Final Balance</h3>
-                        <p id="finalBalance">$0</p>
-                    </div>
-                    <div class="summary-item">
-                        <h3>Total Contributions</h3>
-                        <p id="totalContributions">$0</p>
-                    </div>
-                    <div class="summary-item">
-                        <h3>Total Interest</h3>
-                        <p id="totalInterest">$0</p>
-                    </div>
-                    <div class="summary-item">
-                        <h3>Inflation-Adjusted</h3>
-                        <p id="inflationAdjusted">$0</p>
+                    <div class="compare-summary" id="compareSummary">
+                        <!-- Comparison summary will be shown here -->
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Bottom section for detailed results -->
-        <div class="results" id="results">
-            <div class="view-toggle">
-                <button id="tableViewBtn" class="view-btn active">Table View</button>
-                <button id="compareBtn" class="view-btn">Compare Scenarios</button>
-                <button id="exportBtn" class="view-btn">Export Data</button>
-            </div>
-
-            <div id="tableView" class="view-content active">
-                <h2>Detailed Results</h2>
-                <div class="table-container">
-                    <table id="growthTable">
-                        <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Starting Balance</th>
-                                <th>Contributions</th>
-                                <th>Interest</th>
-                                <th>Ending Balance</th>
-                                <th>Inflation-Adjusted</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                            <!-- Results will be populated here -->
-                        </tbody>
+        <!-- Tip Calculator Content -->
+        <div class="main-tab-content" id="tipCalculator">
+            <div class="tip-calculator-container">
+                <h2>Tip Calculator</h2>
+                
+                <div class="tip-calculator">
+                    <div class="form-group">
+                        <label for="billAmount">Bill Amount ($):</label>
+                        <input type="number" id="billAmount" value="50.00" min="0" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipPercentage">Tip Percentage (%):</label>
+                        <input type="number" id="tipPercentage" value="15" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="tip-slider-container">
+                        <input type="range" id="tipSlider" min="0" max="30" value="15" step="1">
+                        <div class="tip-marks">
+                            <span>0%</span>
+                            <span>15%</span>
+                            <span>30%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="splitCount">Split Between:</label>
+                        <input type="number" id="splitCount" value="1" min="1" step="1">
+                    </div>
+                    
+                    <button id="calculateTip" class="calculate-btn">Calculate Tip</button>
+                    
+                    <div class="tip-results">
+                        <div class="tip-result-row">
+                            <span>Tip Amount:</span>
+                            <span id="tipAmount">$7.50</span>
+                        </div>
+                        <div class="tip-result-row">
+                            <span>Total Amount:</span>
+                            <span id="totalWithTip">$57.50</span>
+                        </div>
+                        <div class="tip-result-row" id="perPersonRow">
+                            <span>Amount Per Person:</span>
+                            <span id="amountPerPerson">$57.50</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preset-tips">
+                        <h3>Quick Tip</h3>
+                        <div class="preset-buttons">
+                            <button class="preset-tip-btn" data-tip="10">10%</button>
+                            <button class="preset-tip-btn" data-tip="15">15%</button>
+                            <button class="preset-tip-btn" data-tip="18">18%</button>
+                            <button class="preset-tip-btn" data-tip="20">20%</button>
+                            <button class="preset-tip-btn" data-tip="25">25%</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-info">
+                    <h3>Tipping Guide</h3>
+                    <table class="tip-guide">
+                        <tr>
+                            <th>Service Quality</th>
+                            <th>Suggested Tip</th>
+                        </tr>
+                        <tr>
+                            <td>Standard Service</td>
+                            <td>15-18%</td>
+                        </tr>
+                        <tr>
+                            <td>Good Service</td>
+                            <td>18-20%</td>
+                        </tr>
+                        <tr>
+                            <td>Excellent Service</td>
+                            <td>20-25%</td>
+                        </tr>
                     </table>
                 </div>
             </div>
-
-            <div id="compareView" class="view-content">
-                <h2>Scenario Comparison</h2>
-                <div class="compare-scenarios">
-                    <select id="scenario1" class="compare-select">
-                        <option value="current">Current Scenario</option>
-                    </select>
-                    <select id="scenario2" class="compare-select">
-                        <option value="">Select Scenario</option>
-                    </select>
+        </div>
+        
+        <!-- Random Generator Content -->
+        <div class="main-tab-content" id="randomGenerator">
+            <h2>Random Generator Tools</h2>
+            
+            <!-- Random Tools Tab Navigation -->
+            <div class="random-tab-navigation">
+                <button class="random-tab-button active" data-random-tab="coinFlip">Coin Flip</button>
+                <button class="random-tab-button" data-random-tab="diceRoller">Dice Roller</button>
+                <button class="random-tab-button" data-random-tab="randomNumber">Random Number</button>
+            </div>
+            
+            <!-- Random Tools Tab Content -->
+            <div class="random-tools-container">
+                <!-- Coin Flip Tool -->
+                <div class="random-tab-content active" id="coinFlip">
+                    <div class="random-tool">
+                        <h3>Coin Flip</h3>
+                        <div class="coin-container">
+                            <div class="coin" id="coin">
+                                <div class="heads"></div>
+                                <div class="tails"></div>
+                            </div>
+                        </div>
+                        <div class="result-display coin-result">
+                            <p>Flip result: <span id="coinResult">-</span></p>
+                        </div>
+                        <button class="calculate-btn" id="flipCoin">Flip Coin</button>
+                        
+                        <div class="stats-container">
+                            <p>Flips: <span id="totalFlips">0</span></p>
+                            <p>Heads: <span id="headsCount">0</span> (<span id="headsPercentage">0%</span>)</p>
+                            <p>Tails: <span id="tailsCount">0</span> (<span id="tailsPercentage">0%</span>)</p>
+                            <button class="small-btn" id="resetCoinStats">Reset Stats</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="compare-chart-container">
-                    <canvas id="compareChart"></canvas>
+                
+                <!-- Dice Roll Tool -->
+                <div class="random-tab-content" id="diceRoller">
+                    <div class="random-tool">
+                        <h3>Dice Roller</h3>
+                        <div class="dice-container">
+                            <div class="dice" id="dice1">
+                                <div class="dot center" id="dice1dot1"></div>
+                                <div class="dot top-left" id="dice1dot2"></div>
+                                <div class="dot top-right" id="dice1dot3"></div>
+                                <div class="dot bottom-left" id="dice1dot4"></div>
+                                <div class="dot bottom-right" id="dice1dot5"></div>
+                                <div class="dot center-left" id="dice1dot6"></div>
+                                <div class="dot center-right" id="dice1dot7"></div>
+                            </div>
+                            <div class="dice" id="dice2">
+                                <div class="dot center" id="dice2dot1"></div>
+                                <div class="dot top-left" id="dice2dot2"></div>
+                                <div class="dot top-right" id="dice2dot3"></div>
+                                <div class="dot bottom-left" id="dice2dot4"></div>
+                                <div class="dot bottom-right" id="dice2dot5"></div>
+                                <div class="dot center-left" id="dice2dot6"></div>
+                                <div class="dot center-right" id="dice2dot7"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="dice-options">
+                            <div class="form-group">
+                                <label for="diceCount">Number of Dice:</label>
+                                <select id="diceCount">
+                                    <option value="1">1 Die</option>
+                                    <option value="2" selected>2 Dice</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="diceSides">Type of Dice:</label>
+                                <select id="diceSides">
+                                    <option value="6" selected>6-sided</option>
+                                    <option value="4">4-sided</option>
+                                    <option value="8">8-sided</option>
+                                    <option value="10">10-sided</option>
+                                    <option value="12">12-sided</option>
+                                    <option value="20">20-sided</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="result-display dice-result">
+                            <p>Roll result: <span id="diceResult">-</span></p>
+                        </div>
+                        
+                        <button class="calculate-btn" id="rollDice">Roll Dice</button>
+                    </div>
                 </div>
-                <div class="compare-summary" id="compareSummary">
-                    <!-- Comparison summary will be shown here -->
+                
+                <!-- Random Number Generator -->
+                <div class="random-tab-content" id="randomNumber">
+                    <div class="random-tool">
+                        <h3>Random Number Generator</h3>
+                        
+                        <div class="form-group">
+                            <label for="minNumber">Minimum:</label>
+                            <input type="number" id="minNumber" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="maxNumber">Maximum:</label>
+                            <input type="number" id="maxNumber" value="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="decimalPlaces">Decimal Places:</label>
+                            <input type="number" id="decimalPlaces" value="0" min="0" max="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="numberCount">Generate:</label>
+                            <input type="number" id="numberCount" value="1" min="1" max="100">
+                            <span class="input-info">number(s)</span>
+                        </div>
+                        
+                        <div class="result-display number-result">
+                            <h4>Generated Numbers:</h4>
+                            <div id="randomNumbers">-</div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button class="calculate-btn" id="generateNumbers">Generate</button>
+                            <button class="small-btn" id="copyNumbers">Copy to Clipboard</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
