@@ -65,6 +65,33 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateInvestment();
     updateSavedScenariosSelect();
     
+    // Tab switching
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            
+            // Deactivate all tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Activate the selected tab
+            button.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Initialize the original calculate button functionality
+    // (This should already exist in your code)
+    
+    // Investment Length Calculator
+    document.getElementById('calculateLength').addEventListener('click', calculateInvestmentLength);
+    
+    // Return Rate Calculator
+    document.getElementById('calculateRate').addEventListener('click', calculateRequiredRate);
+
     // Main calculation function
     function calculateInvestment() {
         // Get input values
@@ -688,3 +715,184 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     }
 });
+
+// Calculate how long it will take to reach target amount
+function calculateInvestmentLength() {
+    // Get input values
+    const targetAmount = parseFloat(document.getElementById('length_target').value);
+    const startingAmount = parseFloat(document.getElementById('length_startingAmount').value);
+    const returnRate = parseFloat(document.getElementById('length_returnRate').value) / 100;
+    const compoundFrequency = parseInt(document.getElementById('length_compoundFrequency').value);
+    const contributionAmount = parseFloat(document.getElementById('length_contributionAmount').value);
+    const contributionTiming = document.getElementById('length_contributionTiming').value;
+    const contributionFrequency = parseInt(document.getElementById('length_contributionFrequency').value);
+    const inflationRate = parseFloat(document.getElementById('length_inflationRate').value) / 100;
+
+    // Variables for calculation
+    let balance = startingAmount;
+    let years = 0;
+    const maxYears = 100; // Prevent infinite loops
+    const periodsPerYear = compoundFrequency;
+    const contributionsPerYear = contributionFrequency;
+    const periodicRate = returnRate / periodsPerYear;
+    const contributionPerPeriod = contributionAmount * (periodsPerYear / contributionsPerYear);
+
+    // Calculate time to reach target
+    while (balance < targetAmount && years < maxYears) {
+        years += 1/periodsPerYear;
+        
+        // Add contribution at beginning of period if specified
+        if (contributionTiming === 'beginning') {
+            // Only add contribution on the appropriate periods
+            if (Math.round(years * periodsPerYear) % (periodsPerYear / contributionsPerYear) === 0) {
+                balance += contributionPerPeriod;
+            }
+        }
+        
+        // Compound interest
+        balance *= (1 + periodicRate);
+        
+        // Add contribution at end of period if specified
+        if (contributionTiming === 'end') {
+            // Only add contribution on the appropriate periods
+            if (Math.round(years * periodsPerYear) % (periodsPerYear / contributionsPerYear) === 0) {
+                balance += contributionPerPeriod;
+            }
+        }
+    }
+
+    // Create or update result display
+    let resultDisplay = document.querySelector('#lengthCalculator .result-display');
+    if (!resultDisplay) {
+        resultDisplay = document.createElement('div');
+        resultDisplay.className = 'result-display';
+        document.getElementById('lengthCalculator').appendChild(resultDisplay);
+    }
+
+    // Display results
+    if (years >= maxYears) {
+        resultDisplay.innerHTML = `
+            <h3>Target not reached within ${maxYears} years</h3>
+            <p>You may need to increase your contribution amount or return rate.</p>
+        `;
+    } else {
+        const yearText = years === 1 ? 'year' : 'years';
+        const monthsDecimal = (years % 1) * 12;
+        const months = Math.floor(monthsDecimal);
+        
+        resultDisplay.innerHTML = `
+            <h3>Time to Reach Target</h3>
+            <div class="result-value">
+                ${Math.floor(years)} ${yearText} ${months > 0 ? `and ${months} months` : ''}
+            </div>
+            <p>Your investment will grow from $${startingAmount.toLocaleString()} to $${targetAmount.toLocaleString()}</p>
+            <p>With ${contributionFrequency === 12 ? 'monthly' : 'yearly'} contributions of $${contributionAmount.toLocaleString()}</p>
+        `;
+    }
+
+    // Update chart with projection data if needed
+    updateChartWithLengthData(years, targetAmount, startingAmount, contributionAmount, contributionFrequency);
+}
+
+// Calculate required return rate to reach target
+function calculateRequiredRate() {
+    // Get input values
+    const targetAmount = parseFloat(document.getElementById('rate_target').value);
+    const startingAmount = parseFloat(document.getElementById('rate_startingAmount').value);
+    const years = parseFloat(document.getElementById('rate_years').value);
+    const compoundFrequency = parseInt(document.getElementById('rate_compoundFrequency').value);
+    const contributionAmount = parseFloat(document.getElementById('rate_contributionAmount').value);
+    const contributionTiming = document.getElementById('rate_contributionTiming').value;
+    const contributionFrequency = parseInt(document.getElementById('rate_contributionFrequency').value);
+    
+    // Binary search to find the rate
+    let lowerRate = -0.99; // -99% (avoid -100% as it breaks calculations)
+    let upperRate = 10; // 1000%
+    let requiredRate;
+    let iterations = 0;
+    const maxIterations = 50;
+    
+    while (iterations < maxIterations) {
+        requiredRate = (lowerRate + upperRate) / 2;
+        
+        // Calculate final balance with this rate
+        const finalBalance = calculateBalanceWithRate(
+            startingAmount, 
+            requiredRate, 
+            years, 
+            compoundFrequency,
+            contributionAmount,
+            contributionTiming,
+            contributionFrequency
+        );
+        
+        if (Math.abs(finalBalance - targetAmount) < 1) {
+            // Close enough, stop iterations
+            break;
+        }
+        
+        if (finalBalance < targetAmount) {
+            lowerRate = requiredRate;
+        } else {
+            upperRate = requiredRate;
+        }
+        
+        iterations++;
+    }
+    
+    // Create or update result display
+    let resultDisplay = document.querySelector('#rateCalculator .result-display');
+    if (!resultDisplay) {
+        resultDisplay = document.createElement('div');
+        resultDisplay.className = 'result-display';
+        document.getElementById('rateCalculator').appendChild(resultDisplay);
+    }
+    
+    // Display results
+    if (iterations >= maxIterations) {
+        resultDisplay.innerHTML = `
+            <h3>Could not calculate required rate</h3>
+            <p>Try adjusting your parameters. Target may be too high or too low.</p>
+        `;
+    } else {
+        const ratePercentage = (requiredRate * 100).toFixed(2);
+        
+        resultDisplay.innerHTML = `
+            <h3>Required Annual Return Rate</h3>
+            <div class="result-value">${ratePercentage}%</div>
+            <p>To grow $${startingAmount.toLocaleString()} to $${targetAmount.toLocaleString()} in ${years} years</p>
+            <p>With ${contributionFrequency === 12 ? 'monthly' : 'yearly'} contributions of $${contributionAmount.toLocaleString()}</p>
+        `;
+    }
+}
+
+// Helper function for rate calculation
+function calculateBalanceWithRate(startingAmount, rate, years, compoundFrequency, contributionAmount, contributionTiming, contributionFrequency) {
+    let balance = startingAmount;
+    const periodsTotal = years * compoundFrequency;
+    const periodicRate = rate / compoundFrequency;
+    const contributionPerPeriod = contributionAmount * (compoundFrequency / contributionFrequency);
+    
+    for (let i = 0; i < periodsTotal; i++) {
+        // Add contribution at beginning if specified
+        if (contributionTiming === 'beginning' && i % (compoundFrequency / contributionFrequency) === 0) {
+            balance += contributionPerPeriod;
+        }
+        
+        // Compound interest
+        balance *= (1 + periodicRate);
+        
+        // Add contribution at end if specified
+        if (contributionTiming === 'end' && i % (compoundFrequency / contributionFrequency) === 0) {
+            balance += contributionPerPeriod;
+        }
+    }
+    
+    return balance;
+}
+
+// Function to update chart with investment length projection data
+function updateChartWithLengthData(years, targetAmount, startingAmount, contributionAmount, contributionFrequency) {
+    // Add chart update logic if desired
+    // This would show how the investment grows over the calculated time period
+}

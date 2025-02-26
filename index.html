@@ -13,53 +13,157 @@
         <h1>Investment Calculator</h1>
         
         <div class="main-layout">
-            <!-- Left column - Calculator inputs -->
+            <!-- Left column - Calculator inputs with tabs -->
             <div class="calculator">
-                <h2>Investment Parameters</h2>
-                <div class="form-group">
-                    <label for="startingAmount">Starting Amount ($):</label>
-                    <input type="number" id="startingAmount" value="1000" min="0" step="100">
+                <!-- Tab navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-button active" data-tab="growthCalculator">Growth Calculator</button>
+                    <button class="tab-button" data-tab="lengthCalculator">Investment Length</button>
+                    <button class="tab-button" data-tab="rateCalculator">Return Rate</button>
                 </div>
-                <div class="form-group">
-                    <label for="returnRate">Annual Return Rate (%):</label>
-                    <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
+                
+                <!-- Growth Calculator Tab (Original calculator) -->
+                <div class="tab-content active" id="growthCalculator">
+                    <h2>Investment Parameters</h2>
+                    <div class="form-group">
+                        <label for="startingAmount">Starting Amount ($):</label>
+                        <input type="number" id="startingAmount" value="1000" min="0" step="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="returnRate">Annual Return Rate (%):</label>
+                        <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="compoundFrequency">Compound Frequency:</label>
+                        <select id="compoundFrequency">
+                            <option value="1">Annually</option>
+                            <option value="4">Quarterly</option>
+                            <option value="12">Monthly</option>
+                            <option value="365">Daily</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contributionAmount">Additional Contribution ($):</label>
+                        <input type="number" id="contributionAmount" value="100" min="0" step="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="contributionTiming">Contribution Timing:</label>
+                        <select id="contributionTiming">
+                            <option value="beginning">Beginning of Period</option>
+                            <option value="end">End of Period</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contributionFrequency">Contribution Frequency:</label>
+                        <select id="contributionFrequency">
+                            <option value="12">Monthly</option>
+                            <option value="1">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="years">Number of Years:</label>
+                        <input type="number" id="years" value="10" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="inflationRate">Inflation Rate (%):</label>
+                        <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
+                    </div>
+                    <button id="calculate" class="calculate-btn">Calculate</button>
                 </div>
-                <div class="form-group">
-                    <label for="compoundFrequency">Compound Frequency:</label>
-                    <select id="compoundFrequency">
-                        <option value="1">Annually</option>
-                        <option value="4">Quarterly</option>
-                        <option value="12">Monthly</option>
-                        <option value="365">Daily</option>
-                    </select>
+                
+                <!-- New Investment Length Calculator Tab -->
+                <div class="tab-content" id="lengthCalculator">
+                    <h2>Calculate Investment Time</h2>
+                    <div class="form-group">
+                        <label for="length_target">Your Target ($):</label>
+                        <input type="number" id="length_target" value="10000" min="0" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="length_startingAmount">Starting Amount ($):</label>
+                        <input type="number" id="length_startingAmount" value="1000" min="0" step="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="length_returnRate">Return Rate (%):</label>
+                        <input type="number" id="length_returnRate" value="7" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="length_compoundFrequency">Compound Frequency:</label>
+                        <select id="length_compoundFrequency">
+                            <option value="1">Annually</option>
+                            <option value="4">Quarterly</option>
+                            <option value="12">Monthly</option>
+                            <option value="365">Daily</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="length_contributionAmount">Additional Contribution ($):</label>
+                        <input type="number" id="length_contributionAmount" value="100" min="0" step="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="length_contributionTiming">Contribution Timing:</label>
+                        <select id="length_contributionTiming">
+                            <option value="beginning">Beginning of Period</option>
+                            <option value="end">End of Period</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="length_contributionFrequency">Contribution Frequency:</label>
+                        <select id="length_contributionFrequency">
+                            <option value="12">Monthly</option>
+                            <option value="1">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="length_inflationRate">Inflation Rate (%):</label>
+                        <input type="number" id="length_inflationRate" value="2.5" min="0" max="20" step="0.1">
+                    </div>
+                    <button id="calculateLength" class="calculate-btn">Calculate Time to Target</button>
                 </div>
-                <div class="form-group">
-                    <label for="contributionAmount">Additional Contribution ($):</label>
-                    <input type="number" id="contributionAmount" value="100" min="0" step="50">
+                
+                <!-- New Return Rate Calculator Tab -->
+                <div class="tab-content" id="rateCalculator">
+                    <h2>Calculate Required Return Rate</h2>
+                    <div class="form-group">
+                        <label for="rate_target">Your Target ($):</label>
+                        <input type="number" id="rate_target" value="10000" min="0" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_startingAmount">Starting Amount ($):</label>
+                        <input type="number" id="rate_startingAmount" value="1000" min="0" step="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_years">After (years):</label>
+                        <input type="number" id="rate_years" value="10" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_compoundFrequency">Compound Frequency:</label>
+                        <select id="rate_compoundFrequency">
+                            <option value="1">Annually</option>
+                            <option value="4">Quarterly</option>
+                            <option value="12">Monthly</option>
+                            <option value="365">Daily</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_contributionAmount">Additional Contribution ($):</label>
+                        <input type="number" id="rate_contributionAmount" value="100" min="0" step="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_contributionTiming">Contribution Timing:</label>
+                        <select id="rate_contributionTiming">
+                            <option value="beginning">Beginning of Period</option>
+                            <option value="end">End of Period</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate_contributionFrequency">Contribution Frequency:</label>
+                        <select id="rate_contributionFrequency">
+                            <option value="12">Monthly</option>
+                            <option value="1">Yearly</option>
+                        </select>
+                    </div>
+                    <button id="calculateRate" class="calculate-btn">Calculate Required Rate</button>
                 </div>
-                <div class="form-group">
-                    <label for="contributionTiming">Contribution Timing:</label>
-                    <select id="contributionTiming">
-                        <option value="beginning">Beginning of Period</option>
-                        <option value="end">End of Period</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="contributionFrequency">Contribution Frequency:</label>
-                    <select id="contributionFrequency">
-                        <option value="12">Monthly</option>
-                        <option value="1">Yearly</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="years">Number of Years:</label>
-                    <input type="number" id="years" value="10" min="1" max="100">
-                </div>
-                <div class="form-group">
-                    <label for="inflationRate">Inflation Rate (%):</label>
-                    <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
-                </div>
-                <button id="calculate" class="calculate-btn">Calculate</button>
                 
                 <!-- Save/Load section -->
                 <div class="save-scenario">
