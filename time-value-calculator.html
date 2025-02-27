@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Value of Money Calculator</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/investment-calculator.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Value of Money Calculator</h1>
+        
+        <!-- Navigation buttons -->
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="nav-button active">Time Value Calculator</a>
+            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
+            <a href="random-generator.html" class="nav-button">Random Generator</a>
+            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        </div>
+
+        <div class="main-layout">
+            <!-- Left column - Calculator inputs -->
+            <div class="calculator">
+                <h2>Time Value Parameters</h2>
+                <div class="form-group">
+                    <label for="currentAmount">Current Amount ($):</label>
+                    <input type="number" id="currentAmount" value="1000" min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label for="inflationRate">Expected Inflation Rate (%):</label>
+                    <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="timePeriod">Time Period (years):</label>
+                    <input type="number" id="timePeriod" value="10" min="1" max="100" step="1">
+                </div>
+                <button id="calculate" class="calculate-btn">Calculate</button>
+                
+                <!-- Summary section -->
+                <div class="result-display" id="summaryResult" style="display: none; opacity: 1; margin-top: 20px;">
+                    <h3>Summary</h3>
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Current value:</span>
+                            <span id="currentValue" class="result-value">$1,000</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Future equivalent value:</span>
+                            <span id="futureValue" class="result-value">$1,280</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Purchasing power loss:</span>
+                            <span id="purchasingPowerLoss" class="result-value">22%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="compare-rates">
+                        <p>What this means:</p>
+                        <ul>
+                            <li>Due to inflation, <span id="currentAmountText">$1,000</span> today will have the same purchasing power as <span id="futureAmountText">$1,280</span> in <span id="yearsText">10</span> years.</li>
+                            <li>If you charge <span id="currentAmountText2">$1,000</span> today and maintain that same price for <span id="yearsText2">10</span> years, you'll effectively be charging <span id="discountedAmountText">$780</span> in today's dollars.</li>
+                            <li>To maintain the same value over time, you would need to increase your prices by approximately <span id="inflationTotalText">28%</span> over this period.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column - Chart visualization -->
+            <div class="chart-section">
+                <h2>Value Over Time</h2>
+                
+                <!-- Chart type selection -->
+                <div class="chart-options">
+                    <div class="form-group">
+                        <label for="chartType">Chart Type:</label>
+                        <select id="chartType">
+                            <option value="line" selected>Line Chart</option>
+                            <option value="bar">Bar Chart</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-checkboxes">
+                        <div>
+                            <input type="checkbox" id="showNominal" checked>
+                            <label for="showNominal">Show Nominal Value</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="showRealValue" checked>
+                            <label for="showRealValue">Show Real Value</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="valueChart"></canvas>
+                </div>
+                
+                <!-- Table view for year-by-year breakdown -->
+                <div class="table-view">
+                    <h3>Year-by-Year Breakdown</h3>
+                    <div class="table-container" id="tableView">
+                        <!-- Table will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/time-value-calculator.js"></script>
+</body>
+</html>

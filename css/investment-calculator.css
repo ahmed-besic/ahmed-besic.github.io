@@ -311,6 +311,46 @@ select {
     font-size: 14px;
 }
 
+/* Additional styles for Time Value of Money Calculator */
+.summary-box {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.summary-row .result-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2980b9;
+    background-color: transparent;
+    padding: 0;
+}
+
+.table-view {
+    margin-top: 20px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 15px;
+}
+
+.table-view h3 {
+    margin-bottom: 15px;
+}
+
 /* Responsive layout */
 @media (max-width: 900px) {
     .main-layout {
