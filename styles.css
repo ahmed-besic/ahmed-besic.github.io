@@ -1005,7 +1005,7 @@ tr:hover {
     
     .tip-calculator {
         min-width: 280px;
-        max-width: 85%; /* Increase from 500px to 95% of container width */
+        max-width: 95%; /* Changed from 85% to 95% to match tip-info */
         width: 100%;
         margin: 0 auto;
     }
@@ -1015,7 +1015,7 @@ tr:hover {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 95%; /* Increase from 500px to 95% of container width */
+        max-width: 95%;
         margin: 0 auto;
     }
 
@@ -1110,7 +1110,7 @@ tr:hover {
     }
 
     .bmi-calculator, .bmi-info {
-        width: 88%;
+        width: 97%; /* Changed from 88% to 95% */
         max-width: 500px;
         margin: 0 auto;
     }
