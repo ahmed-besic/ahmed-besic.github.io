@@ -1619,8 +1619,32 @@ function initializeRandomGenerators() {
         const selectedIndex = Math.floor(normalizedAngle / anglePerItem) % wheelItems.length;
         const selectedItem = wheelItems[selectedIndex];
         
-        // Display result
-        spinResult.textContent = `Result: ${selectedItem}`;
+        // Display result with remove button
+        spinResult.innerHTML = `
+            <div class="spin-result-container">
+                <span>${selectedItem}</span>
+                <button id="removeWinnerBtn" data-index="${selectedIndex}">Remove</button>
+            </div>
+        `;
+        
+        // Show the remove button
+        const removeWinnerBtn = document.getElementById('removeWinnerBtn');
+        setTimeout(() => {
+            removeWinnerBtn.classList.add('visible');
+        }, 500);
+        
+        // Add event listener to remove button
+        removeWinnerBtn.addEventListener('click', function() {
+            const indexToRemove = parseInt(this.getAttribute('data-index'));
+            wheelItems.splice(indexToRemove, 1);
+            
+            // Update the wheel and items list
+            drawWheel();
+            updateItemsList();
+            
+            // Update the result display
+            spinResult.textContent = `Item "${selectedItem}" has been removed`;
+        });
         
         // Add to history
         const historyItem = document.createElement('li');

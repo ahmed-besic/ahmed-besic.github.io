@@ -863,8 +863,19 @@ tr:hover {
 
 .button-row {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.button-row input {
+    flex: 1; 
+    min-width: 0;
+}
+
+.button-row button {
+    flex: 0 0 auto;
 }
 
 .spin-result {
@@ -917,6 +928,34 @@ tr:hover {
     animation: spin 0.5s linear infinite;
 }
 
+/* Style for the result display with remove button */
+.spin-result-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.spin-result-container button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 13px;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.spin-result-container button:hover {
+    background-color: #c0392b;
+}
+
+.spin-result-container button.visible {
+    opacity: 1;
+}
+
 /* Responsive layout */
 @media (max-width: 900px) {
     .main-layout {
@@ -953,8 +992,25 @@ tr:hover {
     
     .tip-calculator-container {
         flex-direction: column;
+        align-items: center;
     }
     
+    .tip-calculator {
+        min-width: 280px;
+        max-width: 85%; /* Increase from 500px to 95% of container width */
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .tip-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 95%; /* Increase from 500px to 95% of container width */
+        margin: 0 auto;
+    }
+
     .main-tab-button {
         padding: 10px 15px;
         font-size: 16px;
@@ -1024,10 +1080,31 @@ tr:hover {
         align-items: center;
     }
 
+    /* Center align the tip guide table */
+    .tip-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .tip-guide {
+        width: 100%;
+        margin: 0 auto;
+    }
+
     /* Center align the BMI calculator container */
     .bmi-calculator-container {
         flex-direction: column;
         align-items: center;
+    }
+
+    .bmi-calculator, .bmi-info {
+        width: 88%;
+        max-width: 500px;
+        margin: 0 auto;
     }
 
     /* Modify main tab navigation for 2x2 grid */
@@ -1061,6 +1138,45 @@ tr:hover {
         font-size: 16px; /* Increase font size */
         text-align: center;
         border-radius: 5px; /* Add border-radius for each button */
+    }
+
+    /* Make roulette controls full width on mobile */
+    .roulette-controls {
+        width: 100%;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+    
+    /* Increase height of items list for mobile to show more items */
+    .items-list-container {
+        max-height: 240px;
+        width: 100%;
+    }
+    
+    /* Improve the input area for adding items */
+    .button-row {
+        display: flex;
+        flex-direction: column !important;
+        gap: 15px !important;
+        margin-bottom: 20px !important;
+        width: 100% !important;
+    }
+    
+    .button-row input {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .button-row button {
+        width: 85% !important;
+        margin: 0 auto !important;
+        padding: 14px 15px !important; 
+        font-size: 16px !important;
+    }
+    
+    /* Make the wheel container centered */
+    .roulette-wheel-container {
+        margin: 0 auto;
     }
 }
 
@@ -1219,5 +1335,6 @@ tr:hover {
 @media (max-width: 768px) {
     .bmi-calculator-container {
         flex-direction: column;
+        align-items: center;
     }
 }
