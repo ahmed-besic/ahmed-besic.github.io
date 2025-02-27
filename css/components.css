@@ -1,0 +1,150 @@
+/* Reusable UI component styles that are used across multiple pages */
+
+/* Button styles */
+.calculate-btn {
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.calculate-btn:hover {
+    background-color: #2980b9;
+}
+
+.small-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+.small-btn:hover {
+    background-color: #2980b9;
+}
+
+.danger {
+    background-color: #e74c3c;
+}
+
+.danger:hover {
+    background-color: #c0392b;
+}
+
+/* Form elements */
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    margin-right: 10px;
+    min-width: 100px;
+}
+
+label {
+    flex: 1;
+    min-width: 200px;
+    font-weight: 600;
+}
+
+input, select {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Card containers */
+.card {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Summary items */
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.summary-item {
+    flex: 1;
+    min-width: 110px;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.summary-item h3 {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 5px;
+}
+
+.summary-item p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Results display */
+.result-display {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.result-display h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.result-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    label {
+        margin-bottom: 8px;
+    }
+    
+    .summary-item {
+        text-align: center;
+    }
+}

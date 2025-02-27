@@ -1,0 +1,50 @@
+/* Styles specific to the homepage */
+
+/* Calculator cards layout */
+.calculator-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.calculator-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+}
+
+.calculator-card:hover, .calculator-card.hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.calculator-card h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.calculator-card p {
+    color: #7f8c8d;
+    line-height: 1.6;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .calculator-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculator-card {
+        margin: 0 auto;
+        max-width: 90%;
+    }
+}

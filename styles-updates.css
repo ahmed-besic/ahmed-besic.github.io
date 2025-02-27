@@ -1,0 +1,166 @@
+/* Additional styles to enhance the separated calculator pages */
+
+/* Add to your existing styles.css file or include this as a separate file */
+
+/* Fade-in animation for page loads */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+body.fade-in {
+    opacity: 1;
+}
+
+/* Navigation highlight for active page */
+.nav-button.active-nav {
+    background-color: #2c3e50;
+    transform: translateY(-2px);
+}
+
+/* Add a subtle hover effect to calculator cards */
+.calculator-card {
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.calculator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+}
+
+/* Create some space between navigation and content */
+.nav-buttons {
+    margin-bottom: 40px;
+}
+
+/* Add logo support */
+.site-logo {
+    max-height: 50px;
+    margin-right: 10px;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Dark theme support */
+body.dark-theme {
+    background-color: #222;
+    color: #f5f5f5;
+}
+
+body.dark-theme .calculator,
+body.dark-theme .chart-section,
+body.dark-theme .results,
+body.dark-theme .random-tool,
+body.dark-theme .tip-calculator,
+body.dark-theme .tip-info,
+body.dark-theme .bmi-calculator,
+body.dark-theme .bmi-info,
+body.dark-theme .calculator-card {
+    background-color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3 {
+    color: #e0e0e0;
+}
+
+body.dark-theme input,
+body.dark-theme select {
+    background-color: #444;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-theme .nav-button {
+    background-color: #465a69;
+}
+
+body.dark-theme .nav-button:hover {
+    background-color: #5a7387;
+}
+
+/* Theme switch button */
+.theme-switch {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.theme-switch:hover {
+    background-color: #2980b9;
+}
+
+/* Improved footer */
+.footer {
+    margin-top: 50px;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    color: #777;
+}
+
+/* Version indicator */
+.version {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    font-size: 10px;
+    color: #999;
+    opacity: 0.5;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    /* Larger touch targets */
+    .calculate-btn {
+        padding: 14px;
+        font-size: 18px;
+    }
+    
+    .nav-button {
+        padding: 12px 18px;
+    }
+    
+    /* Stack elements more compactly */
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    /* Eliminate unnecessary margins */
+    .calculator, .chart-section, .random-tool, .tip-calculator, .tip-info, .bmi-calculator, .bmi-info {
+        padding: 20px;
+    }
+    
+    /* Hide theme switch on very small devices */
+    @media (max-width: 360px) {
+        .theme-switch {
+            display: none;
+        }
+    }
+}

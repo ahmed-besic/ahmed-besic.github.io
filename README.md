@@ -1,70 +1,77 @@
-# Investment Calculator
+# Financial & Utility Calculators
+
+A collection of useful financial and utility calculators built with HTML, CSS, and JavaScript.
 
 ## Overview
 
-This web application is a comprehensive investment calculator that helps users visualize how their investments might grow over time. It accounts for various factors including compound interest, regular contributions, and inflation.
+This project provides various calculators for financial planning and everyday utilities:
 
-## Features
+- **Investment Calculator**: Calculate compound interest growth and investment scenarios
+- **Tip Calculator**: Easily calculate tips and split bills
+- **Random Generator**: Generate random numbers, flip coins, roll dice, or use a roulette wheel
+- **BMI Calculator**: Calculate Body Mass Index and get health metrics
 
-- **Core Calculation Features**:
-  - Calculate investment growth with different compounding frequencies (daily, monthly, quarterly, annual)
-  - Set regular contributions at beginning or end of each period
-  - Adjust contribution frequency (monthly or yearly)
-  - Account for inflation in calculations
-  - Visualize results over a custom number of years
+## File Structure
 
-- **Data Visualization**:
-  - Table view with detailed year-by-year breakdown
-  - Multiple chart types (line, bar, pie) for visual representation
-  - Compare different investment scenarios side-by-side
-  - Toggle between showing contributions, interest, and inflation-adjusted values
-
-- **Scenario Management**:
-  - Save multiple investment scenarios for future reference
-  - Load, compare, and delete saved scenarios 
-  - Export results to CSV format for external analysis
+- `index.html` - Main landing page
+- `investment-calculator.html` - Investment calculator
+- `investment-calculator.js` - Investment calculator functionality
+- `tip-calculator.html` - Tip calculator
+- `tip-calculator.js` - Tip calculator functionality  
+- `random-generator.html` - Random generation tools
+- `random-generator.js` - Random generation functionality
+- `bmi.html` - BMI calculator
+- `bmi-calculator.js` - BMI calculator functionality
+- `styles.css` - Main stylesheet
+- `styles-updates.css` - Additional styling enhancements
+- `main.js` - Shared functionality for the landing page
+- `complete-setup.js` - Utility functions shared across calculators
 
 ## How to Use
 
-1. Enter your investment parameters:
-   - Starting amount
-   - Annual return rate
-   - Compounding frequency
-   - Additional contribution amount
-   - Contribution timing and frequency
-   - Investment time horizon
-   - Expected inflation rate
+1. Open `index.html` in a web browser
+2. Choose a calculator from the available options
+3. Enter your data and use the calculator functionality
+4. Navigate between calculators using the navigation buttons
 
-2. Click "Calculate" to see the results
+## Features
 
-3. Use the toggle buttons to switch between different views:
-   - Table View: See detailed year-by-year breakdown
-   - Graph View: Visualize your investment growth
-   - Compare: Compare different investment scenarios
-   - Export: Download your data in CSV format
+### Investment Calculator
+- Calculate investment growth with compound interest
+- Determine time needed to reach a financial goal
+- Calculate required return rate for a target amount
+- Save and compare different investment scenarios
+- Visualize results with interactive charts
+- Export data to CSV
 
-4. Save scenarios for future reference by entering a name and clicking "Save"
+### Tip Calculator
+- Calculate tips based on bill amount and percentage
+- Split the bill between multiple people
+- Use preset tip percentages for quick calculations
 
-## Technologies Used
+### Random Generator
+- Flip a virtual coin with animated visuals
+- Roll dice with different numbers of sides
+- Generate random numbers with custom parameters
+- Use a roulette wheel for random selection from a list
 
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- Chart.js for data visualization
-- LocalStorage for saving scenarios
+### BMI Calculator
+- Calculate BMI using metric or imperial units
+- Visualize BMI category on a chart
+- Get health information based on BMI results
 
 ## Browser Compatibility
 
-This calculator works in all modern browsers that support ES6+ JavaScript features, including:
-- Chrome
-- Firefox
-- Safari
-- Edge
+This application is designed to work in modern browsers including:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-## Installation
+## Future Enhancements
 
-No installation required. Simply open the `index.html` file in a web browser.
-
-## License
-
-This project is open-source and available for personal and educational use.
+- Add more calculator types
+- Add data persistence with localStorage
+- Create printable versions of calculator results
+- Implement additional chart types for data visualization
+- Add ability to share results via social media

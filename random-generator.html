@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Generator</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/random-generator.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Random Generator Tools</h1>
+        
+        <!-- Standardized navigation buttons with active class -->
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
+            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
+            <a href="random-generator.html" class="nav-button active">Random Generator</a>
+            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        </div>
+        
+        <!-- Random Tools Tab Navigation -->
+        <div class="random-tab-navigation">
+            <button class="random-tab-button active" data-random-tab="coinFlip">Coin Flip</button>
+            <button class="random-tab-button" data-random-tab="diceRoller">Dice Roller</button>
+            <button class="random-tab-button" data-random-tab="randomNumber">Random Number</button>
+            <button class="random-tab-button" data-random-tab="rouletteWheel">Roulette Wheel</button>
+        </div>
+        
+        <!-- Random Tools Tab Content -->
+        <div class="random-tools-container">
+            <!-- Coin Flip Tool -->
+            <div class="random-tab-content active" id="coinFlip">
+                <div class="random-tool">
+                    <h3>Coin Flip</h3>
+                    <div class="coin-container">
+                        <div class="coin" id="coin">
+                            <div class="heads"></div>
+                            <div class="tails"></div>
+                        </div>
+                    </div>
+                    <div class="result-display coin-result">
+                        <p>Flip result: <span id="coinResult">-</span></p>
+                    </div>
+                    <button class="calculate-btn" id="flipCoin">Flip Coin</button>
+                    
+                    <div class="stats-container">
+                        <p>Flips: <span id="totalFlips">0</span></p>
+                        <p>Heads: <span id="headsCount">0</span> (<span id="headsPercentage">0%</span>)</p>
+                        <p>Tails: <span id="tailsCount">0</span> (<span id="tailsPercentage">0%</span>)</p>
+                        <button class="small-btn" id="resetCoinStats">Reset Stats</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dice Roll Tool -->
+            <div class="random-tab-content" id="diceRoller">
+                <div class="random-tool">
+                    <h3>Dice Roller</h3>
+                    <div class="dice-container">
+                        <div class="dice" id="dice1">
+                            <div class="dot center" id="dice1dot1"></div>
+                            <div class="dot top-left" id="dice1dot2"></div>
+                            <div class="dot top-right" id="dice1dot3"></div>
+                            <div class="dot bottom-left" id="dice1dot4"></div>
+                            <div class="dot bottom-right" id="dice1dot5"></div>
+                            <div class="dot center-left" id="dice1dot6"></div>
+                            <div class="dot center-right" id="dice1dot7"></div>
+                        </div>
+                        <div class="dice" id="dice2">
+                            <div class="dot center" id="dice2dot1"></div>
+                            <div class="dot top-left" id="dice2dot2"></div>
+                            <div class="dot top-right" id="dice2dot3"></div>
+                            <div class="dot bottom-left" id="dice2dot4"></div>
+                            <div class="dot bottom-right" id="dice2dot5"></div>
+                            <div class="dot center-left" id="dice2dot6"></div>
+                            <div class="dot center-right" id="dice2dot7"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="dice-options">
+                        <div class="form-group">
+                            <label for="diceCount">Number of Dice:</label>
+                            <select id="diceCount">
+                                <option value="1">1 Die</option>
+                                <option value="2" selected>2 Dice</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="diceSides">Type of Dice:</label>
+                            <select id="diceSides">
+                                <option value="6" selected>6-sided</option>
+                                <option value="4">4-sided</option>
+                                <option value="8">8-sided</option>
+                                <option value="10">10-sided</option>
+                                <option value="12">12-sided</option>
+                                <option value="20">20-sided</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="result-display dice-result">
+                        <p>Roll result: <span id="diceResult">-</span></p>
+                    </div>
+                    
+                    <button class="calculate-btn" id="rollDice">Roll Dice</button>
+                </div>
+            </div>
+            
+            <!-- Random Number Generator -->
+            <div class="random-tab-content" id="randomNumber">
+                <div class="random-tool">
+                    <h3>Random Number Generator</h3>
+                    
+                    <div class="form-group">
+                        <label for="minNumber">Minimum:</label>
+                        <input type="number" id="minNumber" value="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="maxNumber">Maximum:</label>
+                        <input type="number" id="maxNumber" value="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="decimalPlaces">Decimal Places:</label>
+                        <input type="number" id="decimalPlaces" value="0" min="0" max="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="numberCount">Generate:</label>
+                        <input type="number" id="numberCount" value="1" min="1" max="100">
+                        <span class="input-info">number(s)</span>
+                    </div>
+                    
+                    <div class="result-display number-result">
+                        <h4>Generated Numbers:</h4>
+                        <div id="randomNumbers">-</div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="calculate-btn" id="generateNumbers">Generate</button>
+                        <button class="small-btn" id="copyNumbers">Copy to Clipboard</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roulette Wheel Tool -->
+            <div class="random-tab-content" id="rouletteWheel">
+                <div class="random-tool">
+                    <h3>Roulette Wheel</h3>
+                    
+                    <!-- Moved result display to the top -->
+                    <div class="result-display roulette-result">
+                        <h4>Result:</h4>
+                        <div id="spinResult" class="spin-result">Spin the wheel to get a result</div>
+                    </div>
+                    
+                    <div class="roulette-container">
+                        <div class="roulette-wheel-container">
+                            <div class="wheel-pointer"></div>
+                            <div class="roulette-wheel" id="rouletteWheelCanvas">
+                                <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="roulette-controls">
+                            <button class="calculate-btn spin-wheel-btn" id="spinWheelBtn">Spin the Wheel</button>
+                            
+                            <div class="form-group">
+                                <label for="itemInput">Add Item:</label>
+                                <input type="text" id="itemInput" placeholder="Enter item name">
+                                <button class="small-btn" id="addItemBtn">Add</button>
+                            </div>
+                            
+                            <div class="items-list-container">
+                                <h4>Items on Wheel</h4>
+                                <ul id="itemsList" class="items-list"></ul>
+                            </div>
+                            
+                            <div class="button-row">
+                                <button class="small-btn" id="removeSelectedBtn">Remove Selected</button>
+                                <button class="small-btn danger" id="clearWheelBtn">Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- History section remains at the bottom -->
+                    <div class="result-history">
+                        <h4>Previous Results:</h4>
+                        <ul id="historyList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/random-generator.js"></script>
+    <script src="js/complete-setup.js"></script>
+</body>
+</html>

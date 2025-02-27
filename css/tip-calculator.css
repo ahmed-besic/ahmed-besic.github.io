@@ -1,0 +1,139 @@
+/* Tip Calculator Styles */
+.tip-calculator-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.tip-calculator {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.tip-info {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    flex: 0.8;
+    min-width: 300px;
+    max-width: 400px;
+    align-self: flex-start;
+}
+
+.tip-slider-container {
+    margin: 20px 0;
+}
+
+#tipSlider {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.tip-marks {
+    display: flex;
+    justify-content: space-between;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.tip-results {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.tip-result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.tip-result-row:last-child {
+    border-bottom: none;
+}
+
+.tip-result-row span:last-child {
+    font-weight: bold;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.preset-tips {
+    margin-top: 25px;
+}
+
+.preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.preset-tip-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.preset-tip-btn:hover {
+    background-color: #e3e8ed;
+}
+
+.preset-tip-btn.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.tip-guide {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.tip-guide th, .tip-guide td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.tip-guide th {
+    background-color: #f2f2f2;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .tip-calculator-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .tip-calculator {
+        min-width: 280px;
+        max-width: 95%;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .tip-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+}

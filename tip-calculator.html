@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/tip-calculator.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tip Calculator</h1>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
+            <a href="tip-calculator.html" class="nav-button active">Tip Calculator</a>
+            <a href="random-generator.html" class="nav-button">Random Generator</a>
+            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        </div>
+        
+        <div class="tip-calculator-container">
+            <div class="tip-calculator">
+                <div class="form-group">
+                    <label for="billAmount">Bill Amount ($):</label>
+                    <input type="number" id="billAmount" value="50.00" min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipPercentage">Tip Percentage (%):</label>
+                    <input type="number" id="tipPercentage" value="15" min="0" max="100" step="1">
+                </div>
+                
+                <div class="tip-slider-container">
+                    <input type="range" id="tipSlider" min="0" max="30" value="15" step="1">
+                    <div class="tip-marks">
+                        <span>0%</span>
+                        <span>15%</span>
+                        <span>30%</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="splitCount">Split Between:</label>
+                    <input type="number" id="splitCount" value="1" min="1" step="1">
+                </div>
+                
+                <button id="calculateTip" class="calculate-btn">Calculate Tip</button>
+                
+                <div class="tip-results">
+                    <div class="tip-result-row">
+                        <span>Tip Amount:</span>
+                        <span id="tipAmount">$7.50</span>
+                    </div>
+                    <div class="tip-result-row">
+                        <span>Total Amount:</span>
+                        <span id="totalWithTip">$57.50</span>
+                    </div>
+                    <div class="tip-result-row" id="perPersonRow">
+                        <span>Amount Per Person:</span>
+                        <span id="amountPerPerson">$57.50</span>
+                    </div>
+                </div>
+                
+                <div class="preset-tips">
+                    <h3>Quick Tip</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-tip-btn" data-tip="10">10%</button>
+                        <button class="preset-tip-btn" data-tip="15">15%</button>
+                        <button class="preset-tip-btn" data-tip="18">18%</button>
+                        <button class="preset-tip-btn" data-tip="20">20%</button>
+                        <button class="preset-tip-btn" data-tip="25">25%</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-info">
+                <h3>Tipping Guide</h3>
+                <table class="tip-guide">
+                    <tr>
+                        <th>Service Quality</th>
+                        <th>Suggested Tip</th>
+                    </tr>
+                    <tr>
+                        <td>Standard Service</td>
+                        <td>15-18%</td>
+                    </tr>
+                    <tr>
+                        <td>Good Service</td>
+                        <td>18-20%</td>
+                    </tr>
+                    <tr>
+                        <td>Excellent Service</td>
+                        <td>20-25%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="js/tip-calculator.js"></script>
+    <script src="js/complete-setup.js"></script>
+</body>
+</html>
