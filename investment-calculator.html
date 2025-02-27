@@ -32,6 +32,7 @@
                     <button class="tab-button active" data-tab="growthCalculator">Growth Calculator</button>
                     <button class="tab-button" data-tab="lengthCalculator">Investment Length</button>
                     <button class="tab-button" data-tab="rateCalculator">Return Rate</button>
+                    <button class="tab-button" data-tab="dividendCalculator">Dividend Calculator</button>
                 </div>
                 
                 <!-- Growth Calculator Tab (Original calculator) -->
@@ -161,6 +162,74 @@
                                 <li>Conservative portfolio: ~4-6%</li>
                                 <li>Aggressive portfolio: ~8-12%</li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add the Dividend Calculator Tab -->
+                <div class="tab-content" id="dividendCalculator">
+                    <h2>Stock Dividend Calculator</h2>
+                    
+                    <div class="form-group">
+                        <label for="stockPrice">Current Stock Price ($):</label>
+                        <input type="number" id="stockPrice" value="100" min="0.01" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sharesOwned">Number of Shares Owned:</label>
+                        <input type="number" id="sharesOwned" value="100" min="1" step="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="annualDividendPerShare">Annual Dividend Per Share ($):</label>
+                        <input type="number" id="annualDividendPerShare" value="2.50" min="0" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dividendFrequency">Dividend Payment Frequency:</label>
+                        <select id="dividendFrequency">
+                            <option value="1">Annual</option>
+                            <option value="2">Semi-Annual</option>
+                            <option value="4" selected>Quarterly</option>
+                            <option value="12">Monthly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dividendGrowthRate">Expected Annual Dividend Growth Rate (%):</label>
+                        <input type="number" id="dividendGrowthRate" value="5" min="0" max="30" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectionYears">Projection Period (years):</label>
+                        <input type="number" id="projectionYears" value="10" min="1" max="50" step="1">
+                    </div>
+                    
+                    <button id="calculateDividend" class="calculate-btn">Calculate Dividends</button>
+                    
+                    <div class="result-display" id="dividendResult" style="display: none; opacity: 1; margin-top: 20px;">
+                        <h3>Dividend Summary</h3>
+                        <div class="summary-box">
+                            <div class="summary-row">
+                                <span>Current Dividend Yield:</span>
+                                <span id="currentYield" class="result-value">2.5%</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Annual Dividend Income:</span>
+                                <span id="annualDividendIncome" class="result-value">$250.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Monthly Dividend Income:</span>
+                                <span id="monthlyDividendIncome" class="result-value">$20.83</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Total Investment Value:</span>
+                                <span id="totalInvestmentValue" class="result-value">$10,000.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container dividend-chart-container" style="height: 200px; margin-top: 20px;">
+                            <canvas id="dividendGrowthChart"></canvas>
                         </div>
                     </div>
                 </div>

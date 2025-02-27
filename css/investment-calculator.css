@@ -208,6 +208,7 @@
     display: flex;
     border-bottom: 1px solid #ddd;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .tab-button {
@@ -217,6 +218,9 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    flex: 1;
+    min-width: 130px;
+    font-size: 0.9rem;
 }
 
 .tab-button:hover {
@@ -385,4 +389,22 @@ select {
     .view-toggle {
         justify-content: center;
     }
+
+    .tab-button {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Additional styles for Dividend Calculator */
+.dividend-chart-container {
+    margin-top: 25px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    background-color: #fafafa;
+}
+
+#dividendResult .summary-box {
+    border-left: 4px solid #4CAF50;
 }
