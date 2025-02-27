@@ -1,10 +1,46 @@
 /**
- * This file contains utility functions for the calculator website
+ * This script helps ensure consistent navigation across all pages
+ * and provides common utility functions used throughout the site.
  */
 
-// Check if all required files exist
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Calculator suite initialized');
+    
+    // Ensure all pages have the complete navigation
+    const navigationLinks = [
+        { url: 'index.html', text: 'Home' },
+        { url: 'investment-calculator.html', text: 'Investment Calculator' },
+        { url: 'time-value-calculator.html', text: 'Time Value Calculator' },
+        { url: 'tip-calculator.html', text: 'Tip Calculator' },
+        { url: 'random-generator.html', text: 'Random Generator' },
+        { url: 'crypto-tracker.html', text: 'Crypto Tracker' },
+        { url: 'bmi.html', text: 'BMI Calculator' }
+    ];
+    
+    const navContainer = document.querySelector('.nav-buttons');
+    
+    if (navContainer) {
+        // Get current page URL
+        const currentPage = window.location.pathname.split('/').pop();
+        
+        // Clear existing navigation
+        navContainer.innerHTML = '';
+        
+        // Rebuild complete navigation
+        navigationLinks.forEach(link => {
+            const navLink = document.createElement('a');
+            navLink.href = link.url;
+            navLink.className = 'nav-button';
+            navLink.textContent = link.text;
+            
+            // Set active class if this is the current page
+            if (currentPage === link.url) {
+                navLink.classList.add('active');
+            }
+            
+            navContainer.appendChild(navLink);
+        });
+    }
     
     // Add fade-in effect to the page content
     document.body.classList.add('fade-in');

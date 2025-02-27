@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let growthChart = null;
     let compareChart = null;
     let lengthChart = null; // Add this to track the length chart instance
-    let dividendGrowthChart = null; // Add this for the dividend chart
     let currentScenarioData = null;
     let scenarios = loadSavedScenarios();
     
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ensure these critical buttons are found
     const calculateLengthBtn = document.getElementById('calculateLength');
     const calculateRateBtn = document.getElementById('calculateRate');
-    const calculateDividendBtn = document.getElementById('calculateDividend'); // Get the dividend calculator button
 
     // Set up event listeners for main calculator
     calculateBtn.addEventListener('click', calculateInvestment);
@@ -107,10 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Required Rate calculator button listener attached');
     } else {
         console.error('Calculate Rate button not found in the DOM');
-    }
-
-    if (calculateDividendBtn) {
-        calculateDividendBtn.addEventListener('click', calculateDividends);
     }
 
     // Main calculation function
@@ -1033,12 +1027,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Format currency values
-    function formatCurrency(value, decimals = 0) {
+    function formatCurrency(value) {
         return new Intl.NumberFormat('en-US', { 
             style: 'currency', 
             currency: 'USD',
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
         }).format(value);
     }
 
@@ -1047,161 +1041,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentScenarioData) {
             updateGrowthChart(currentScenarioData);
         }
-    }
-
-    // Calculate dividends function
-    function calculateDividends() {
-        // Get input values
-        const stockPrice = parseFloat(document.getElementById('stockPrice').value);
-        const sharesOwned = parseInt(document.getElementById('sharesOwned').value);
-        const annualDividendPerShare = parseFloat(document.getElementById('annualDividendPerShare').value);
-        const dividendFrequency = parseInt(document.getElementById('dividendFrequency').value);
-        const dividendGrowthRate = parseFloat(document.getElementById('dividendGrowthRate').value) / 100;
-        const projectionYears = parseInt(document.getElementById('projectionYears').value);
-        
-        // Validate inputs
-        if (isNaN(stockPrice) || isNaN(sharesOwned) || isNaN(annualDividendPerShare) || 
-            isNaN(dividendGrowthRate) || isNaN(projectionYears)) {
-            alert('Please enter valid values for all fields');
-            return;
-        }
-        
-        // Calculate dividend metrics
-        const totalInvestmentValue = stockPrice * sharesOwned;
-        const annualDividendIncome = annualDividendPerShare * sharesOwned;
-        const monthlyDividendIncome = annualDividendIncome / 12;
-        const currentYieldPercentage = (annualDividendPerShare / stockPrice) * 100;
-        
-        // Calculate dividend projection for each year
-        const projectionData = [];
-        let yearlyDividend = annualDividendIncome;
-        
-        for (let year = 0; year <= projectionYears; year++) {
-            projectionData.push({
-                year: year,
-                dividendIncome: yearlyDividend,
-                dividendPerShare: yearlyDividend / sharesOwned,
-                cumulativeDividends: year === 0 ? 0 : 
-                    projectionData.reduce((sum, data, index) => 
-                        index > 0 && index <= year ? sum + data.dividendIncome : sum, 0)
-            });
-            
-            // Increase dividend for next year based on growth rate
-            yearlyDividend = yearlyDividend * (1 + dividendGrowthRate);
-        }
-        
-        // Update UI with results
-        document.getElementById('currentYield').textContent = currentYieldPercentage.toFixed(2) + '%';
-        document.getElementById('annualDividendIncome').textContent = formatCurrency(annualDividendIncome);
-        document.getElementById('monthlyDividendIncome').textContent = formatCurrency(monthlyDividendIncome);
-        document.getElementById('totalInvestmentValue').textContent = formatCurrency(totalInvestmentValue);
-        
-        // Show result section with animation
-        const resultElement = document.getElementById('dividendResult');
-        resultElement.style.display = 'block';
-        resultElement.classList.add('show');
-        
-        // Generate dividend growth chart
-        updateDividendChart(projectionData);
-    }
-    
-    // Update dividend growth chart
-    function updateDividendChart(projectionData) {
-        const ctx = document.getElementById('dividendGrowthChart').getContext('2d');
-        
-        // Destroy previous chart instance if it exists
-        if (dividendGrowthChart) {
-            dividendGrowthChart.destroy();
-        }
-        
-        // Prepare data for chart
-        const years = projectionData.map(item => item.year);
-        const annualDividends = projectionData.map(item => item.dividendIncome);
-        const cumulativeDividends = projectionData.map(item => item.cumulativeDividends);
-        
-        // Create chart
-        dividendGrowthChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: years,
-                datasets: [{
-                    type: 'line',
-                    label: 'Cumulative Dividends',
-                    data: cumulativeDividends,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderWidth: 2,
-                    fill: false,
-                    yAxisID: 'y1'
-                }, {
-                    type: 'bar',
-                    label: 'Annual Dividend Income',
-                    data: annualDividends,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'y'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Year'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'Annual Dividend ($)'
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return formatCurrency(value, 0);
-                            }
-                        }
-                    },
-                    y1: {
-                        beginAtZero: true,
-                        position: 'right',
-                        title: {
-                            display: true,
-                            text: 'Cumulative Dividends ($)'
-                        },
-                        grid: {
-                            drawOnChartArea: false
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return formatCurrency(value, 0);
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += formatCurrency(context.raw);
-                                return label;
-                            }
-                        }
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
     }
 
     // Calculate investment on page load with default values
