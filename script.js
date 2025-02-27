@@ -1029,17 +1029,21 @@ function initializeRandomGenerators() {
         
         coinFlipping = true;
         
-        // Start animation
-        coin.style.animation = 'none';
+        // Determine the result
         const result = Math.random() < 0.5 ? 'heads' : 'tails';
         
-        requestAnimationFrame(() => {
-            // Update coin visual
-            coin.className = 'coin';
-            void coin.offsetWidth; // Trigger reflow to restart animation
-            coin.classList.add('flip-' + result);
-            
-            // Update result display immediately
+        // Reset animation by removing all animation classes
+        coin.className = 'coin';
+        
+        // Force browser reflow to ensure animation restarts even with same result
+        void coin.offsetWidth;
+        
+        // Add multi-flip animation class plus the result class
+        coin.classList.add('flip-multiple');
+        coin.classList.add('flip-' + result);
+        
+        // Update result display after a short delay to match animation
+        setTimeout(() => {
             coinResult.textContent = result.charAt(0).toUpperCase() + result.slice(1);
             
             // Update stats
@@ -1048,12 +1052,12 @@ function initializeRandomGenerators() {
             else tails++;
             
             updateCoinStats();
-            
-            // Allow new full animation after current one completes
-            setTimeout(() => {
-                coinFlipping = false;
-            }, 550); // Reduced from 1000ms to 550ms for quicker response
-        });
+        }, 650); // Show result during animation
+        
+        // Allow new full animation after current one completes
+        setTimeout(() => {
+            coinFlipping = false;
+        }, 750); // Increased from 550ms to 750ms to account for multiple flips
     });
     
     // Function for rapid coin flipping without animation delays

@@ -577,6 +577,44 @@ tr:hover {
     transform: rotateY(180deg);
 }
 
+/* Add new multi-flip animation */
+.coin.flip-multiple {
+    animation: multiFlip 0.75s ease-out;
+}
+
+/* Animation for multiple coin flips */
+@keyframes multiFlip {
+    0% { transform: rotateY(0); }
+    25% { transform: rotateY(720deg); } /* 2 full rotations */
+    50% { transform: rotateY(1080deg); } /* 3 full rotations */
+    /* End state will be handled by flip-heads or flip-tails class */
+}
+
+/* Fix for combined animations - override the transition when using animation */
+.coin.flip-multiple.flip-heads {
+    transition: none;
+    animation: multiFlipHeads 0.75s ease-out forwards;
+}
+
+.coin.flip-multiple.flip-tails {
+    transition: none;
+    animation: multiFlipTails 0.75s ease-out forwards;
+}
+
+@keyframes multiFlipHeads {
+    0% { transform: rotateY(0); }
+    25% { transform: rotateY(720deg); } /* 2 full rotations */
+    50% { transform: rotateY(900deg); } /* 3 full rotations */
+    100% { transform: rotateY(1080deg); } /* End on heads (multiple of 360) */
+}
+
+@keyframes multiFlipTails {
+    0% { transform: rotateY(0); }
+    25% { transform: rotateY(720deg); } /* 2 full rotations */
+    50% { transform: rotateY(1080deg); } /* 3 full rotations */
+    100% { transform: rotateY(1260deg); } /* End on tails (multiple of 360 + 180) */
+}
+
 .stats-container {
     margin-top: 20px;
     padding: 15px;
