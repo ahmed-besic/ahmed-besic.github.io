@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { url: 'index.html', text: 'Home' },
         { url: 'investment-calculator.html', text: 'Investment Calculator' },
         { url: 'time-value-calculator.html', text: 'Time Value Calculator' },
+        { url: 'date-calculator.html', text: 'Date Calculator' },
         { url: 'tip-calculator.html', text: 'Tip Calculator' },
         { url: 'random-generator.html', text: 'Random Generator' },
         { url: 'crypto-tracker.html', text: 'Crypto Tracker' },

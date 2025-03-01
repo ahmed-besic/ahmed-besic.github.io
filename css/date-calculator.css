@@ -1,0 +1,147 @@
+/* Date Calculator Styles */
+
+/* Calculator Tabs */
+.date-calculator .calculator-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.date-calculator .tab-button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.date-calculator .tab-button:hover {
+    color: #4CAF50;
+}
+
+.date-calculator .tab-button.active {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+}
+
+/* Calculator Sections */
+.calculator-section {
+    display: none;
+}
+
+.calculator-section.active {
+    display: block;
+}
+
+.calculator-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.operation-select {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.operation-select label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.operation-select input {
+    margin-right: 5px;
+}
+
+.time-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.calculate-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.calculate-btn:hover {
+    background: #3e8e41;
+}
+
+/* Results */
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border-left: 4px solid #4CAF50;
+}
+
+.result p {
+    margin: 5px 0;
+}
+
+.result span {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.result ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .time-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculator-tabs {
+        flex-direction: column;
+        border-bottom: none;
+    }
+    
+    .tab-button {
+        border-radius: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .tab-button.active {
+        margin-bottom: 5px;
+    }
+}
