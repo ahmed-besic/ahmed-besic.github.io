@@ -4,95 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date Calculator</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/navigation.css">
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Keep original CSS for JavaScript-dependent styles -->
     <link rel="stylesheet" href="css/date-calculator.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Date Calculator</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Date Calculator</h1>
         
-        <!-- Navigation buttons -->
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button active">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="crypto-tracker.html" class="nav-button">Crypto Tracker</a>
-            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
 
-        <!-- Calculator Tabs -->
-        <div class="calculator-tabs">
-            <button class="tab-button active" data-tab="between-dates">Days Between Dates</button>
-            <button class="tab-button" data-tab="add-subtract">Add/Subtract from Date</button>
+        <!-- Calculator Tabs with Tailwind -->
+        <div class="flex border-b border-gray-200 mb-6">
+            <button class="tab-button active py-3 px-6 font-medium border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 focus:outline-none text-blue-600 border-blue-600" data-tab="between-dates">
+                Days Between Dates
+            </button>
+            <button class="tab-button py-3 px-6 font-medium border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 focus:outline-none" data-tab="add-subtract">
+                Add/Subtract from Date
+            </button>
         </div>
 
         <!-- Days Between Dates Calculator -->
         <div class="calculator-section active" id="between-dates">
-            <div class="calculator-card">
-                <h2>Calculate Days Between Two Dates</h2>
-                <div class="form-group">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate">
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Calculate Days Between Two Dates</h2>
+                <div class="mb-4">
+                    <label for="startDate" class="block text-gray-700 font-medium mb-2">Start Date:</label>
+                    <input type="date" id="startDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                 </div>
-                <div class="form-group">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate">
+                <div class="mb-4">
+                    <label for="endDate" class="block text-gray-700 font-medium mb-2">End Date:</label>
+                    <input type="date" id="endDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                 </div>
-                <button id="calculateDays" class="calculate-btn">Calculate</button>
-                <div class="result" id="daysResult">
-                    <p>The difference is: <span id="daysDifference">0</span> days</p>
-                    <p>Which is approximately:</p>
-                    <ul>
-                        <li><span id="weeksResult">0</span> weeks</li>
-                        <li><span id="monthsResult">0</span> months</li>
-                        <li><span id="yearsResult">0</span> years</li>
+                <button id="calculateDays" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    Calculate
+                </button>
+                <div class="result mt-6 bg-gray-50 p-6 rounded-lg border-l-4 border-blue-600 hidden" id="daysResult">
+                    <p class="text-gray-800">The difference is: <span id="daysDifference" class="font-bold text-blue-600">0</span> days</p>
+                    <p class="text-gray-800 mt-2">Which is approximately:</p>
+                    <ul class="mt-2 ml-6 list-disc text-gray-700">
+                        <li><span id="weeksResult" class="font-semibold">0</span> weeks</li>
+                        <li><span id="monthsResult" class="font-semibold">0</span> months</li>
+                        <li><span id="yearsResult" class="font-semibold">0</span> years</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- Add/Subtract from Date Calculator -->
-        <div class="calculator-section" id="add-subtract">
-            <div class="calculator-card">
-                <h2>Add or Subtract from Date</h2>
-                <div class="form-group">
-                    <label for="baseDate">Base Date:</label>
-                    <input type="date" id="baseDate">
+        <div class="calculator-section hidden" id="add-subtract">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Add or Subtract from Date</h2>
+                <div class="mb-4">
+                    <label for="baseDate" class="block text-gray-700 font-medium mb-2">Base Date:</label>
+                    <input type="date" id="baseDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                 </div>
-                <div class="operation-select">
-                    <label>
-                        <input type="radio" name="operation" value="add" checked> Add
+                <div class="flex space-x-6 mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="operation" value="add" checked class="form-radio h-5 w-5 text-blue-600">
+                        <span class="ml-2 text-gray-700">Add</span>
                     </label>
-                    <label>
-                        <input type="radio" name="operation" value="subtract"> Subtract
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="operation" value="subtract" class="form-radio h-5 w-5 text-blue-600">
+                        <span class="ml-2 text-gray-700">Subtract</span>
                     </label>
                 </div>
-                <div class="time-inputs">
-                    <div class="form-group">
-                        <label for="years">Years:</label>
-                        <input type="number" id="years" value="0" min="0">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="years" class="block text-gray-700 font-medium mb-1">Years:</label>
+                        <input type="number" id="years" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                    <div class="form-group">
-                        <label for="months">Months:</label>
-                        <input type="number" id="months" value="0" min="0" max="11">
+                    <div>
+                        <label for="months" class="block text-gray-700 font-medium mb-1">Months:</label>
+                        <input type="number" id="months" value="0" min="0" max="11" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                    <div class="form-group">
-                        <label for="weeks">Weeks:</label>
-                        <input type="number" id="weeks" value="0" min="0">
+                    <div>
+                        <label for="weeks" class="block text-gray-700 font-medium mb-1">Weeks:</label>
+                        <input type="number" id="weeks" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                    <div class="form-group">
-                        <label for="days">Days:</label>
-                        <input type="number" id="days" value="0" min="0">
+                    <div>
+                        <label for="days" class="block text-gray-700 font-medium mb-1">Days:</label>
+                        <input type="number" id="days" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
                 </div>
-                <button id="calculateNewDate" class="calculate-btn">Calculate</button>
-                <div class="result" id="dateResult">
-                    <p>Result Date: <span id="resultDate">-</span></p>
+                <button id="calculateNewDate" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    Calculate
+                </button>
+                <div class="result mt-6 bg-gray-50 p-6 rounded-lg border-l-4 border-blue-600 hidden" id="dateResult">
+                    <p class="text-gray-800">Result Date: <span id="resultDate" class="font-bold text-blue-600">-</span></p>
                 </div>
             </div>
         </div>

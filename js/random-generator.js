@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Random Generator Tab Switching
+    // Random Generator Tab Switching with Tailwind classes
     const randomTabButtons = document.querySelectorAll('.random-tab-button');
     const randomTabContents = document.querySelectorAll('.random-tab-content');
     
@@ -8,11 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const tabId = button.getAttribute('data-random-tab');
             
             // Deactivate all random tabs
-            randomTabButtons.forEach(btn => btn.classList.remove('active'));
+            randomTabButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-green-600', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
             randomTabContents.forEach(content => content.classList.remove('active'));
             
             // Activate the selected random tab
-            button.classList.add('active');
+            button.classList.add('active', 'bg-green-600', 'text-white');
+            button.classList.remove('bg-gray-100', 'text-gray-700');
             document.getElementById(tabId).classList.add('active');
         });
     });
@@ -576,6 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (wheelItems.length === 0) {
                     const emptyItem = document.createElement('li');
                     emptyItem.textContent = 'No items added yet';
+                    emptyItem.className = 'p-3 text-center';
                     emptyItem.style.fontStyle = 'italic';
                     emptyItem.style.color = '#999';
                     itemsList.appendChild(emptyItem);
@@ -584,17 +589,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 wheelItems.forEach((item, index) => {
                     const li = document.createElement('li');
+                    li.className = 'px-3 py-2 flex justify-between items-center';
                     
                     // Create item text span
                     const textSpan = document.createElement('span');
                     textSpan.textContent = item;
-                    textSpan.className = 'item-text';
+                    textSpan.className = 'item-text flex-1';
                     li.appendChild(textSpan);
                     
                     // Create remove button
                     const removeBtn = document.createElement('span');
                     removeBtn.textContent = '×';
-                    removeBtn.className = 'item-remove';
+                    removeBtn.className = 'item-remove px-2 ml-2';
                     removeBtn.title = 'Remove this item';
                     removeBtn.dataset.index = index;
                     li.appendChild(removeBtn);
@@ -603,6 +609,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (selectedItems.includes(index)) {
                         li.classList.add('selected');
+                        li.classList.add('bg-blue-50');
                     }
                     
                     itemsList.appendChild(li);

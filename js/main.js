@@ -1,16 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Main application loaded');
     
-    // Add any landing page specific functionality here
-    const cards = document.querySelectorAll('.calculator-card');
+    // With Tailwind CSS hover effects, we don't need the JavaScript hover handling
+    // The transition-all and hover:-translate-y-1 classes handle this effect
     
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.classList.add('hover');
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.classList.remove('hover');
-        });
-    });
+    // Add any additional landing page functionality here
 });

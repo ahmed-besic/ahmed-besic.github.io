@@ -87,8 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show the summary box
         const summaryResult = document.getElementById('summaryResult');
         if (summaryResult) {
-            summaryResult.style.display = 'block';
-            summaryResult.classList.add('show');
+            summaryResult.classList.remove('hidden');
         }
         
         // Update summary values
@@ -119,68 +118,33 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear previous table
         tableView.innerHTML = '';
         
-        // Create table
-        const table = document.createElement('table');
-        table.className = 'results-table';
+        // Create table with Tailwind classes
+        const tableHTML = `
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                        <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nominal Value</th>
+                        <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Real Value (Today's $)</th>
+                        <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required Value</th>
+                        <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cumulative Inflation</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    ${data.results.map((yearData, index) => `
+                        <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${yearData.year}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${formatCurrency(yearData.nominalValue)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${formatCurrency(yearData.realValue)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${formatCurrency(yearData.futureValue)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">${index === 0 ? '0.0%' : ((yearData.inflationFactor - 1) * 100).toFixed(1) + '%'}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
         
-        // Create table header
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        
-        const headers = [
-            'Year', 
-            'Nominal Value', 
-            'Real Value (Today\'s $)', 
-            'Required Value to Maintain Purchasing Power',
-            'Cumulative Inflation'
-        ];
-        
-        headers.forEach(header => {
-            const th = document.createElement('th');
-            th.textContent = header;
-            headerRow.appendChild(th);
-        });
-        
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
-        
-        // Create table body
-        const tbody = document.createElement('tbody');
-        
-        data.results.forEach((yearData, index) => {
-            const row = document.createElement('tr');
-            
-            // Year
-            const yearCell = document.createElement('td');
-            yearCell.textContent = yearData.year;
-            row.appendChild(yearCell);
-            
-            // Nominal Value
-            const nominalCell = document.createElement('td');
-            nominalCell.textContent = formatCurrency(yearData.nominalValue);
-            row.appendChild(nominalCell);
-            
-            // Real Value
-            const realCell = document.createElement('td');
-            realCell.textContent = formatCurrency(yearData.realValue);
-            row.appendChild(realCell);
-            
-            // Future Value (Required Value to Maintain Purchasing Power)
-            const futureCell = document.createElement('td');
-            futureCell.textContent = formatCurrency(yearData.futureValue);
-            row.appendChild(futureCell);
-            
-            // Cumulative Inflation
-            const inflationCell = document.createElement('td');
-            const inflationPercent = ((yearData.inflationFactor - 1) * 100).toFixed(1) + '%';
-            inflationCell.textContent = index === 0 ? '0.0%' : inflationPercent;
-            row.appendChild(inflationCell);
-            
-            tbody.appendChild(row);
-        });
-        
-        table.appendChild(tbody);
-        tableView.appendChild(table);
+        tableView.innerHTML = tableHTML;
     }
     
     // Update the chart with the data

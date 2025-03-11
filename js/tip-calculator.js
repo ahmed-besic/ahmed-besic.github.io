@@ -25,9 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tipPercentageInput.value = tipValue;
             tipSlider.value = tipValue;
             
-            // Update active state
-            presetTipButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
+            // Update active state with Tailwind classes
+            presetTipButtons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-800');
+            });
+            this.classList.remove('bg-gray-100', 'text-gray-800');
+            this.classList.add('bg-blue-600', 'text-white');
             
             calculateTip();
         });

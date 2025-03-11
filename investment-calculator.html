@@ -4,161 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investment Calculator</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/investment-calculator.css">
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Keep original CSS for JavaScript-dependent styles -->
+    <link rel="stylesheet" href="css/investment-calculator.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Investment Calculator</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Investment Calculator</h1>
         
-        <!-- Standardized navigation buttons with active class -->
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="investment-calculator.html" class="nav-button active">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="crypto-tracker.html" class="nav-button">Crypto Tracker</a>
-            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
 
-        <div class="main-layout">
+        <div class="flex flex-col lg:flex-row gap-6">
             <!-- Left column - Calculator inputs with tabs -->
-            <div class="calculator">
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 flex-1 min-w-[320px]">
                 <!-- Tab navigation -->
-                <div class="tab-navigation">
-                    <button class="tab-button active" data-tab="growthCalculator">Growth Calculator</button>
-                    <button class="tab-button" data-tab="lengthCalculator">Investment Length</button>
-                    <button class="tab-button" data-tab="rateCalculator">Return Rate</button>
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button class="tab-button active px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 flex-1" data-tab="growthCalculator">Growth Calculator</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 flex-1" data-tab="lengthCalculator">Investment Length</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 flex-1" data-tab="rateCalculator">Return Rate</button>
                 </div>
                 
                 <!-- Growth Calculator Tab (Original calculator) -->
                 <div class="tab-content active" id="growthCalculator">
-                    <h2>Investment Parameters</h2>
-                    <div class="form-group">
-                        <label for="startingAmount">Starting Amount ($):</label>
-                        <input type="number" id="startingAmount" value="1000" min="0" step="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="returnRate">Annual Return Rate (%):</label>
-                        <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="years">Investment Period (years):</label>
-                        <input type="number" id="years" value="30" min="1" max="100" step="1">
-                    </div>
-                    <div class="form-group">
-                        <label for="compoundFrequency">Compound Frequency:</label>
-                        <select id="compoundFrequency">
-                            <option value="1">Annually</option>
-                            <option value="4">Quarterly</option>
-                            <option value="12" selected>Monthly</option>
-                            <option value="365">Daily</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="contributionAmount">Additional Contribution ($):</label>
-                        <input type="number" id="contributionAmount" value="100" min="0" step="10">
-                    </div>
-                    <div class="form-group">
-                        <label for="contributionFrequency">Contribution Frequency:</label>
-                        <select id="contributionFrequency">
-                            <option value="1">Annually</option>
-                            <option value="4">Quarterly</option>
-                            <option value="12" selected>Monthly</option>
-                        </select>
-                    </div>
-                    <div class="form-group contribution-timing">
-                        <label>Contribution Timing:</label>
-                        <div class="radio-group">
-                            <input type="radio" id="endPeriod" name="contributionTiming" value="end" checked>
-                            <label for="endPeriod">End of period</label>
-                            <input type="radio" id="startPeriod" name="contributionTiming" value="start">
-                            <label for="startPeriod">Beginning of period</label>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Investment Parameters</h2>
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="startingAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Starting Amount ($):</label>
+                            <input type="number" id="startingAmount" value="1000" min="0" step="100" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
                         </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="returnRate" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Annual Return Rate (%):</label>
+                            <input type="number" id="returnRate" value="7" min="0" max="100" step="0.1" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="years" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Investment Period (years):</label>
+                            <input type="number" id="years" value="30" min="1" max="100" step="1" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="compoundFrequency" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Compound Frequency:</label>
+                            <select id="compoundFrequency" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="1">Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12" selected>Monthly</option>
+                                <option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="contributionAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Additional Contribution ($):</label>
+                            <input type="number" id="contributionAmount" value="100" min="0" step="10" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="contributionFrequency" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Frequency:</label>
+                            <select id="contributionFrequency" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="1">Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12" selected>Monthly</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Timing:</label>
+                            <div class="flex space-x-4 w-full sm:w-2/3">
+                                <div class="flex items-center">
+                                    <input type="radio" id="endPeriod" name="contributionTiming" value="end" checked class="mr-2">
+                                    <label for="endPeriod" class="text-gray-700">End of period</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="startPeriod" name="contributionTiming" value="start" class="mr-2">
+                                    <label for="startPeriod" class="text-gray-700">Beginning of period</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="inflationRate" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Inflation Rate (%):</label>
+                            <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <button id="calculate" class="calculate-btn w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors mt-4">Calculate</button>
                     </div>
-                    <div class="form-group">
-                        <label for="inflationRate">Inflation Rate (%):</label>
-                        <input type="number" id="inflationRate" value="2.5" min="0" max="20" step="0.1">
-                    </div>
-                    <button id="calculate" class="calculate-btn">Calculate</button>
                 </div>
                 
-                <!-- Update the Investment Length Calculator Tab -->
+                <!-- Investment Length Calculator Tab -->
                 <div class="tab-content" id="lengthCalculator">
-                    <h2>Calculate Investment Time</h2>
-                    <div class="form-group">
-                        <label for="lengthStartingAmount">Starting Amount ($):</label>
-                        <input type="number" id="lengthStartingAmount" value="1000" min="0" step="100">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Calculate Investment Time</h2>
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="lengthStartingAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Starting Amount ($):</label>
+                            <input type="number" id="lengthStartingAmount" value="1000" min="0" step="100" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="targetAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Target Amount ($):</label>
+                            <input type="number" id="targetAmount" value="10000" min="0" step="100" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="lengthReturnRate" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Annual Return Rate (%):</label>
+                            <input type="number" id="lengthReturnRate" value="7" min="0" max="100" step="0.1" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="lengthContributionAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Amount ($):</label>
+                            <input type="number" id="lengthContributionAmount" value="100" min="0" step="10" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="lengthContributionFrequency" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Frequency:</label>
+                            <select id="lengthContributionFrequency" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="12" selected>Monthly</option>
+                                <option value="1">Annually</option>
+                            </select>
+                        </div>
+                        <button id="calculateLength" class="calculate-btn w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors mt-4">Calculate Time to Target</button>
                     </div>
-                    <div class="form-group">
-                        <label for="targetAmount">Target Amount ($):</label>
-                        <input type="number" id="targetAmount" value="10000" min="0" step="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="lengthReturnRate">Annual Return Rate (%):</label>
-                        <input type="number" id="lengthReturnRate" value="7" min="0" max="100" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="lengthContributionAmount">Contribution Amount ($):</label>
-                        <input type="number" id="lengthContributionAmount" value="100" min="0" step="10">
-                    </div>
-                    <div class="form-group">
-                        <label for="lengthContributionFrequency">Contribution Frequency:</label>
-                        <select id="lengthContributionFrequency">
-                            <option value="12" selected>Monthly</option>
-                            <option value="1">Annually</option>
-                        </select>
-                    </div>
-                    <button id="calculateLength" class="calculate-btn">Calculate Time to Target</button>
                     
-                    <div class="result-display" id="lengthResult" style="display: none; opacity: 1;">
-                        <h3>Time to Reach Target</h3>
-                        <p>With the given parameters, it will take approximately <span id="yearsToTarget" class="result-value">0</span> years to reach your target amount.</p>
-                        <div class="chart-container" style="height: 200px;">
+                    <div id="lengthResult" class="mt-6 bg-gray-50 p-6 rounded-lg hidden opacity-0">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Time to Reach Target</h3>
+                        <p class="text-gray-600">With the given parameters, it will take approximately <span id="yearsToTarget" class="text-2xl font-bold text-blue-600 px-2 bg-blue-50 rounded">0</span> years to reach your target amount.</p>
+                        <div class="mt-6 border border-gray-200 rounded-lg p-3 bg-white" style="height: 200px;">
                             <canvas id="lengthChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Update the Return Rate Calculator Tab -->
+                <!-- Return Rate Calculator Tab -->
                 <div class="tab-content" id="rateCalculator">
-                    <h2>Calculate Required Return Rate</h2>
-                    <div class="form-group">
-                        <label for="rateStartingAmount">Starting Amount ($):</label>
-                        <input type="number" id="rateStartingAmount" value="1000" min="0" step="100">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Calculate Required Return Rate</h2>
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="rateStartingAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Starting Amount ($):</label>
+                            <input type="number" id="rateStartingAmount" value="1000" min="0" step="100" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="rateTargetAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Target Amount ($):</label>
+                            <input type="number" id="rateTargetAmount" value="10000" min="0" step="100" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="investmentYears" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Investment Period (years):</label>
+                            <input type="number" id="investmentYears" value="10" min="1" max="100" step="1" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="rateContributionAmount" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Amount ($):</label>
+                            <input type="number" id="rateContributionAmount" value="100" min="0" step="10" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center">
+                            <label for="rateContributionFrequency" class="text-gray-700 font-medium sm:w-1/3 mb-1 sm:mb-0">Contribution Frequency:</label>
+                            <select id="rateContributionFrequency" class="w-full sm:w-2/3 p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="12" selected>Monthly</option>
+                                <option value="1">Annually</option>
+                            </select>
+                        </div>
+                        <button id="calculateRate" class="calculate-btn w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors mt-4">Calculate Required Rate</button>
                     </div>
-                    <div class="form-group">
-                        <label for="rateTargetAmount">Target Amount ($):</label>
-                        <input type="number" id="rateTargetAmount" value="10000" min="0" step="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="investmentYears">Investment Period (years):</label>
-                        <input type="number" id="investmentYears" value="10" min="1" max="100" step="1">
-                    </div>
-                    <div class="form-group">
-                        <label for="rateContributionAmount">Contribution Amount ($):</label>
-                        <input type="number" id="rateContributionAmount" value="100" min="0" step="10">
-                    </div>
-                    <div class="form-group">
-                        <label for="rateContributionFrequency">Contribution Frequency:</label>
-                        <select id="rateContributionFrequency">
-                            <option value="12" selected>Monthly</option>
-                            <option value="1">Annually</option>
-                        </select>
-                    </div>
-                    <button id="calculateRate" class="calculate-btn">Calculate Required Rate</button>
                     
-                    <div class="result-display" id="rateResult" style="display: none; opacity: 1;">
-                        <h3>Required Annual Return Rate</h3>
-                        <p>To reach your target amount in the specified time, you need an annual return rate of <span id="requiredRate" class="result-value">0%</span>.</p>
-                        <div class="compare-rates">
-                            <p>For comparison:</p>
-                            <ul>
+                    <div id="rateResult" class="mt-6 bg-gray-50 p-6 rounded-lg hidden opacity-0">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Required Annual Return Rate</h3>
+                        <p class="text-gray-600">To reach your target amount in the specified time, you need an annual return rate of <span id="requiredRate" class="text-2xl font-bold text-blue-600 px-2 bg-blue-50 rounded">0%</span>.</p>
+                        <div class="mt-5 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                            <p class="font-medium text-gray-800">For comparison:</p>
+                            <ul class="mt-2 space-y-1 list-disc list-inside text-gray-600">
                                 <li>S&P 500 historical average: ~10% (before inflation)</li>
                                 <li>Conservative portfolio: ~4-6%</li>
                                 <li>Aggressive portfolio: ~8-12%</li>
@@ -168,101 +178,104 @@
                 </div>
                 
                 <!-- Save/Load section -->
-                <div class="save-scenario">
-                    <div class="form-group">
-                        <input type="text" id="scenarioName" placeholder="Scenario name">
-                        <button id="saveScenario" class="small-btn">Save</button>
+                <div class="mt-6 pt-5 border-t border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                        <input type="text" id="scenarioName" placeholder="Scenario name" class="flex-1 p-2 border border-gray-300 rounded-md">
+                        <button id="saveScenario" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">Save</button>
                     </div>
-                    <div class="form-group">
-                        <select id="savedScenarios">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <select id="savedScenarios" class="flex-1 p-2 border border-gray-300 rounded-md bg-white">
                             <option value="">-- Saved Scenarios --</option>
                         </select>
-                        <button id="loadScenario" class="small-btn">Load</button>
-                        <button id="deleteScenario" class="small-btn danger">Delete</button>
+                        <div class="flex gap-2">
+                            <button id="loadScenario" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">Load</button>
+                            <button id="deleteScenario" class="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-colors">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Right column - Chart visualization -->
-            <div class="chart-section">
-                <h2>Investment Growth Chart</h2>
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 flex-1 min-w-[320px] flex flex-col">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Investment Growth Chart</h2>
                 
                 <!-- Add chart control options -->
-                <div class="chart-options">
-                    <div class="form-group">
-                        <label for="chartType">Chart Type:</label>
-                        <select id="chartType">
-                            <option value="line">Line Chart</option>
-                            <option value="bar">Bar Chart</option>
-                            <option value="pie">Pie Chart</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-checkboxes">
-                        <div>
-                            <input type="checkbox" id="showContributions" checked>
-                            <label for="showContributions">Show Contributions</label>
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div class="flex flex-wrap items-center justify-between">
+                        <div class="flex items-center mb-3 sm:mb-0">
+                            <label for="chartType" class="text-gray-700 font-medium mr-2">Chart Type:</label>
+                            <select id="chartType" class="p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="line">Line Chart</option>
+                                <option value="bar">Bar Chart</option>
+                                <option value="pie">Pie Chart</option>
+                            </select>
                         </div>
-                        <div>
-                            <input type="checkbox" id="showInterest" checked>
-                            <label for="showInterest">Show Interest</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="showInflationAdjusted" checked>
-                            <label for="showInflationAdjusted">Show Inflation Adjusted</label>
+                        
+                        <div class="flex flex-wrap gap-x-4">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="showContributions" checked class="mr-2">
+                                <label for="showContributions" class="text-gray-700">Show Contributions</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="showInterest" checked class="mr-2">
+                                <label for="showInterest" class="text-gray-700">Show Interest</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="showInflationAdjusted" checked class="mr-2">
+                                <label for="showInflationAdjusted" class="text-gray-700">Show Inflation Adjusted</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="chart-container">
+                <div class="flex-grow bg-gray-50 p-1 rounded-lg border border-gray-200 h-[340px]">
                     <canvas id="growthChart"></canvas>
                 </div>
-                
-                <div class="summary">
-                    <div class="summary-item">
-                        <h3>Final Balance</h3>
-                        <p id="finalBalance">$0</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    <div class="bg-gray-50 p-3 rounded-lg text-center">
+                        <h3 class="text-sm text-gray-500 mb-1">Final Balance</h3>
+                        <p id="finalBalance" class="text-lg font-bold text-gray-800">$0</p>
                     </div>
-                    <div class="summary-item">
-                        <h3>Total Contributions</h3>
-                        <p id="totalContributions">$0</p>
+                    <div class="bg-gray-50 p-3 rounded-lg text-center">
+                        <h3 class="text-sm text-gray-500 mb-1">Total Contributions</h3>
+                        <p id="totalContributions" class="text-lg font-bold text-gray-800">$0</p>
                     </div>
-                    <div class="summary-item">
-                        <h3>Total Interest</h3>
-                        <p id="totalInterest">$0</p>
+                    <div class="bg-gray-50 p-3 rounded-lg text-center">
+                        <h3 class="text-sm text-gray-500 mb-1">Total Interest</h3>
+                        <p id="totalInterest" class="text-lg font-bold text-gray-800">$0</p>
                     </div>
-                    <div class="summary-item">
-                        <h3>Inflation-Adjusted</h3>
-                        <p id="inflationAdjusted">$0</p>
+                    <div class="bg-gray-50 p-3 rounded-lg text-center">
+                        <h3 class="text-sm text-gray-500 mb-1">Inflation-Adjusted</h3>
+                        <p id="inflationAdjusted" class="text-lg font-bold text-gray-800">$0</p>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Bottom section for detailed results -->
-        <div class="results" id="results">
-            <div class="view-toggle">
-                <button id="tableViewBtn" class="view-btn active">Table View</button>
-                <button id="compareBtn" class="view-btn">Compare Scenarios</button>
-                <button id="exportBtn" class="view-btn">Export Data</button>
+        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 mt-6" id="results">
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button id="tableViewBtn" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors view-btn active">Table View</button>
+                <button id="compareBtn" class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors view-btn">Compare Scenarios</button>
+                <button id="exportBtn" class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors view-btn">Export Data</button>
             </div>
 
-            <div id="tableView" class="view-content active">
+            <div id="tableView" class="view-content active overflow-x-auto">
+                <!-- Table will be inserted here by JavaScript -->
             </div>
 
-            <div id="compareView" class="view-content">
-                <div class="compare-scenarios">
-                    <select id="scenario1" class="compare-select">
+            <div id="compareView" class="view-content hidden">
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                    <select id="scenario1" class="p-2 border border-gray-300 rounded-md bg-white w-full sm:w-2/5">
                         <option value="">Select Scenario 1</option>
                     </select>
-                    <select id="scenario2" class="compare-select">
+                    <select id="scenario2" class="p-2 border border-gray-300 rounded-md bg-white w-full sm:w-2/5">
                         <option value="">Select Scenario 2</option>
                     </select>
                 </div>
-                <div class="compare-chart-container">
+                <div class="bg-gray-50 p-1 rounded-lg border border-gray-200 h-[350px] mb-6">
                     <canvas id="compareChart"></canvas>
                 </div>
-                <div class="compare-summary" id="compareSummary">
+                <div class="bg-gray-50 p-6 rounded-lg text-center" id="compareSummary">
                     Select two scenarios to compare.
                 </div>
             </div>

@@ -76,8 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Chart period buttons
         chartPeriodButtons.forEach(button => {
             button.addEventListener('click', () => {
-                chartPeriodButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+                chartPeriodButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-blue-500', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                button.classList.add('active', 'bg-blue-500', 'text-white');
                 chartPeriod = button.getAttribute('data-period');
                 if (selectedCrypto) {
                     loadPriceHistory(selectedCrypto.id);
@@ -101,9 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add notification about API limitations with more details
         const cryptoDashboard = document.querySelector('.crypto-dashboard');
         const apiNotice = document.createElement('div');
-        apiNotice.className = 'api-notice';
+        apiNotice.className = 'col-span-1 lg:col-span-2 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-6';
         apiNotice.innerHTML = `
-            <p>⚠️ This tracker uses the free CoinGecko API which has rate limits (10-50 calls/minute). 
+            <p class="text-yellow-700">⚠️ This tracker uses the free CoinGecko API which has rate limits (10-50 calls/minute). 
             If you encounter errors, we'll use cached data when possible and retry automatically.</p>
         `;
         cryptoDashboard.insertAdjacentElement('afterbegin', apiNotice);
@@ -117,8 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.crypto-list-item')) {
                     const item = e.target.closest('.crypto-list-item');
-                    item.classList.add('tapped');
-                    setTimeout(() => item.classList.remove('tapped'), 300);
+                    item.classList.add('bg-blue-50');
+                    setTimeout(() => item.classList.remove('bg-blue-50'), 300);
                 }
             });
         }
@@ -533,10 +537,10 @@ document.addEventListener('DOMContentLoaded', function() {
         updatePagination(filtered.length);
     }
     
-    // Enhance the displayCryptoList function to highlight pinned tokens
+    // Enhance the displayCryptoList function to work with Tailwind CSS
     function displayCryptoList(cryptos) {
         if (cryptos.length === 0) {
-            cryptoListBody.innerHTML = '<div class="no-data-message">No cryptocurrencies found matching your criteria</div>';
+            cryptoListBody.innerHTML = '<div class="py-8 text-center text-gray-500">No cryptocurrencies found matching your criteria</div>';
             return;
         }
         
@@ -552,34 +556,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 : formatNumber(coin.current_price);
             
             const listItem = document.createElement('div');
-            listItem.className = 'crypto-list-item';
+            listItem.className = 'crypto-list-item grid grid-cols-5 md:grid-cols-7 py-3 px-4 hover:bg-gray-50 border-b border-gray-200 cursor-pointer transition-colors';
             
             // Add special class for pinned tokens
             if (coin.isPinned) {
-                listItem.classList.add('pinned-token');
+                listItem.classList.add('border-l-4', 'border-blue-500', 'pl-3');
             }
             
             listItem.innerHTML = `
-                ${coin.isPinned ? '<div class="pinned-badge">★</div>' : ''}
-                <div class="crypto-rank">${coin.rank}</div>
-                <div class="crypto-name">
-                    <img src="${coin.image}" alt="${coin.name}" class="crypto-icon" onerror="this.src='https://via.placeholder.com/30?text=${coin.symbol.charAt(0).toUpperCase()}'">
-                    <div>
-                        <div class="coin-name">${coin.name}</div>
-                        <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+                <div class="hidden md:block crypto-rank text-gray-500">${coin.rank}</div>
+                <div class="crypto-name flex items-center gap-2 overflow-hidden">
+                    <img src="${coin.image}" alt="${coin.name}" class="w-6 h-6 min-w-[24px] rounded-full" onerror="this.src='https://via.placeholder.com/30?text=${coin.symbol.charAt(0).toUpperCase()}'">
+                    <div class="truncate">
+                        <div class="coin-name font-medium text-gray-900 truncate max-w-[100px] sm:max-w-[180px]">${coin.name}</div>
+                        <div class="coin-symbol text-xs text-gray-500">${coin.symbol.toUpperCase()}</div>
                     </div>
                 </div>
-                <div class="crypto-price">$${priceDisplay}</div>
-                <div class="crypto-change ${isPriceUp ? 'positive' : 'negative'}">
-                    ${isPriceUp ? '↑' : '↓'} ${Math.abs(priceChange).toFixed(2)}%
+                <div class="crypto-price text-right font-medium text-sm md:text-base">$${priceDisplay}</div>
+                <div class="crypto-change text-right font-medium text-xs md:text-sm ${isPriceUp ? 'text-green-600' : 'text-red-600'}">
+                    ${isPriceUp ? '↑' : '↓'} ${Math.abs(priceChange).toFixed(1)}%
                 </div>
-                <div class="crypto-market-cap">$${formatMarketCap(coin.market_cap)}</div>
-                <div class="crypto-volume">$${formatMarketCap(coin.total_volume)}</div>
-                <div class="crypto-actions">
-                    <button class="action-btn favorite-btn ${coin.isFavorite ? 'active' : ''}" title="Add to favorites">
+                <div class="crypto-market-cap text-right text-gray-700 hidden md:block">$${formatMarketCap(coin.market_cap)}</div>
+                <div class="crypto-volume text-right text-gray-700 hidden md:block">$${formatMarketCap(coin.total_volume)}</div>
+                <div class="crypto-actions flex justify-end gap-1">
+                    <button class="action-btn favorite-btn p-2 text-xl ${coin.isFavorite ? 'text-yellow-500' : 'text-gray-400'}" title="Add to favorites">
                         ★
                     </button>
-                    <button class="action-btn portfolio-btn" title="Add to portfolio">
+                    <button class="action-btn portfolio-btn p-2 text-xl text-blue-500" title="Add to portfolio">
                         +
                     </button>
                 </div>
@@ -620,51 +623,55 @@ document.addEventListener('DOMContentLoaded', function() {
             : description;
         
         cryptoDetail.innerHTML = `
-            <div class="crypto-detail-header">
-                <img src="${coin.image.large}" alt="${coin.name}" class="crypto-detail-icon">
-                <h2>${coin.name} (${coin.symbol.toUpperCase()})</h2>
+            <div class="crypto-detail-header flex items-center gap-4 mb-4">
+                <img src="${coin.image.large}" alt="${coin.name}" class="w-12 h-12">
+                <h2 class="text-xl font-bold text-gray-800">${coin.name} <span class="text-gray-500">(${coin.symbol.toUpperCase()})</span></h2>
             </div>
             
-            <div class="crypto-detail-price">
-                <span class="current-price">$${formatNumber(coin.market_data.current_price.usd)}</span>
-                <span class="price-change ${coin.market_data.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+            <div class="crypto-detail-price mb-6">
+                <span class="current-price text-2xl font-bold text-gray-900">$${formatNumber(coin.market_data.current_price.usd)}</span>
+                <span class="price-change ml-2 font-medium ${coin.market_data.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'}">
                     ${coin.market_data.price_change_percentage_24h >= 0 ? '↑' : '↓'} 
                     ${Math.abs(coin.market_data.price_change_percentage_24h || 0).toFixed(2)}% (24h)
                 </span>
             </div>
             
-            <div class="crypto-stats">
-                <div class="stat-item">
-                    <div class="stat-title">Market Cap</div>
-                    <div class="stat-value">$${formatMarketCap(coin.market_data.market_cap.usd)}</div>
+            <div class="crypto-stats grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <div class="stat-item p-3 bg-gray-50 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">Market Cap</div>
+                    <div class="font-semibold">$${formatMarketCap(coin.market_data.market_cap.usd)}</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-title">24h Volume</div>
-                    <div class="stat-value">$${formatMarketCap(coin.market_data.total_volume.usd)}</div>
+                <div class="stat-item p-3 bg-gray-50 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">24h Volume</div>
+                    <div class="font-semibold">$${formatMarketCap(coin.market_data.total_volume.usd)}</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-title">Circulating Supply</div>
-                    <div class="stat-value">${formatNumber(coin.market_data.circulating_supply)} ${coin.symbol.toUpperCase()}</div>
+                <div class="stat-item p-3 bg-gray-50 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">Circulating Supply</div>
+                    <div class="font-semibold">${formatNumber(coin.market_data.circulating_supply)} ${coin.symbol.toUpperCase()}</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-title">Max Supply</div>
-                    <div class="stat-value">${coin.market_data.max_supply ? formatNumber(coin.market_data.max_supply) + ' ' + coin.symbol.toUpperCase() : 'Unlimited'}</div>
+                <div class="stat-item p-3 bg-gray-50 rounded-lg">
+                    <div class="text-sm text-gray-500 mb-1">Max Supply</div>
+                    <div class="font-semibold">${coin.market_data.max_supply ? formatNumber(coin.market_data.max_supply) + ' ' + coin.symbol.toUpperCase() : 'Unlimited'}</div>
                 </div>
             </div>
             
-            <div class="crypto-price-range">
-                <div class="range-title">24h Range</div>
-                <div class="range-bar">
-                    <div class="range-low">$${formatNumber(coin.market_data.low_24h.usd)}</div>
-                    <div class="range-high">$${formatNumber(coin.market_data.high_24h.usd)}</div>
+            <div class="crypto-price-range mb-6">
+                <div class="text-sm text-gray-500 mb-2">24h Range</div>
+                <div class="flex justify-between bg-gray-50 p-3 rounded-lg">
+                    <div class="font-medium">$${formatNumber(coin.market_data.low_24h.usd)}</div>
+                    <div class="font-medium">$${formatNumber(coin.market_data.high_24h.usd)}</div>
                 </div>
             </div>
             
             <div class="crypto-description">
-                <h3>About ${coin.name}</h3>
-                <div class="description-text">${shortDescription}</div>
-                <a href="${coin.links.homepage[0]}" target="_blank" rel="noopener noreferrer" class="crypto-link">Official Website</a>
-                ${coin.links.blockchain_site[0] ? `<a href="${coin.links.blockchain_site[0]}" target="_blank" rel="noopener noreferrer" class="crypto-link">Blockchain Explorer</a>` : ''}
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">About ${coin.name}</h3>
+                <div class="text-gray-700 mb-4">${shortDescription}</div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="${coin.links.homepage[0]}" target="_blank" rel="noopener noreferrer" 
+                        class="text-blue-600 hover:text-blue-800 transition-colors">Official Website</a>
+                    ${coin.links.blockchain_site[0] ? `<a href="${coin.links.blockchain_site[0]}" target="_blank" rel="noopener noreferrer" 
+                        class="text-blue-600 hover:text-blue-800 transition-colors">Blockchain Explorer</a>` : ''}
+                </div>
             </div>
         `;
     }
@@ -718,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
             priceChart.destroy();
         }
         
-        // Create new chart
+        // Create new chart with improved mobile responsiveness
         try {
             priceChart = new Chart(chartContainer, {
                 type: 'line',
@@ -744,7 +751,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: `${selectedCrypto.name || 'Cryptocurrency'} Price Chart (${period})`,
                             font: {
-                                size: 16
+                                size: window.innerWidth <= 768 ? 14 : 16
                             }
                         },
                         tooltip: {
@@ -766,8 +773,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 display: false
                             },
                             ticks: {
-                                maxTicksLimit: 8,
-                                maxRotation: 0
+                                maxTicksLimit: window.innerWidth <= 768 ? 5 : 8,
+                                maxRotation: 0,
+                                font: {
+                                    size: window.innerWidth <= 768 ? 10 : 12
+                                }
                             }
                         },
                         y: {
@@ -776,7 +786,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             ticks: {
                                 callback: function(value) {
+                                    // Shorter formatting for mobile
+                                    if (window.innerWidth <= 480) {
+                                        if (value >= 1000) {
+                                            return '$' + (value / 1000).toFixed(1) + 'K';
+                                        }
+                                    }
                                     return '$' + value.toFixed(2);
+                                },
+                                font: {
+                                    size: window.innerWidth <= 768 ? 10 : 12
                                 }
                             }
                         }
@@ -796,7 +815,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updatePortfolioDisplay() {
         if (Object.keys(portfolio).length === 0) {
-            portfolioListElement.innerHTML = '<p class="no-data-message">Your portfolio is empty. Add cryptocurrencies from the list above.</p>';
+            portfolioListElement.innerHTML = '<p class="py-8 text-center text-gray-500">Your portfolio is empty. Add cryptocurrencies from the list above.</p>';
             return;
         }
         
@@ -815,28 +834,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const isProfitable = profitLoss >= 0;
             
             const holdingItem = document.createElement('div');
-            holdingItem.className = 'portfolio-item';
+            holdingItem.className = 'flex flex-wrap items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50';
             holdingItem.innerHTML = `
-                <div class="portfolio-item-info">
-                    <img src="${coin.image}" alt="${coin.name}" class="crypto-icon">
+                <div class="flex items-center gap-3 mb-2 sm:mb-0">
+                    <img src="${coin.image}" alt="${coin.name}" class="w-8 h-8 rounded-full">
                     <div>
-                        <div class="portfolio-item-name">${coin.name}</div>
-                        <div class="portfolio-item-quantity">${holding.quantity} ${coin.symbol.toUpperCase()}</div>
+                        <div class="font-medium text-gray-900">${coin.name}</div>
+                        <div class="text-xs text-gray-500">${holding.quantity} ${coin.symbol.toUpperCase()}</div>
                     </div>
                 </div>
-                <div class="portfolio-item-value">
-                    <div class="current-value">$${formatNumber(currentValue)}</div>
-                    <div class="profit-loss ${isProfitable ? 'positive' : 'negative'}">
-                        ${isProfitable ? '+' : ''}$${formatNumber(profitLoss)} (${profitLossPercentage.toFixed(2)}%)
+                <div class="w-full sm:w-auto flex items-center justify-between gap-4">
+                    <div class="text-right">
+                        <div class="font-semibold">$${formatNumber(currentValue)}</div>
+                        <div class="${isProfitable ? 'text-green-600' : 'text-red-600'} text-sm">
+                            ${isProfitable ? '+' : ''}$${formatNumber(profitLoss)} (${profitLossPercentage.toFixed(2)}%)
+                        </div>
                     </div>
-                </div>
-                <div class="portfolio-item-actions">
-                    <button class="action-btn remove-btn" title="Remove from portfolio">×</button>
+                    <button class="text-red-500 hover:bg-red-50 p-2 rounded-full" title="Remove from portfolio">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
                 </div>
             `;
             
             // Add event listener for remove button
-            const removeBtn = holdingItem.querySelector('.remove-btn');
+            const removeBtn = holdingItem.querySelector('button');
             removeBtn.addEventListener('click', () => {
                 removeFromPortfolio(coinId);
             });

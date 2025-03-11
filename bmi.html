@@ -4,75 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI Calculator</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/navigation.css">
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        underweight: '#3498db',
+                        normal: '#2ecc71',
+                        overweight: '#f39c12',
+                        obese: '#e74c3c',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Keep original CSS for JavaScript-dependent styles -->
     <link rel="stylesheet" href="css/bmi-calculator.css">
 </head>
-<body>
-    <div class="container">
-        <h1>BMI Calculator</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">BMI Calculator</h1>
         
-        <!-- Standardized navigation buttons with active class -->
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="bmi.html" class="nav-button active">BMI Calculator</a>
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
         
-        <div class="bmi-calculator-container">
-            <div class="bmi-calculator">
-                <h2>Calculate Your BMI</h2>
+        <div class="flex flex-wrap gap-8 justify-center">
+            <!-- BMI Calculator Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[500px]">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Calculate Your BMI</h2>
                 
-                <div class="unit-toggle">
-                    <button id="metricUnits" class="unit-toggle-btn active">Metric</button>
-                    <button id="imperialUnits" class="unit-toggle-btn">Imperial</button>
+                <!-- Unit Toggle -->
+                <div class="flex justify-center mb-6">
+                    <button id="metricUnits" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-l-lg unit-toggle-btn active">Metric</button>
+                    <button id="imperialUnits" class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-r-lg unit-toggle-btn">Imperial</button>
                 </div>
                 
-                <div id="metricForm">
-                    <div class="form-row">
-                        <label for="heightCm">Height (cm):</label>
-                        <input type="number" id="heightCm" placeholder="e.g., 175">
+                <!-- Metric Form -->
+                <div id="metricForm" class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <label for="heightCm" class="text-gray-700 font-medium w-1/3">Height (cm):</label>
+                        <input type="number" id="heightCm" placeholder="e.g., 175" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
                     
-                    <div class="form-row">
-                        <label for="weightKg">Weight (kg):</label>
-                        <input type="number" id="weightKg" placeholder="e.g., 70">
+                    <div class="flex items-center space-x-4">
+                        <label for="weightKg" class="text-gray-700 font-medium w-1/3">Weight (kg):</label>
+                        <input type="number" id="weightKg" placeholder="e.g., 70" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
                     
-                    <button id="calculateMetric" class="calculate-btn">Calculate BMI</button>
+                    <button id="calculateMetric" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        Calculate BMI
+                    </button>
                 </div>
                 
-                <div id="imperialForm" style="display: none;">
-                    <div class="form-row">
-                        <label>Height:</label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="number" id="heightFt" placeholder="ft" style="width: 50%;">
-                            <input type="number" id="heightIn" placeholder="in" style="width: 50%;">
+                <!-- Imperial Form -->
+                <div id="imperialForm" class="space-y-4" style="display: none;">
+                    <div class="flex items-center space-x-4">
+                        <label class="text-gray-700 font-medium w-1/3">Height:</label>
+                        <div class="flex-1 flex space-x-2">
+                            <input type="number" id="heightFt" placeholder="ft" 
+                                   class="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                            <input type="number" id="heightIn" placeholder="in" 
+                                   class="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                         </div>
                     </div>
                     
-                    <div class="form-row">
-                        <label for="weightLbs">Weight (lbs):</label>
-                        <input type="number" id="weightLbs" placeholder="e.g., 154">
+                    <div class="flex items-center space-x-4">
+                        <label for="weightLbs" class="text-gray-700 font-medium w-1/3">Weight (lbs):</label>
+                        <input type="number" id="weightLbs" placeholder="e.g., 154" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
                     
-                    <button id="calculateImperial" class="calculate-btn">Calculate BMI</button>
+                    <button id="calculateImperial" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        Calculate BMI
+                    </button>
                 </div>
                 
-                <div class="bmi-results" style="display: none;">
-                    <h3>Your BMI Result</h3>
-                    <div class="bmi-value" id="bmiValue">0.0</div>
-                    <div class="bmi-category" id="bmiCategory">Normal weight</div>
+                <!-- BMI Results -->
+                <div class="bmi-results mt-6 bg-gray-50 p-6 rounded-lg text-center" style="display: none;">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Your BMI Result</h3>
+                    <div id="bmiValue" class="text-4xl font-bold text-gray-900 my-3">0.0</div>
+                    <div id="bmiCategory" class="text-xl font-semibold mb-4 bmi-category">Normal weight</div>
                     
-                    <div class="bmi-chart">
-                        <div class="bmi-marker" id="bmiMarker"></div>
+                    <div class="bmi-chart w-full h-5 rounded-full bg-gradient-to-r from-underweight via-normal to-obese relative">
+                        <div id="bmiMarker" class="bmi-marker"></div>
                     </div>
-                    <div class="bmi-scale">
+                    <div class="flex justify-between mt-1 text-xs text-gray-600">
                         <span>18.5</span>
                         <span>25</span>
                         <span>30</span>
@@ -81,41 +110,44 @@
                 </div>
             </div>
             
-            <div class="bmi-info">
-                <h2>BMI Categories</h2>
-                <div class="bmi-guide">
-                    <table>
-                        <thead>
+            <!-- BMI Information Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[400px] self-start">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">BMI Categories</h2>
+                
+                <!-- BMI Categories Table -->
+                <div class="overflow-hidden rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th>BMI Range</th>
-                                <th>Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BMI Range</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white divide-y divide-gray-200">
                             <tr>
-                                <td>Below 18.5</td>
-                                <td class="category-underweight">Underweight</td>
+                                <td class="px-6 py-4 whitespace-nowrap">Below 18.5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-underweight font-medium">Underweight</td>
                             </tr>
                             <tr>
-                                <td>18.5 - 24.9</td>
-                                <td class="category-normal">Normal weight</td>
+                                <td class="px-6 py-4 whitespace-nowrap">18.5 - 24.9</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-normal font-medium">Normal weight</td>
                             </tr>
                             <tr>
-                                <td>25 - 29.9</td>
-                                <td class="category-overweight">Overweight</td>
+                                <td class="px-6 py-4 whitespace-nowrap">25 - 29.9</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-overweight font-medium">Overweight</td>
                             </tr>
                             <tr>
-                                <td>30 and Above</td>
-                                <td class="category-obese">Obese</td>
+                                <td class="px-6 py-4 whitespace-nowrap">30 and Above</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-obese font-medium">Obese</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <div style="margin-top: 20px;">
-                    <h3>About BMI</h3>
-                    <p>BMI (Body Mass Index) is a numerical value derived from a person's weight and height. It provides a simple rule of thumb for classifying a person's weight as underweight, normal weight, overweight, or obese.</p>
-                    <p>BMI is not a direct measurement of body fat and doesn't account for factors like muscle mass, bone density, or overall body composition.</p>
+                <div class="mt-6">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">About BMI</h3>
+                    <p class="text-gray-600 mb-3">BMI (Body Mass Index) is a numerical value derived from a person's weight and height. It provides a simple rule of thumb for classifying a person's weight as underweight, normal weight, overweight, or obese.</p>
+                    <p class="text-gray-600">BMI is not a direct measurement of body fat and doesn't account for factors like muscle mass, bone density, or overall body composition.</p>
                 </div>
             </div>
         </div>

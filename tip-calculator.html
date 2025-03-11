@@ -4,101 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tip Calculator</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/navigation.css">
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Keep the original CSS for any JavaScript-dependent styles -->
     <link rel="stylesheet" href="css/tip-calculator.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Tip Calculator</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Tip Calculator</h1>
         
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button active">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="crypto-tracker.html" class="nav-button">Crypto Tracker</a>
-            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
         
-        <div class="tip-calculator-container">
-            <div class="tip-calculator">
-                <div class="form-group">
-                    <label for="billAmount">Bill Amount ($):</label>
-                    <input type="number" id="billAmount" value="50.00" min="0" step="0.01">
-                </div>
-                
-                <div class="form-group">
-                    <label for="tipPercentage">Tip Percentage (%):</label>
-                    <input type="number" id="tipPercentage" value="15" min="0" max="100" step="1">
-                </div>
-                
-                <div class="tip-slider-container">
-                    <input type="range" id="tipSlider" min="0" max="30" value="15" step="1">
-                    <div class="tip-marks">
-                        <span>0%</span>
-                        <span>15%</span>
-                        <span>30%</span>
+        <div class="flex flex-wrap gap-8 justify-center">
+            <!-- Tip Calculator Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[500px]">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <label for="billAmount" class="text-gray-700 font-medium w-1/3">Bill Amount ($):</label>
+                        <input type="number" id="billAmount" value="50.00" min="0" step="0.01" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="splitCount">Split Between:</label>
-                    <input type="number" id="splitCount" value="1" min="1" step="1">
-                </div>
-                
-                <button id="calculateTip" class="calculate-btn">Calculate Tip</button>
-                
-                <div class="tip-results">
-                    <div class="tip-result-row">
-                        <span>Tip Amount:</span>
-                        <span id="tipAmount">$7.50</span>
+                    
+                    <div class="flex items-center space-x-4">
+                        <label for="tipPercentage" class="text-gray-700 font-medium w-1/3">Tip Percentage (%):</label>
+                        <input type="number" id="tipPercentage" value="15" min="0" max="100" step="1" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                    <div class="tip-result-row">
-                        <span>Total Amount:</span>
-                        <span id="totalWithTip">$57.50</span>
+                    
+                    <div class="tip-slider-container my-5">
+                        <input type="range" id="tipSlider" min="0" max="30" value="15" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>0%</span>
+                            <span>15%</span>
+                            <span>30%</span>
+                        </div>
                     </div>
-                    <div class="tip-result-row" id="perPersonRow">
-                        <span>Amount Per Person:</span>
-                        <span id="amountPerPerson">$57.50</span>
+                    
+                    <div class="flex items-center space-x-4">
+                        <label for="splitCount" class="text-gray-700 font-medium w-1/3">Split Between:</label>
+                        <input type="number" id="splitCount" value="1" min="1" step="1" 
+                               class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                     </div>
-                </div>
-                
-                <div class="preset-tips">
-                    <h3>Quick Tip</h3>
-                    <div class="preset-buttons">
-                        <button class="preset-tip-btn" data-tip="10">10%</button>
-                        <button class="preset-tip-btn" data-tip="15">15%</button>
-                        <button class="preset-tip-btn" data-tip="18">18%</button>
-                        <button class="preset-tip-btn" data-tip="20">20%</button>
-                        <button class="preset-tip-btn" data-tip="25">25%</button>
+                    
+                    <button id="calculateTip" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        Calculate Tip
+                    </button>
+                    
+                    <!-- Tip Results -->
+                    <div class="tip-results mt-6 bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between py-2 border-b border-gray-200">
+                            <span class="text-gray-700">Tip Amount:</span>
+                            <span id="tipAmount" class="font-bold text-lg text-gray-900">$7.50</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-200">
+                            <span class="text-gray-700">Total Amount:</span>
+                            <span id="totalWithTip" class="font-bold text-lg text-gray-900">$57.50</span>
+                        </div>
+                        <div id="perPersonRow" class="flex justify-between py-2">
+                            <span class="text-gray-700">Amount Per Person:</span>
+                            <span id="amountPerPerson" class="font-bold text-lg text-gray-900">$57.50</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Preset Tips -->
+                    <div class="mt-6">
+                        <h3 class="text-lg font-medium text-gray-800 mb-2">Quick Tip</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="preset-tip-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition-colors" data-tip="10">10%</button>
+                            <button class="preset-tip-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition-colors" data-tip="15">15%</button>
+                            <button class="preset-tip-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition-colors" data-tip="18">18%</button>
+                            <button class="preset-tip-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition-colors" data-tip="20">20%</button>
+                            <button class="preset-tip-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition-colors" data-tip="25">25%</button>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="tip-info">
-                <h3>Tipping Guide</h3>
-                <table class="tip-guide">
-                    <tr>
-                        <th>Service Quality</th>
-                        <th>Suggested Tip</th>
-                    </tr>
-                    <tr>
-                        <td>Standard Service</td>
-                        <td>15-18%</td>
-                    </tr>
-                    <tr>
-                        <td>Good Service</td>
-                        <td>18-20%</td>
-                    </tr>
-                    <tr>
-                        <td>Excellent Service</td>
-                        <td>20-25%</td>
-                    </tr>
-                </table>
+            <!-- Tipping Guide Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[400px] self-start">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Tipping Guide</h3>
+                
+                <div class="overflow-hidden rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service Quality</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Suggested Tip</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">Standard Service</td>
+                                <td class="px-6 py-4 whitespace-nowrap">15-18%</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">Good Service</td>
+                                <td class="px-6 py-4 whitespace-nowrap">18-20%</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">Excellent Service</td>
+                                <td class="px-6 py-4 whitespace-nowrap">20-25%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-lg font-medium text-gray-800 mb-2">About Tipping</h4>
+                    <p class="text-gray-600 mb-3">Tipping is a way to show appreciation for good service. While practices vary by country, in the US a tip of 15-20% is customary for restaurant service.</p>
+                    <p class="text-gray-600">For large parties, many restaurants automatically add a gratuity charge to the bill, usually around 18%.</p>
+                </div>
             </div>
         </div>
     </div>

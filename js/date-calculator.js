@@ -17,13 +17,22 @@ document.addEventListener('DOMContentLoaded', function() {
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             // Remove active class from all buttons and sections
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            calculatorSections.forEach(section => section.classList.remove('active'));
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.remove('text-blue-600', 'border-blue-600');
+            });
+            
+            calculatorSections.forEach(section => {
+                section.classList.remove('active');
+                section.classList.add('hidden');
+            });
             
             // Add active class to clicked button and corresponding section
-            button.classList.add('active');
+            button.classList.add('active', 'text-blue-600', 'border-blue-600');
             const tabId = button.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            const activeSection = document.getElementById(tabId);
+            activeSection.classList.add('active');
+            activeSection.classList.remove('hidden');
         });
     });
     
@@ -46,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('yearsResult').textContent = (diffDays / 365.25).toFixed(2); // Account for leap years
         
         // Show result section
-        document.getElementById('daysResult').style.display = 'block';
+        document.getElementById('daysResult').classList.remove('hidden');
     }
     
     // Add/Subtract from Date Calculator
@@ -81,6 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('resultDate').textContent = resultDate.toLocaleDateString(undefined, options);
         
         // Show result section
-        document.getElementById('dateResult').style.display = 'block';
+        document.getElementById('dateResult').classList.remove('hidden');
     }
 });

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Crypto Price Tracker</title>
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/navigation.css">
@@ -11,28 +13,29 @@
     <!-- Chart.js for price charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Crypto Price Tracker</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">Crypto Price Tracker</h1>
         
         <!-- Navigation buttons -->
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button">Home</a>
-            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="crypto-tracker.html" class="nav-button active">Crypto Tracker</a>
-            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
         
-        <div class="crypto-dashboard">
+        <div class="crypto-dashboard grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Search and filter tools -->
-            <div class="crypto-controls card">
-                <div class="search-container">
-                    <input type="text" id="cryptoSearch" placeholder="Search cryptocurrency...">
-                    <select id="sortMethod">
+            <div class="crypto-controls col-span-1 lg:col-span-2 bg-white rounded-xl shadow-md p-5 border border-gray-100">
+                <div class="search-container flex flex-col md:flex-row gap-3 mb-3">
+                    <input type="text" id="cryptoSearch" placeholder="Search cryptocurrency..." 
+                        class="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select id="sortMethod" class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="rank">Rank</option>
                         <option value="name">Name</option>
                         <option value="price">Price</option>
@@ -40,108 +43,114 @@
                         <option value="volume">Volume</option>
                         <option value="market_cap">Market Cap</option>
                     </select>
-                    <button id="refreshButton" class="small-btn">Refresh</button>
+                    <button id="refreshButton" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-colors">
+                        Refresh
+                    </button>
                 </div>
-                <div class="favorites-only">
-                    <input type="checkbox" id="showFavoritesOnly">
-                    <label for="showFavoritesOnly">Show favorites only</label>
+                <div class="flex justify-between items-center">
+                    <div class="favorites-only flex items-center gap-2">
+                        <input type="checkbox" id="showFavoritesOnly" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                        <label for="showFavoritesOnly" class="text-gray-700">Show favorites only</label>
+                    </div>
+                    <div class="last-updated text-gray-500 text-sm">Last updated: <span id="lastUpdated">Loading...</span></div>
                 </div>
-                <div class="last-updated">Last updated: <span id="lastUpdated">Loading...</span></div>
             </div>
             
             <!-- Cryptocurrency list -->
-            <div class="crypto-list card">
-                <div class="crypto-list-header">
-                    <div class="crypto-rank">#</div>
+            <div class="crypto-list col-span-1 lg:col-span-2 bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <div class="crypto-list-header grid grid-cols-5 md:grid-cols-7 py-3 px-4 bg-gray-50 font-semibold text-gray-700 border-b border-gray-200">
+                    <div class="hidden md:block crypto-rank">#</div>
                     <div class="crypto-name">Name</div>
-                    <div class="crypto-price">Price</div>
-                    <div class="crypto-change">24h Change</div>
-                    <div class="crypto-market-cap">Market Cap</div>
-                    <div class="crypto-volume">Volume (24h)</div>
-                    <div class="crypto-actions">Actions</div>
+                    <div class="crypto-price text-right">Price</div>
+                    <div class="crypto-change text-right">24h</div>
+                    <div class="crypto-market-cap text-right hidden md:block">Market Cap</div>
+                    <div class="crypto-volume text-right hidden md:block">Volume (24h)</div>
+                    <div class="crypto-actions text-right">Actions</div>
                 </div>
-                <div id="cryptoListBody">
+                <div id="cryptoListBody" class="max-h-96 overflow-y-auto">
                     <!-- Crypto list items will be populated here -->
-                    <div class="loading-spinner">Loading cryptocurrency data...</div>
+                    <div class="loading-spinner py-12 text-center text-gray-500">Loading cryptocurrency data...</div>
                 </div>
-                <div class="pagination">
-                    <button id="prevPage" class="small-btn" disabled>Previous</button>
-                    <span id="pageIndicator">Page 1</span>
-                    <button id="nextPage" class="small-btn">Next</button>
+                <div class="pagination flex justify-center items-center gap-5 py-4 border-t border-gray-200">
+                    <button id="prevPage" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50" disabled>Previous</button>
+                    <span id="pageIndicator" class="min-w-[100px] text-center">Page 1</span>
+                    <button id="nextPage" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-colors">Next</button>
                 </div>
             </div>
             
             <!-- Selected crypto details -->
-            <div class="crypto-detail card" id="cryptoDetail">
-                <h2>Select a cryptocurrency for detailed information</h2>
-                <p>Click on any cryptocurrency in the list to view detailed information and price charts.</p>
+            <div class="crypto-detail bg-white rounded-xl shadow-md p-6 border border-gray-100" id="cryptoDetail">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Select a cryptocurrency for detailed information</h2>
+                <p class="text-gray-600">Click on any cryptocurrency in the list to view detailed information and price charts.</p>
             </div>
             
             <!-- Price chart -->
-            <div class="crypto-chart card">
-                <h2>Price Chart</h2>
-                <div class="chart-period-buttons">
-                    <button class="chart-period active" data-period="24h">24h</button>
-                    <button class="chart-period" data-period="7d">7 Days</button>
-                    <button class="chart-period" data-period="30d">30 Days</button>
-                    <button class="chart-period" data-period="90d">90 Days</button>
-                    <button class="chart-period" data-period="1y">1 Year</button>
+            <div class="crypto-chart bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Price Chart</h2>
+                <div class="chart-period-buttons flex flex-wrap gap-2 mb-6">
+                    <button class="chart-period px-3 py-1 bg-blue-500 text-white rounded-md active" data-period="24h">24h</button>
+                    <button class="chart-period px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md" data-period="7d">7d</button>
+                    <button class="chart-period px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md" data-period="30d">30d</button>
+                    <button class="chart-period px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md" data-period="90d">90d</button>
+                    <button class="chart-period px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md" data-period="1y">1Y</button>
                 </div>
-                <div class="chart-container">
+                <div class="chart-container h-64 md:h-80">
                     <canvas id="priceChart"></canvas>
                 </div>
-                <div id="noChartData" class="no-data-message">
+                <div id="noChartData" class="no-data-message py-8 text-center text-gray-500">
                     Select a cryptocurrency to view price chart
                 </div>
             </div>
             
             <!-- Portfolio Tracker -->
-            <div class="crypto-portfolio card">
-                <h2>Portfolio Tracker</h2>
-                <div class="portfolio-summary">
-                    <div class="summary-item">
-                        <h3>Total Value</h3>
-                        <p id="portfolioValue">$0.00</p>
+            <div class="crypto-portfolio col-span-1 lg:col-span-2 bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Portfolio Tracker</h2>
+                <div class="portfolio-summary grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="summary-item bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-gray-600 text-sm mb-2">Total Value</h3>
+                        <p id="portfolioValue" class="text-xl font-bold text-gray-900">$0.00</p>
                     </div>
-                    <div class="summary-item">
-                        <h3>24h Change</h3>
-                        <p id="portfolioChange">0.00%</p>
+                    <div class="summary-item bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-gray-600 text-sm mb-2">24h Change</h3>
+                        <p id="portfolioChange" class="text-xl font-bold text-gray-900">0.00%</p>
                     </div>
-                    <div class="summary-item">
-                        <h3>Holdings</h3>
-                        <p id="portfolioHoldings">0</p>
+                    <div class="summary-item bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-gray-600 text-sm mb-2">Holdings</h3>
+                        <p id="portfolioHoldings" class="text-xl font-bold text-gray-900">0</p>
                     </div>
                 </div>
-                <div class="portfolio-list" id="portfolioList">
-                    <p class="no-data-message">Your portfolio is empty. Add cryptocurrencies from the list above.</p>
+                <div class="portfolio-list max-h-64 overflow-y-auto mb-4 border border-gray-200 rounded-lg" id="portfolioList">
+                    <p class="no-data-message py-8 text-center text-gray-500">Your portfolio is empty. Add cryptocurrencies from the list above.</p>
                 </div>
-                <div class="portfolio-actions">
-                    <button id="exportPortfolio" class="small-btn">Export Portfolio</button>
-                    <button id="clearPortfolio" class="small-btn danger">Clear Portfolio</button>
+                <div class="portfolio-actions flex flex-col sm:flex-row justify-end gap-3">
+                    <button id="exportPortfolio" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-colors">Export Portfolio</button>
+                    <button id="clearPortfolio" class="px-4 py-2 bg-red-500 text-white font-medium rounded-md hover:bg-red-600 transition-colors">Clear Portfolio</button>
                 </div>
             </div>
         </div>
         
         <!-- Add Holding Modal -->
-        <div id="addHoldingModal" class="modal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h2>Add to Portfolio</h2>
+        <div id="addHoldingModal" class="modal fixed inset-0 z-50 hidden bg-black bg-opacity-70 flex items-center justify-center">
+            <div class="modal-content bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 relative">
+                <span class="close-modal absolute top-4 right-4 text-2xl font-medium text-gray-500 hover:text-gray-700 cursor-pointer">&times;</span>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Add to Portfolio</h2>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="holdingCrypto">Cryptocurrency:</label>
-                        <input type="text" id="holdingCrypto" readonly>
+                    <div class="form-group mb-4">
+                        <label for="holdingCrypto" class="block text-gray-700 font-medium mb-2">Cryptocurrency:</label>
+                        <input type="text" id="holdingCrypto" readonly class="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md">
                     </div>
-                    <div class="form-group">
-                        <label for="holdingQuantity">Quantity:</label>
-                        <input type="number" id="holdingQuantity" step="any" min="0" placeholder="Enter quantity">
+                    <div class="form-group mb-4">
+                        <label for="holdingQuantity" class="block text-gray-700 font-medium mb-2">Quantity:</label>
+                        <input type="number" id="holdingQuantity" step="any" min="0" placeholder="Enter quantity" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <div class="form-group">
-                        <label for="holdingPurchasePrice">Purchase Price ($):</label>
-                        <input type="number" id="holdingPurchasePrice" step="any" min="0" placeholder="Enter purchase price">
+                    <div class="form-group mb-4">
+                        <label for="holdingPurchasePrice" class="block text-gray-700 font-medium mb-2">Purchase Price ($):</label>
+                        <input type="number" id="holdingPurchasePrice" step="any" min="0" placeholder="Enter purchase price"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div class="form-actions">
-                        <button id="addHoldingButton" class="calculate-btn">Add to Portfolio</button>
+                        <button id="addHoldingButton" class="w-full px-4 py-3 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-colors">Add to Portfolio</button>
                     </div>
                 </div>
             </div>

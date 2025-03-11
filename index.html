@@ -4,67 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial & Utility Calculators</title>
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/navigation.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Financial & Utility Calculators</h1>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Financial & Utility Calculators</h1>
         
-        <!-- Add consistent navigation buttons with active class -->
-        <div class="nav-buttons">
-            <a href="index.html" class="nav-button active">Home</a>
-            <a href="investment-calculator.html" class="nav-button">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="nav-button">Time Value Calculator</a>
-            <a href="date-calculator.html" class="nav-button">Date Calculator</a>
-            <a href="tip-calculator.html" class="nav-button">Tip Calculator</a>
-            <a href="random-generator.html" class="nav-button">Random Generator</a>
-            <a href="crypto-tracker.html" class="nav-button">Crypto Tracker</a>
-            <a href="bmi.html" class="nav-button">BMI Calculator</a>
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <a href="index.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
         </div>
         
-        <div class="calculator-cards">
-            <div class="calculator-card">
-                <h2>Iftarska Dova</h2>
-                <p style="font-size: 1.1em; margin: 10px 0;">ALLAHUMA INI LAKA SUMTU VA BIKA A'AMANTU VA ALEJKA TAVAK'KALTU VA ALA RZKIKA AFTARTU</p>
-                <p style="font-style: italic;">Prevod: O Allahu, samo za tebe sam postio, vjerujem i uzdam se u Tebe, i iftarim se sa onim čime si me Ti opskrbio.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Iftarska Dova Card -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Iftarska Dova</h2>
+                <p class="text-lg mb-3">ALLAHUMA INI LAKA SUMTU VA BIKA A'AMANTU VA ALEJKA TAVAK'KALTU VA ALA RZKIKA AFTARTU</p>
+                <p class="text-gray-600 italic">Prevod: O Allahu, samo za tebe sam postio, vjerujem i uzdam se u Tebe, i iftarim se sa onim čime si me Ti opskrbio.</p>
             </div>
 
-            <a href="investment-calculator.html" class="calculator-card">
-                <h2>Investment Calculator</h2>
-                <p>Plan your investments and calculate compound interest growth</p>
+            <!-- Calculator Cards -->
+            <a href="investment-calculator.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Investment Calculator</h2>
+                <p class="text-gray-600 flex-grow">Plan your investments and calculate compound interest growth</p>
             </a>
             
-            <a href="time-value-calculator.html" class="calculator-card">
-                <h2>Time Value Calculator</h2>
-                <p>See how inflation affects the value of money over time.</p>
+            <a href="time-value-calculator.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Time Value Calculator</h2>
+                <p class="text-gray-600 flex-grow">See how inflation affects the value of money over time.</p>
             </a>
             
-            <a href="tip-calculator.html" class="calculator-card">
-                <h2>Tip Calculator</h2>
-                <p>Calculate tips and split bills between multiple people</p>
+            <a href="tip-calculator.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Tip Calculator</h2>
+                <p class="text-gray-600 flex-grow">Calculate tips and split bills between multiple people</p>
             </a>
             
-            <a href="random-generator.html" class="calculator-card">
-                <h2>Random Generator</h2>
-                <p>Flip coins, roll dice, generate random numbers, and more</p>
+            <a href="random-generator.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Random Generator</h2>
+                <p class="text-gray-600 flex-grow">Flip coins, roll dice, generate random numbers, and more</p>
             </a>
             
-            <a href="crypto-tracker.html" class="calculator-card">
-                <h2>Crypto Price Tracker</h2>
-                <p>Track cryptocurrency prices in real-time with interactive charts</p>
+            <a href="crypto-tracker.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Crypto Price Tracker</h2>
+                <p class="text-gray-600 flex-grow">Track cryptocurrency prices in real-time with interactive charts</p>
             </a>
             
-            <a href="bmi.html" class="calculator-card">
-                <h2>BMI Calculator</h2>
-                <p>Calculate your Body Mass Index and check health metrics</p>
+            <a href="bmi.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">BMI Calculator</h2>
+                <p class="text-gray-600 flex-grow">Calculate your Body Mass Index and check health metrics</p>
             </a>
             
-            <a href="date-calculator.html" class="calculator-card">
-                <h2>Date Calculator</h2>
-                <p>Calculate days between dates or add/subtract time from a date</p>
+            <a href="date-calculator.html" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 p-6 flex flex-col border border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">Date Calculator</h2>
+                <p class="text-gray-600 flex-grow">Calculate days between dates or add/subtract time from a date</p>
             </a>
         </div>
     </div>

@@ -21,15 +21,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Button handlers
     metricBtn.addEventListener('click', function() {
-        metricBtn.classList.add('active');
-        imperialBtn.classList.remove('active');
+        metricBtn.classList.add('active', 'bg-blue-600', 'text-white');
+        metricBtn.classList.remove('bg-gray-200', 'text-gray-700');
+        imperialBtn.classList.remove('active', 'bg-blue-600', 'text-white');
+        imperialBtn.classList.add('bg-gray-200', 'text-gray-700');
+        
         metricForm.style.display = 'block';
         imperialForm.style.display = 'none';
     });
     
     imperialBtn.addEventListener('click', function() {
-        imperialBtn.classList.add('active');
-        metricBtn.classList.remove('active');
+        imperialBtn.classList.add('active', 'bg-blue-600', 'text-white');
+        imperialBtn.classList.remove('bg-gray-200', 'text-gray-700');
+        metricBtn.classList.remove('active', 'bg-blue-600', 'text-white');
+        metricBtn.classList.add('bg-gray-200', 'text-gray-700');
+        
         imperialForm.style.display = 'block';
         metricForm.style.display = 'none';
     });
@@ -79,25 +85,25 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (bmi < 18.5) {
             category = 'Underweight';
-            categoryClass = 'category-underweight';
+            categoryClass = 'text-underweight';
             markerPosition = (bmi / 40) * 100; // Scale to percentage of chart width
         } else if (bmi < 25) {
             category = 'Normal weight';
-            categoryClass = 'category-normal';
+            categoryClass = 'text-normal';
             markerPosition = (bmi / 40) * 100;
         } else if (bmi < 30) {
             category = 'Overweight';
-            categoryClass = 'category-overweight';
+            categoryClass = 'text-overweight';
             markerPosition = (bmi / 40) * 100;
         } else {
             category = 'Obese';
-            categoryClass = 'category-obese';
+            categoryClass = 'text-obese';
             markerPosition = Math.min((bmi / 40) * 100, 98); // Cap at 98% to keep marker visible
         }
         
         // Update category text and class
         bmiCategory.textContent = category;
-        bmiCategory.className = 'bmi-category ' + categoryClass;
+        bmiCategory.className = 'text-xl font-semibold mb-4 ' + categoryClass;
         
         // Position the marker
         bmiMarker.style.left = `${markerPosition}%`;
