@@ -1,0 +1,183 @@
+<!-- world-clocks.html -->
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clocks</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Alpine.js for simple interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js"></script>
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 for better alerts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/world-clocks.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['"JetBrains Mono"', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+            --card-gradient: linear-gradient(145deg, #ffffff, #f5f7fa);
+            --clock-font: 'JetBrains Mono', monospace;
+        }
+        
+        .dark {
+            --primary-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+            --card-gradient: linear-gradient(145deg, #1f2937, #111827);
+        }
+        
+        /* Base styles for Alpine.js transitions */
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-950 dark:text-white transition-colors duration-500 font-sans">
+    <!-- Page Header with World Map Background and Parallax Effect -->
+    <div class="page-header w-full py-16 relative overflow-hidden" x-data="{}" x-init="AOS.init()">
+        <!-- Floating particles for visual interest -->
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        
+        <div class="page-header-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div data-aos="fade-right" data-aos-delay="100">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-3 drop-shadow-xl">World Clocks</h1>
+                    <p class="text-blue-100 text-lg max-w-xl leading-relaxed">Track time across different cities and timezones around the world with our beautiful clock display</p>
+                </div>
+                <div class="mt-6 md:mt-0" data-aos="fade-left">
+                    <button id="themeToggle" class="relative p-3 rounded-full transition-all duration-500 transform hover:rotate-12 focus:outline-none theme-toggle">
+                        <i class="fas fa-sun text-yellow-300 text-2xl dark:hidden"></i>
+                        <i class="fas fa-moon text-blue-200 text-2xl hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Quick local time display -->
+            <div class="mt-8 inline-block bg-white/20 backdrop-blur-md px-6 py-3 rounded-xl text-white border border-white/30" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center">
+                    <i class="fas fa-clock mr-3 text-xl"></i>
+                    <div>
+                        <div class="text-sm opacity-80">Your Local Time</div>
+                        <div id="localTime" class="text-2xl font-mono font-bold"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-6">
+        <!-- Navigation with Tailwind -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10 py-3 px-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg nav-container" data-aos="fade-up" data-aos-delay="400">
+            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
+            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
+            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
+            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
+            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
+            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
+            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
+            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
+            <a href="world-clocks.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">World Clocks</a>
+        </div>
+
+        <!-- Add New Clock Form -->
+        <div class="mb-10 p-6 bg-white/95 dark:bg-gray-800/95 rounded-2xl shadow-lg backdrop-blur-sm search-form" data-aos="fade-up" data-aos-delay="200">
+            <div class="search-form-bg"></div>
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
+                <i class="fas fa-globe-americas text-blue-500 mr-3"></i>Add New Clock
+            </h2>
+            <div class="relative">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="w-full">
+                        <label for="citySearch" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            <i class="fas fa-search mr-2 text-blue-500"></i>Search for a city
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="citySearch" placeholder="Type a city name..." 
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                                autocomplete="off">
+                            <button id="addCityBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                <i class="fas fa-plus mr-2"></i>Add
+                            </button>
+                            <div id="citySuggestions" class="absolute z-10 w-full mt-1 bg-white/95 dark:bg-gray-800/95 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 hidden max-h-60 overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-500 dark:text-gray-400 flex items-center bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg">
+                    <i class="fas fa-info-circle text-blue-500 mr-2 text-lg"></i>
+                    <p>Type a city name and select from the dropdown to add a new clock to your collection.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="mb-8 flex flex-wrap gap-3 justify-center" data-aos="fade-up" data-aos-delay="300" aria-label="Clock control options">
+            <!-- Time format toggle button will be inserted here by JavaScript -->
+            <button id="sortClocks" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 flex items-center">
+                <i class="fas fa-sort-alpha-down mr-2"></i> Sort Alphabetically
+            </button>
+            <button id="clearClocks" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 flex items-center">
+                <i class="fas fa-trash-alt mr-2"></i> Clear All
+            </button>
+            <button id="resetToDefault" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-300 flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i> Reset to Default
+            </button>
+        </div>
+
+        <!-- Clock Cards Container -->
+        <div id="clocksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Default clocks will be added here by JavaScript -->
+        </div>
+    </div>
+
+    <footer class="mt-16 py-8 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-900/30 dark:to-indigo-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-600 dark:text-gray-400">© 2023 World Clocks App. All times shown use your device's current timezone settings.</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                    <i class="fab fa-github text-lg"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                    <i class="fab fa-twitter text-lg"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">
+                    <i class="fas fa-envelope text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize AOS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <!-- App scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/city-timezones.js"></script>
+    <script src="js/world-clocks.js"></script>
+</body>
+</html>

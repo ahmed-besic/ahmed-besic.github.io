@@ -14,20 +14,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const bmiValue = document.getElementById('bmiValue');
     const bmiCategory = document.getElementById('bmiCategory');
     const bmiMarker = document.getElementById('bmiMarker');
+    const bmiResults = document.querySelector('.bmi-results');
     
     // Form containers
     const metricForm = document.getElementById('metricForm');
     const imperialForm = document.getElementById('imperialForm');
     
-    // Button handlers
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out',
+        once: false
+    });
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            
+            // Add rotation animation to theme toggle
+            themeToggle.classList.add('animate-spin');
+            setTimeout(() => {
+                themeToggle.classList.remove('animate-spin');
+            }, 500);
+        });
+    
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
+    
+    // Button handlers for unit toggle with enhanced animation
     metricBtn.addEventListener('click', function() {
         metricBtn.classList.add('active', 'bg-blue-600', 'text-white');
         metricBtn.classList.remove('bg-gray-200', 'text-gray-700');
         imperialBtn.classList.remove('active', 'bg-blue-600', 'text-white');
         imperialBtn.classList.add('bg-gray-200', 'text-gray-700');
         
-        metricForm.style.display = 'block';
-        imperialForm.style.display = 'none';
+        // Slide transition for form toggle
+        imperialForm.style.opacity = '0';
+        imperialForm.style.transform = 'translateX(20px)';
+        
+        setTimeout(() => {
+            metricForm.style.display = 'block';
+            imperialForm.style.display = 'none';
+            
+            setTimeout(() => {
+                metricForm.style.opacity = '1';
+                metricForm.style.transform = 'translateX(0)';
+            }, 50);
+        }, 300);
     });
     
     imperialBtn.addEventListener('click', function() {
@@ -36,13 +79,45 @@ document.addEventListener('DOMContentLoaded', function() {
         metricBtn.classList.remove('active', 'bg-blue-600', 'text-white');
         metricBtn.classList.add('bg-gray-200', 'text-gray-700');
         
-        imperialForm.style.display = 'block';
-        metricForm.style.display = 'none';
+        // Slide transition for form toggle
+        metricForm.style.opacity = '0';
+        metricForm.style.transform = 'translateX(-20px)';
+        
+        setTimeout(() => {
+            imperialForm.style.display = 'block';
+            metricForm.style.display = 'none';
+            
+            setTimeout(() => {
+                imperialForm.style.opacity = '1';
+                imperialForm.style.transform = 'translateX(0)';
+            }, 50);
+        }, 300);
     });
     
     // Calculate BMI handlers
     document.getElementById('calculateMetric').addEventListener('click', calculateMetricBMI);
     document.getElementById('calculateImperial').addEventListener('click', calculateImperialBMI);
+    
+    // Add keyboard event listeners for better UX
+    heightCm.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateMetricBMI();
+    });
+    
+    weightKg.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateMetricBMI();
+    });
+    
+    heightFt.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateImperialBMI();
+    });
+    
+    heightIn.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateImperialBMI();
+    });
+    
+    weightLbs.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateImperialBMI();
+    });
     
     // Functions to calculate BMI
     function calculateMetricBMI() {
@@ -50,7 +125,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const weight = parseFloat(weightKg.value);
         
         if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-            alert('Please enter valid values for height and weight');
+            Swal.fire({
+                title: 'Invalid Input',
+                text: 'Please enter valid values for height and weight.',
+                icon: 'error',
+                confirmButtonColor: '#3b82f6',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+            
+            // Add shake animation to inputs
+            if (isNaN(height) || height <= 0) {
+                heightCm.classList.add('border-red-500', 'animate-shake');
+                setTimeout(() => heightCm.classList.remove('border-red-500', 'animate-shake'), 1000);
+            }
+            if (isNaN(weight) || weight <= 0) {
+                weightKg.classList.add('border-red-500', 'animate-shake');
+                setTimeout(() => weightKg.classList.remove('border-red-500', 'animate-shake'), 1000);
+            }
             return;
         }
         
@@ -67,7 +162,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalHeightInInches = (heightInFeet * 12) + heightInInches;
         
         if (isNaN(totalHeightInInches) || isNaN(weight) || totalHeightInInches <= 0 || weight <= 0) {
-            alert('Please enter valid values for height and weight');
+            Swal.fire({
+                title: 'Invalid Input',
+                text: 'Please enter valid values for height and weight.',
+                icon: 'error',
+                confirmButtonColor: '#3b82f6',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+            
+            // Add shake animation to inputs
+            if (totalHeightInInches <= 0) {
+                heightFt.classList.add('border-red-500', 'animate-shake');
+                heightIn.classList.add('border-red-500', 'animate-shake');
+                setTimeout(() => {
+                    heightFt.classList.remove('border-red-500', 'animate-shake');
+                    heightIn.classList.remove('border-red-500', 'animate-shake');
+                }, 1000);
+            }
+            if (isNaN(weight) || weight <= 0) {
+                weightLbs.classList.add('border-red-500', 'animate-shake');
+                setTimeout(() => weightLbs.classList.remove('border-red-500', 'animate-shake'), 1000);
+            }
             return;
         }
         
@@ -108,7 +227,40 @@ document.addEventListener('DOMContentLoaded', function() {
         // Position the marker
         bmiMarker.style.left = `${markerPosition}%`;
         
-        // Show results
-        document.querySelector('.bmi-results').style.display = 'block';
+        // Show results with animation
+        bmiResults.style.display = 'block';
+        
+        // Trigger reflow for animation
+        void bmiResults.offsetWidth;
+        
+        // Add show class for animation
+        bmiResults.classList.add('show');
+        
+        // Show toast notification
+        let toastIcon = 'info';
+        if (category === 'Normal weight') {
+            toastIcon = 'success';
+        } else if (category === 'Underweight' || category === 'Overweight') {
+            toastIcon = 'warning';
+        } else if (category === 'Obese') {
+            toastIcon = 'error';
+        }
+        
+        // Display a nice toast notification
+        Swal.fire({
+            title: 'BMI Calculated',
+            text: `Your BMI is ${bmi.toFixed(1)} (${category})`,
+            icon: toastIcon,
+            confirmButtonColor: '#3b82f6',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true
+        });
     }
+    
+    // Fix any results that might be showing by default
+    bmiResults.style.display = 'none';
+    bmiResults.classList.remove('show');
 });
