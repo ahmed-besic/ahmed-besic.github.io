@@ -5,4 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // The transition-all and hover:-translate-y-1 classes handle this effect
     
     // Add any additional landing page functionality here
+
+    
 });

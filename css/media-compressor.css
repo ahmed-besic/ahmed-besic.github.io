@@ -1,0 +1,57 @@
+/* Media Compressor specific styles */
+
+/* File upload area styling */
+#dropArea {
+    transition: all 0.3s ease;
+}
+
+#dropArea.drag-over {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+}
+
+/* Range slider styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    background-image: linear-gradient(#3b82f6, #3b82f6);
+    background-repeat: no-repeat;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 0 2px 0 #555;
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 0 2px 0 #555;
+}
+
+/* Progress bar animation */
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.compressing #progressBar {
+    animation: pulse 1.5s infinite;
+}
