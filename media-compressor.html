@@ -4,82 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media Compressor</title>
-    <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- CSS for Media Compressor -->
     <link rel="stylesheet" href="css/media-compressor.css">
+    <link rel="stylesheet" href="css/site-shell.css">
+    <link rel="stylesheet" href="css/tool-overhaul.css">
 </head>
-<body class="bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Media Compressor</h1>
-        
-        <!-- Navigation with Tailwind -->
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
-            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
-            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
-            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
-            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
-            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
-            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
-            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
-            <a href="world-clocks.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">World Clocks</a>
-            <a href="media-compressor.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Media Compressor</a>
+<body class="shell-page page-tool page-media">
+    <header class="shell-header" data-open="false">
+        <div class="shell-header__inner">
+            <a class="shell-brand" href="index.html">
+                <span class="shell-brand__mark">KT</span>
+                <span class="shell-brand__copy">
+                    <span class="shell-brand__eyebrow">Digital Toolkit</span>
+                    <span class="shell-brand__title">Knight Tools</span>
+                </span>
+            </a>
+            <button class="shell-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Toggle navigation">
+                <span class="shell-toggle__bars"></span>
+            </button>
+            <div class="shell-menu" id="site-menu">
+                <nav class="shell-nav" aria-label="Primary">
+                    <a class="shell-nav__link" href="index.html">Home</a>
+                    <a class="shell-nav__link" href="investment-calculator.html">Investment</a>
+                    <a class="shell-nav__link" href="time-value-calculator.html">Time Value</a>
+                    <a class="shell-nav__link" href="date-calculator.html">Date</a>
+                    <a class="shell-nav__link" href="tip-calculator.html">Tip</a>
+                    <a class="shell-nav__link" href="random-generator.html">Random</a>
+                    <a class="shell-nav__link" href="crypto-tracker.html">Crypto</a>
+                    <a class="shell-nav__link" href="bmi.html">BMI</a>
+                    <a class="shell-nav__link" href="world-clocks.html">Clocks</a>
+                    <a class="shell-nav__link is-active" href="media-compressor.html">Media</a>
+                </nav>
+                <a class="shell-cta" href="#compressor">Open Compressor</a>
+            </div>
         </div>
-        
-        <div class="flex flex-wrap gap-8 justify-center">
-            <!-- Media Compressor Section -->
-            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[600px]">
-                <div class="space-y-6">
-                    <!-- File Upload Area -->
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center" id="dropArea">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    </header>
+
+    <main>
+        <section class="tool-hero">
+            <div class="tool-hero__copy shell-card">
+                <span class="shell-kicker">Browser Media Utility</span>
+                <h1 class="shell-display">Compress and convert media with a cleaner upload flow.</h1>
+                <p class="shell-lead">The new page puts the upload zone front and center, then moves into compression controls, progress, and results without burying the workflow under generic cards.</p>
+            </div>
+        </section>
+
+        <section class="tool-workbench" id="compressor">
+            <section class="tool-panel tool-panel--dark">
+                <div class="tool-panel__header">
+                    <div>
+                        <h2 class="tool-panel__title">Compression Flow</h2>
+                        <p class="tool-panel__copy">Drop a file, choose the target, and run compression from the same panel.</p>
+                    </div>
+                    <span class="tool-pill">Upload</span>
+                </div>
+
+                <div id="dropArea" class="tool-note" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); text-align: center;">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
-                        <p class="mt-2 text-sm text-gray-600">Drag and drop your media files here, or</p>
-                        <label class="mt-2 inline-block px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
-                            Browse Files
-                            <input type="file" id="fileInput" class="hidden" accept="audio/*,video/*" />
-                        </label>
-                        <p class="mt-2 text-xs text-gray-500">Supported formats: MP4, MOV, AVI, MP3, WAV, etc.</p>
                     </div>
-                    
-                    <!-- File Details -->
-                    <div id="fileDetails" class="hidden">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <h3 style="color: #f8fafc;">Drop your media file here</h3>
+                    <p class="tool-muted" style="color: rgba(248,250,252,0.7); margin-top: 8px;">Drag and drop or browse for MP4, MOV, AVI, MP3, WAV, and similar formats.</p>
+                    <label class="tool-button-alt mt-4 inline-flex cursor-pointer">
+                        Browse Files
+                        <input type="file" id="fileInput" class="hidden" accept="audio/*,video/*">
+                    </label>
+                </div>
+
+                <div id="fileDetails" class="hidden mt-6">
+                    <div class="tool-result-box tool-result-box--dark">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">FILE</div>
+                            <div class="min-w-0 flex-1">
+                                <p id="fileName" class="truncate font-semibold"></p>
+                                <p id="fileSize" class="text-sm opacity-70"></p>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p id="fileName" class="text-sm font-medium text-gray-900 truncate"></p>
-                                <p id="fileSize" class="text-sm text-gray-500"></p>
-                            </div>
-                            <button id="removeFile" class="flex-shrink-0 text-red-500 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
+                            <button id="removeFile" class="tool-button-soft" type="button">Remove</button>
                         </div>
                     </div>
-                    
-                    <!-- Compression Options -->
-                    <div id="compressionOptions" class="hidden space-y-4">
-                        <h3 class="text-lg font-medium text-gray-800">Compression Options</h3>
-                        
-                        <!-- Target Size -->
-                        <div class="flex items-center space-x-4">
-                            <label for="targetSize" class="text-gray-700 font-medium w-1/3">Target Size (MB):</label>
-                            <input type="number" id="targetSize" value="10" min="1" step="1" 
-                                   class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+
+                <div id="compressionOptions" class="hidden mt-6">
+                    <div class="tool-form">
+                        <div class="tool-field">
+                            <label for="targetSize">Target Size (MB)</label>
+                            <input type="number" id="targetSize" value="10" min="1" step="1">
                         </div>
-                        
-                        <!-- Output Format -->
-                        <div class="flex items-center space-x-4">
-                            <label for="outputFormat" class="text-gray-700 font-medium w-1/3">Output Format:</label>
-                            <select id="outputFormat" class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <div class="tool-field">
+                            <label for="outputFormat">Output Format</label>
+                            <select id="outputFormat">
                                 <option value="same">Same as input</option>
                                 <option value="mp4">MP4</option>
                                 <option value="webm">WebM</option>
@@ -88,96 +103,73 @@
                                 <option value="ogg">OGG</option>
                             </select>
                         </div>
-                        
-                        <!-- Quality Slider -->
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <label for="qualitySlider" class="text-gray-700 font-medium">Quality:</label>
-                                <span id="qualityValue" class="text-gray-700">Medium</span>
-                            </div>
-                            <input type="range" id="qualitySlider" min="1" max="5" value="3" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                            <div class="flex justify-between text-xs text-gray-500">
+                        <div class="tool-field">
+                            <label for="qualitySlider">Quality</label>
+                            <input type="range" id="qualitySlider" min="1" max="5" value="3" step="1">
+                            <div class="flex justify-between text-sm opacity-70">
                                 <span>Lower Quality</span>
+                                <span id="qualityValue">Medium</span>
                                 <span>Higher Quality</span>
                             </div>
                         </div>
-                        
-                        <!-- Compress Button -->
-                        <button id="compressButton" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                            Compress Media
-                        </button>
-                    </div>
-                    
-                    <!-- Progress Bar -->
-                    <div id="progressContainer" class="hidden space-y-2">
-                        <div class="flex justify-between text-sm text-gray-700">
-                            <span>Compressing...</span>
-                            <span id="progressPercentage">0%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Result Section -->
-                    <div id="resultSection" class="hidden space-y-4">
-                        <h3 class="text-lg font-medium text-gray-800">Compression Result</h3>
-                        
-                        <div class="bg-gray-50 p-4 rounded-lg space-y-2">
-                            <div class="flex justify-between py-1">
-                                <span class="text-gray-700">Original Size:</span>
-                                <span id="originalSize" class="font-medium text-gray-900"></span>
-                            </div>
-                            <div class="flex justify-between py-1">
-                                <span class="text-gray-700">Compressed Size:</span>
-                                <span id="compressedSize" class="font-medium text-gray-900"></span>
-                            </div>
-                            <div class="flex justify-between py-1">
-                                <span class="text-gray-700">Reduction:</span>
-                                <span id="reduction" class="font-medium text-green-600"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex space-x-3">
-                            <a id="downloadLink" class="flex-1 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-center cursor-pointer">
-                                Download
-                            </a>
-                            <button id="compressAnother" class="flex-1 py-2 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition-colors">
-                                Compress Another File
-                            </button>
-                        </div>
+                        <button id="compressButton" class="tool-button-alt" type="button">Compress Media</button>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Information Section -->
-            <div class="bg-white rounded-xl shadow-md p-6 flex-1 min-w-[300px] max-w-[400px] self-start">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">About Media Compression</h3>
-                
-                <div class="space-y-4 text-gray-600">
-                    <p>This tool allows you to compress video and audio files directly in your browser. No files are uploaded to any server - all processing happens locally on your device.</p>
-                    
-                    <h4 class="text-lg font-medium text-gray-800 mt-6">Features</h4>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Compress videos and audio files to a target size</li>
-                        <li>Convert between different media formats</li>
-                        <li>Adjust quality settings for better compression</li>
-                        <li>100% client-side processing for privacy</li>
-                    </ul>
-                    
-                    <h4 class="text-lg font-medium text-gray-800 mt-6">Supported Formats</h4>
-                    <p><strong>Video:</strong> MP4, WebM, MOV, AVI</p>
-                    <p><strong>Audio:</strong> MP3, WAV, OGG, AAC</p>
-                    
-                    <div class="bg-blue-50 p-4 rounded-lg mt-6">
-                        <p class="text-blue-800"><strong>Note:</strong> Compression quality and speed depend on your device's processing power. Larger files may take longer to process.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="js/main.js"></script>
+                <div id="progressContainer" class="hidden mt-6">
+                    <div class="tool-result-box tool-result-box--dark">
+                        <div class="flex justify-between gap-4">
+                            <span>Compressing</span>
+                            <strong id="progressPercentage">0%</strong>
+                        </div>
+                        <div class="mt-4 h-3 w-full rounded-full bg-white/10">
+                            <div id="progressBar" class="h-3 rounded-full bg-emerald-400" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tool-sidepanel">
+                <div id="resultSection" class="tool-card shell-card hidden">
+                    <h3 class="tool-card__title">Compression Result</h3>
+                    <div class="tool-summary-grid mt-4">
+                        <article class="tool-summary-card">
+                            <span>Original Size</span>
+                            <strong id="originalSize"></strong>
+                        </article>
+                        <article class="tool-summary-card">
+                            <span>Compressed Size</span>
+                            <strong id="compressedSize"></strong>
+                        </article>
+                        <article class="tool-summary-card">
+                            <span>Reduction</span>
+                            <strong id="reduction"></strong>
+                        </article>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <a id="downloadLink" class="tool-button flex-1" href="#">Download</a>
+                        <button id="compressAnother" class="tool-button-soft flex-1" type="button">Compress Another</button>
+                    </div>
+                </div>
+
+                <div class="tool-card shell-card">
+                    <h3 class="tool-card__title">About This Tool</h3>
+                    <p class="tool-card__copy">The compressor is designed for quick browser-based workflows where privacy matters and a local-first approach is preferable.</p>
+                    <div class="tool-note mt-4">
+                        <h3>Supported Formats</h3>
+                        <p><strong>Video:</strong> MP4, WebM, MOV, AVI</p>
+                        <p><strong>Audio:</strong> MP3, WAV, OGG, AAC</p>
+                    </div>
+                    <div class="tool-note mt-4">
+                        <h3>Practical Note</h3>
+                        <p>Compression speed and quality depend on your device. Larger media files will take longer and can consume noticeable CPU resources while processing.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="js/site-shell.js"></script>
     <script src="js/media-compressor.js"></script>
 </body>
 </html>

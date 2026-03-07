@@ -4,228 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Generator</title>
-    <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Keep original CSS for JavaScript-dependent styles -->
     <link rel="stylesheet" href="css/random-generator.css">
+    <link rel="stylesheet" href="css/site-shell.css">
+    <link rel="stylesheet" href="css/tool-overhaul.css">
 </head>
-<body class="bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Random Generator Tools</h1>
-        
-        <!-- Navigation with Tailwind -->
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
-            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
-            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
-            <a href="date-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
-            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
-            <a href="random-generator.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
-            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
-            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
-        </div>
-        
-        <!-- Random Tools Tab Navigation with Tailwind -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8 border-b border-gray-200 pb-2 md:pb-0">
-            <button class="random-tab-button px-4 py-2 bg-green-600 text-white font-medium rounded-t-lg active" data-random-tab="coinFlip">Coin Flip</button>
-            <button class="random-tab-button px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-t-lg hover:bg-gray-200" data-random-tab="diceRoller">Dice Roller</button>
-            <button class="random-tab-button px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-t-lg hover:bg-gray-200" data-random-tab="randomNumber">Random Number</button>
-            <button class="random-tab-button px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-t-lg hover:bg-gray-200" data-random-tab="rouletteWheel">Roulette Wheel</button>
-        </div>
-        
-        <!-- Random Tools Tab Content -->
-        <div class="random-tools-container">
-            <!-- Coin Flip Tool -->
-            <div class="random-tab-content active bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" id="coinFlip">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Coin Flip</h3>
-                
-                <div class="coin-container flex justify-center my-8 h-36">
-                    <div class="coin" id="coin">
-                        <div class="heads"></div>
-                        <div class="tails"></div>
-                    </div>
-                </div>
-                
-                <div class="text-center mb-6 text-lg font-medium">
-                    <p>Flip result: <span id="coinResult" class="font-bold">-</span></p>
-                </div>
-                
-                <button id="flipCoin" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors mb-6">
-                    Flip Coin
-                </button>
-                
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <p class="text-gray-700">Flips: <span id="totalFlips" class="font-medium">0</span></p>
-                        <p class="text-gray-700">Heads: <span id="headsCount" class="font-medium">0</span> (<span id="headsPercentage">0%</span>)</p>
-                        <p class="text-gray-700">Tails: <span id="tailsCount" class="font-medium">0</span> (<span id="tailsPercentage">0%</span>)</p>
-                    </div>
-                    <button id="resetCoinStats" class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm">Reset Stats</button>
-                </div>
+<body class="shell-page page-tool page-random">
+    <header class="shell-header" data-open="false">
+        <div class="shell-header__inner">
+            <a class="shell-brand" href="index.html">
+                <span class="shell-brand__mark">KT</span>
+                <span class="shell-brand__copy">
+                    <span class="shell-brand__eyebrow">Digital Toolkit</span>
+                    <span class="shell-brand__title">Knight Tools</span>
+                </span>
+            </a>
+            <button class="shell-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Toggle navigation">
+                <span class="shell-toggle__bars"></span>
+            </button>
+            <div class="shell-menu" id="site-menu">
+                <nav class="shell-nav" aria-label="Primary">
+                    <a class="shell-nav__link" href="index.html">Home</a>
+                    <a class="shell-nav__link" href="investment-calculator.html">Investment</a>
+                    <a class="shell-nav__link" href="time-value-calculator.html">Time Value</a>
+                    <a class="shell-nav__link" href="date-calculator.html">Date</a>
+                    <a class="shell-nav__link" href="tip-calculator.html">Tip</a>
+                    <a class="shell-nav__link is-active" href="random-generator.html">Random</a>
+                    <a class="shell-nav__link" href="crypto-tracker.html">Crypto</a>
+                    <a class="shell-nav__link" href="bmi.html">BMI</a>
+                    <a class="shell-nav__link" href="world-clocks.html">Clocks</a>
+                    <a class="shell-nav__link" href="media-compressor.html">Media</a>
+                </nav>
+                <a class="shell-cta" href="#random-workbench">Open Tools</a>
             </div>
-            
-            <!-- Dice Roll Tool -->
-            <div class="random-tab-content bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" id="diceRoller">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Dice Roller</h3>
-                
-                <div class="dice-container flex justify-center gap-5 my-8 h-24">
-                    <div class="dice" id="dice1">
-                        <div class="dot center" id="dice1dot1"></div>
-                        <div class="dot top-left" id="dice1dot2"></div>
-                        <div class="dot top-right" id="dice1dot3"></div>
-                        <div class="dot bottom-left" id="dice1dot4"></div>
-                        <div class="dot bottom-right" id="dice1dot5"></div>
-                        <div class="dot center-left" id="dice1dot6"></div>
-                        <div class="dot center-right" id="dice1dot7"></div>
-                    </div>
-                    <div class="dice" id="dice2">
-                        <div class="dot center" id="dice2dot1"></div>
-                        <div class="dot top-left" id="dice2dot2"></div>
-                        <div class="dot top-right" id="dice2dot3"></div>
-                        <div class="dot bottom-left" id="dice2dot4"></div>
-                        <div class="dot bottom-right" id="dice2dot5"></div>
-                        <div class="dot center-left" id="dice2dot6"></div>
-                        <div class="dot center-right" id="dice2dot7"></div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label for="diceCount" class="block text-sm font-medium text-gray-700 mb-1">Number of Dice:</label>
-                        <select id="diceCount" class="w-full p-2 bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:outline-none focus:ring-2 focus:border-blue-500">
-                            <option value="1">1 Die</option>
-                            <option value="2" selected>2 Dice</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="diceSides" class="block text-sm font-medium text-gray-700 mb-1">Type of Dice:</label>
-                        <select id="diceSides" class="w-full p-2 bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:outline-none focus:ring-2 focus:border-blue-500">
-                            <option value="6" selected>6-sided</option>
-                            <option value="4">4-sided</option>
-                            <option value="8">8-sided</option>
-                            <option value="10">10-sided</option>
-                            <option value="12">12-sided</option>
-                            <option value="20">20-sided</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="text-center mb-6 text-lg font-medium">
-                    <p>Roll result: <span id="diceResult" class="font-bold">-</span></p>
-                </div>
-                
-                <button id="rollDice" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                    Roll Dice
-                </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="tool-hero">
+            <div class="tool-hero__copy shell-card">
+                <span class="shell-kicker">Playground</span>
+                <h1 class="shell-display">One randomizer hub for coins, dice, numbers, and wheel picks.</h1>
+                <p class="shell-lead">The page is rebuilt as a single playful workspace with one navigation strip and four focused panels underneath. It is still the same toolset, just organized like an actual mini app.</p>
             </div>
-            
-            <!-- Random Number Generator -->
-            <div class="random-tab-content bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" id="randomNumber">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Random Number Generator</h3>
-                
-                <div class="space-y-4 mb-6">
-                    <div class="flex items-center space-x-4">
-                        <label for="minNumber" class="text-gray-700 font-medium w-1/3">Minimum:</label>
-                        <input type="number" id="minNumber" value="1" class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    
-                    <div class="flex items-center space-x-4">
-                        <label for="maxNumber" class="text-gray-700 font-medium w-1/3">Maximum:</label>
-                        <input type="number" id="maxNumber" value="100" class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    
-                    <div class="flex items-center space-x-4">
-                        <label for="decimalPlaces" class="text-gray-700 font-medium w-1/3">Decimal Places:</label>
-                        <input type="number" id="decimalPlaces" value="0" min="0" max="10" class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    
-                    <div class="flex items-center space-x-4">
-                        <label for="numberCount" class="text-gray-700 font-medium w-1/3">Generate:</label>
-                        <div class="flex-1 flex items-center">
-                            <input type="number" id="numberCount" value="1" min="1" max="100" class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                            <span class="ml-2 text-gray-600">number(s)</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <h4 class="font-medium text-gray-700 mb-2">Generated Numbers:</h4>
-                    <div id="randomNumbers" class="p-3 bg-white border border-gray-200 rounded-md font-mono text-lg break-all max-h-48 overflow-auto">-</div>
-                </div>
-                
-                <div class="space-y-3">
-                    <button id="generateNumbers" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                        Generate
-                    </button>
-                    <button id="copyNumbers" class="w-full py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                        Copy to Clipboard
-                    </button>
+        </section>
+
+        <section class="tool-panel shell-card" id="random-workbench">
+            <div class="tool-panel__header">
+                <div>
+                    <h2 class="tool-panel__title">Random Tools</h2>
+                    <p class="tool-panel__copy">Use the tabs to jump between utilities. Each section below keeps its original logic and IDs intact.</p>
                 </div>
             </div>
 
-            <!-- Roulette Wheel Tool -->
-            <div class="random-tab-content bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" id="rouletteWheel">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Roulette Wheel</h3>
-                
-                <!-- Result display at top -->
-                <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <h4 class="font-medium text-gray-700 mb-2">Result:</h4>
-                    <div id="spinResult" class="p-3 bg-white border border-gray-200 rounded-md font-medium text-center">
-                        Spin the wheel to get a result
-                    </div>
-                </div>
-                
-                <div class="lg:flex gap-6">
-                    <!-- Wheel container with pointer -->
-                    <div class="relative mx-auto lg:mx-0 mb-6 lg:mb-0">
-                        <!-- The pointer is positioned within the wheel container but visually outside the wheel -->
-                        <div class="wheel-pointer"></div>
-                        <div class="roulette-wheel relative">
-                            <canvas id="wheelCanvas" width="300" height="300"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Controls -->
-                    <div class="flex-1">
-                        <button id="spinWheelBtn" class="w-full py-4 bg-green-600 text-white text-xl font-medium rounded-lg hover:bg-green-700 transition-colors mb-6">
-                            Spin the Wheel
-                        </button>
-                        
-                        <div class="flex items-end gap-2 mb-4">
-                            <div class="flex-1">
-                                <label for="itemInput" class="block text-sm font-medium text-gray-700 mb-1">Add Item:</label>
-                                <input type="text" id="itemInput" placeholder="Enter item name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            <div class="tool-tabs random-tabs mb-6">
+                <button class="random-tab-button tab-button active bg-green-600 text-white" data-random-tab="coinFlip" type="button">Coin Flip</button>
+                <button class="random-tab-button tab-button bg-gray-100 text-gray-700" data-random-tab="diceRoller" type="button">Dice Roller</button>
+                <button class="random-tab-button tab-button bg-gray-100 text-gray-700" data-random-tab="randomNumber" type="button">Random Number</button>
+                <button class="random-tab-button tab-button bg-gray-100 text-gray-700" data-random-tab="rouletteWheel" type="button">Roulette Wheel</button>
+            </div>
+
+            <div class="random-tools-container">
+                <div class="random-tab-content active" id="coinFlip">
+                    <div class="tool-workbench">
+                        <section class="tool-panel tool-panel--dark">
+                            <h3 class="calculator-heading">Coin Flip</h3>
+                            <p class="calculator-copy">A simple heads-or-tails simulator with running statistics.</p>
+                            <div class="coin-container flex justify-center my-8 h-36">
+                                <div class="coin" id="coin">
+                                    <div class="heads"></div>
+                                    <div class="tails"></div>
+                                </div>
                             </div>
-                            <button id="addItemBtn" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                                Add
-                            </button>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h4 class="font-medium text-gray-700 mb-2">Items on Wheel</h4>
-                            <ul id="itemsList" class="border border-gray-200 rounded-md max-h-60 sm:max-h-48 overflow-y-auto divide-y divide-gray-200 text-base"></ul>
-                        </div>
-                        
-                        <div class="flex gap-2">
-                            <button id="removeSelectedBtn" class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                                Remove Selected
-                            </button>
-                            <button id="clearWheelBtn" class="flex-1 px-4 py-2 bg-red-100 text-red-700 font-medium rounded-lg hover:bg-red-200 transition-colors">
-                                Clear All
-                            </button>
-                        </div>
+                            <button id="flipCoin" class="tool-button-alt w-full" type="button">Flip Coin</button>
+                        </section>
+                        <section class="tool-sidepanel">
+                            <div class="tool-card shell-card">
+                                <h3 class="tool-card__title">Result</h3>
+                                <div class="tool-result-box mt-4">
+                                    <strong id="coinResult" style="font-family: 'Syne', sans-serif; font-size: 2rem;">-</strong>
+                                </div>
+                                <div class="tool-summary-grid mt-4">
+                                    <article class="tool-summary-card"><span>Flips</span><strong id="totalFlips">0</strong></article>
+                                    <article class="tool-summary-card"><span>Heads</span><strong><span id="headsCount">0</span> <small id="headsPercentage">0%</small></strong></article>
+                                    <article class="tool-summary-card"><span>Tails</span><strong><span id="tailsCount">0</span> <small id="tailsPercentage">0%</small></strong></article>
+                                </div>
+                                <button id="resetCoinStats" class="tool-button-soft mt-4 w-full" type="button">Reset Stats</button>
+                            </div>
+                        </section>
                     </div>
                 </div>
-                
-                <!-- History section -->
-                <div class="mt-6">
-                    <h4 class="font-medium text-gray-700 mb-2">Previous Results:</h4>
-                    <ul id="historyList" class="border border-gray-200 rounded-md max-h-28 overflow-y-auto divide-y divide-gray-200 bg-gray-50 p-2"></ul>
+
+                <div class="random-tab-content" id="diceRoller">
+                    <div class="tool-workbench">
+                        <section class="tool-panel tool-panel--dark">
+                            <h3 class="calculator-heading">Dice Roller</h3>
+                            <p class="calculator-copy">Roll one or two dice, or switch to alternate sided dice when needed.</p>
+                            <div class="dice-container flex justify-center gap-5 my-8 h-24">
+                                <div class="dice" id="dice1">
+                                    <div class="dot center" id="dice1dot1"></div>
+                                    <div class="dot top-left" id="dice1dot2"></div>
+                                    <div class="dot top-right" id="dice1dot3"></div>
+                                    <div class="dot bottom-left" id="dice1dot4"></div>
+                                    <div class="dot bottom-right" id="dice1dot5"></div>
+                                    <div class="dot center-left" id="dice1dot6"></div>
+                                    <div class="dot center-right" id="dice1dot7"></div>
+                                </div>
+                                <div class="dice" id="dice2">
+                                    <div class="dot center" id="dice2dot1"></div>
+                                    <div class="dot top-left" id="dice2dot2"></div>
+                                    <div class="dot top-right" id="dice2dot3"></div>
+                                    <div class="dot bottom-left" id="dice2dot4"></div>
+                                    <div class="dot bottom-right" id="dice2dot5"></div>
+                                    <div class="dot center-left" id="dice2dot6"></div>
+                                    <div class="dot center-right" id="dice2dot7"></div>
+                                </div>
+                            </div>
+                            <button id="rollDice" class="tool-button-alt w-full" type="button">Roll Dice</button>
+                        </section>
+                        <section class="tool-sidepanel">
+                            <div class="tool-card shell-card">
+                                <div class="tool-grid-2">
+                                    <div class="tool-field">
+                                        <label for="diceCount">Number of Dice</label>
+                                        <select id="diceCount">
+                                            <option value="1">1 Die</option>
+                                            <option value="2" selected>2 Dice</option>
+                                        </select>
+                                    </div>
+                                    <div class="tool-field">
+                                        <label for="diceSides">Type of Dice</label>
+                                        <select id="diceSides">
+                                            <option value="6" selected>6-sided</option>
+                                            <option value="4">4-sided</option>
+                                            <option value="8">8-sided</option>
+                                            <option value="10">10-sided</option>
+                                            <option value="12">12-sided</option>
+                                            <option value="20">20-sided</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tool-result-box mt-4">
+                                    <span>Roll result</span>
+                                    <strong id="diceResult" style="font-family: 'Syne', sans-serif; font-size: 2rem;">-</strong>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="random-tab-content" id="randomNumber">
+                    <div class="tool-workbench">
+                        <section class="tool-panel tool-panel--dark">
+                            <h3 class="calculator-heading">Random Number Generator</h3>
+                            <div class="tool-form">
+                                <div class="tool-grid-2">
+                                    <div class="tool-field">
+                                        <label for="minNumber">Minimum</label>
+                                        <input type="number" id="minNumber" value="1">
+                                    </div>
+                                    <div class="tool-field">
+                                        <label for="maxNumber">Maximum</label>
+                                        <input type="number" id="maxNumber" value="100">
+                                    </div>
+                                    <div class="tool-field">
+                                        <label for="decimalPlaces">Decimal Places</label>
+                                        <input type="number" id="decimalPlaces" value="0" min="0" max="10">
+                                    </div>
+                                    <div class="tool-field">
+                                        <label for="numberCount">Generate</label>
+                                        <input type="number" id="numberCount" value="1" min="1" max="100">
+                                    </div>
+                                </div>
+                                <button id="generateNumbers" class="tool-button-alt" type="button">Generate Numbers</button>
+                            </div>
+                        </section>
+                        <section class="tool-sidepanel">
+                            <div class="tool-card shell-card">
+                                <h3 class="tool-card__title">Generated Numbers</h3>
+                                <div id="randomNumbers" class="tool-result-box mt-4 font-mono break-all max-h-48 overflow-auto">-</div>
+                                <button id="copyNumbers" class="tool-button-soft mt-4 w-full" type="button">Copy to Clipboard</button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="random-tab-content" id="rouletteWheel">
+                    <div class="tool-workbench">
+                        <section class="tool-panel tool-panel--dark">
+                            <h3 class="calculator-heading">Roulette Wheel</h3>
+                            <div class="tool-note" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.08); color: #f8fafc;">
+                                <h3 style="color: #f8fafc;">Result</h3>
+                                <div id="spinResult" class="tool-result-box mt-3" style="color: var(--shell-text);">Spin the wheel to get a result</div>
+                            </div>
+                            <div class="relative mx-auto my-8">
+                                <div class="wheel-pointer"></div>
+                                <div class="roulette-wheel relative">
+                                    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                                </div>
+                            </div>
+                            <button id="spinWheelBtn" class="tool-button-alt w-full" type="button">Spin the Wheel</button>
+                        </section>
+                        <section class="tool-sidepanel">
+                            <div class="tool-card shell-card">
+                                <div class="flex items-end gap-2 mb-4">
+                                    <div class="tool-field" style="flex: 1 1 auto;">
+                                        <label for="itemInput">Add Item</label>
+                                        <input type="text" id="itemInput" placeholder="Enter item name">
+                                    </div>
+                                    <button id="addItemBtn" class="tool-button" type="button">Add</button>
+                                </div>
+                                <h3 class="tool-card__title">Items on Wheel</h3>
+                                <ul id="itemsList" class="border border-slate-200 rounded-2xl max-h-60 overflow-y-auto divide-y divide-slate-200 text-base mt-4"></ul>
+                                <div class="flex gap-2 mt-4">
+                                    <button id="removeSelectedBtn" class="tool-button-soft flex-1" type="button">Remove Selected</button>
+                                    <button id="clearWheelBtn" class="tool-button-soft flex-1" type="button">Clear All</button>
+                                </div>
+                                <h3 class="tool-card__title mt-6">Previous Results</h3>
+                                <ul id="historyList" class="border border-slate-200 rounded-2xl max-h-28 overflow-y-auto divide-y divide-slate-200 bg-slate-50 p-2 mt-4"></ul>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <script src="js/site-shell.js"></script>
     <script src="js/random-generator.js"></script>
-    <script src="js/complete-setup.js"></script>
 </body>
 </html>

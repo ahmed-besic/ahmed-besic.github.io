@@ -4,111 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date Calculator</title>
-    <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Keep original CSS for JavaScript-dependent styles -->
     <link rel="stylesheet" href="css/date-calculator.css">
+    <link rel="stylesheet" href="css/site-shell.css">
+    <link rel="stylesheet" href="css/tool-overhaul.css">
 </head>
-<body class="bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Date Calculator</h1>
-        
-        <!-- Navigation with Tailwind -->
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
-            <a href="index.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Home</a>
-            <a href="investment-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Investment Calculator</a>
-            <a href="time-value-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Time Value Calculator</a>
-            <a href="date-calculator.html" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Date Calculator</a>
-            <a href="tip-calculator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Tip Calculator</a>
-            <a href="random-generator.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Random Generator</a>
-            <a href="crypto-tracker.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">Crypto Tracker</a>
-            <a href="bmi.html" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">BMI Calculator</a>
-        </div>
-
-        <!-- Calculator Tabs with Tailwind -->
-        <div class="flex border-b border-gray-200 mb-6">
-            <button class="tab-button active py-3 px-6 font-medium border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 focus:outline-none text-blue-600 border-blue-600" data-tab="between-dates">
-                Days Between Dates
+<body class="shell-page page-tool page-date">
+    <header class="shell-header" data-open="false">
+        <div class="shell-header__inner">
+            <a class="shell-brand" href="index.html">
+                <span class="shell-brand__mark">KT</span>
+                <span class="shell-brand__copy">
+                    <span class="shell-brand__eyebrow">Digital Toolkit</span>
+                    <span class="shell-brand__title">Knight Tools</span>
+                </span>
+            </a>
+            <button class="shell-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Toggle navigation">
+                <span class="shell-toggle__bars"></span>
             </button>
-            <button class="tab-button py-3 px-6 font-medium border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 focus:outline-none" data-tab="add-subtract">
-                Add/Subtract from Date
-            </button>
-        </div>
-
-        <!-- Days Between Dates Calculator -->
-        <div class="calculator-section active" id="between-dates">
-            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Calculate Days Between Two Dates</h2>
-                <div class="mb-4">
-                    <label for="startDate" class="block text-gray-700 font-medium mb-2">Start Date:</label>
-                    <input type="date" id="startDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                </div>
-                <div class="mb-4">
-                    <label for="endDate" class="block text-gray-700 font-medium mb-2">End Date:</label>
-                    <input type="date" id="endDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                </div>
-                <button id="calculateDays" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                    Calculate
-                </button>
-                <div class="result mt-6 bg-gray-50 p-6 rounded-lg border-l-4 border-blue-600 hidden" id="daysResult">
-                    <p class="text-gray-800">The difference is: <span id="daysDifference" class="font-bold text-blue-600">0</span> days</p>
-                    <p class="text-gray-800 mt-2">Which is approximately:</p>
-                    <ul class="mt-2 ml-6 list-disc text-gray-700">
-                        <li><span id="weeksResult" class="font-semibold">0</span> weeks</li>
-                        <li><span id="monthsResult" class="font-semibold">0</span> months</li>
-                        <li><span id="yearsResult" class="font-semibold">0</span> years</li>
-                    </ul>
-                </div>
+            <div class="shell-menu" id="site-menu">
+                <nav class="shell-nav" aria-label="Primary">
+                    <a class="shell-nav__link" href="index.html">Home</a>
+                    <a class="shell-nav__link" href="investment-calculator.html">Investment</a>
+                    <a class="shell-nav__link" href="time-value-calculator.html">Time Value</a>
+                    <a class="shell-nav__link is-active" href="date-calculator.html">Date</a>
+                    <a class="shell-nav__link" href="tip-calculator.html">Tip</a>
+                    <a class="shell-nav__link" href="random-generator.html">Random</a>
+                    <a class="shell-nav__link" href="crypto-tracker.html">Crypto</a>
+                    <a class="shell-nav__link" href="bmi.html">BMI</a>
+                    <a class="shell-nav__link" href="world-clocks.html">Clocks</a>
+                    <a class="shell-nav__link" href="media-compressor.html">Media</a>
+                </nav>
+                <a class="shell-cta" href="#date-workbench">Calculate Dates</a>
             </div>
         </div>
+    </header>
 
-        <!-- Add/Subtract from Date Calculator -->
-        <div class="calculator-section hidden" id="add-subtract">
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Add or Subtract from Date</h2>
-                <div class="mb-4">
-                    <label for="baseDate" class="block text-gray-700 font-medium mb-2">Base Date:</label>
-                    <input type="date" id="baseDate" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                </div>
-                <div class="flex space-x-6 mb-4">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="operation" value="add" checked class="form-radio h-5 w-5 text-blue-600">
-                        <span class="ml-2 text-gray-700">Add</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="operation" value="subtract" class="form-radio h-5 w-5 text-blue-600">
-                        <span class="ml-2 text-gray-700">Subtract</span>
-                    </label>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="years" class="block text-gray-700 font-medium mb-1">Years:</label>
-                        <input type="number" id="years" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label for="months" class="block text-gray-700 font-medium mb-1">Months:</label>
-                        <input type="number" id="months" value="0" min="0" max="11" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label for="weeks" class="block text-gray-700 font-medium mb-1">Weeks:</label>
-                        <input type="number" id="weeks" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label for="days" class="block text-gray-700 font-medium mb-1">Days:</label>
-                        <input type="number" id="days" value="0" min="0" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    </div>
-                </div>
-                <button id="calculateNewDate" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                    Calculate
-                </button>
-                <div class="result mt-6 bg-gray-50 p-6 rounded-lg border-l-4 border-blue-600 hidden" id="dateResult">
-                    <p class="text-gray-800">Result Date: <span id="resultDate" class="font-bold text-blue-600">-</span></p>
+    <main>
+        <section class="tool-hero">
+            <div class="tool-hero__copy shell-card">
+                <span class="shell-kicker">Calendar Utility</span>
+                <h1 class="shell-display">A cleaner way to count time between dates or shift a date forward.</h1>
+                <p class="shell-lead">The page is now split into two clear modes. Use one tab to measure elapsed time and the other to add or subtract years, months, weeks, and days from a base date.</p>
+            </div>
+        </section>
+
+        <section class="tool-panel shell-card" id="date-workbench">
+            <div class="tool-panel__header">
+                <div>
+                    <h2 class="tool-panel__title">Date Workbench</h2>
+                    <p class="tool-panel__copy">Switch modes without leaving the page.</p>
                 </div>
             </div>
-        </div>
-    </div>
-    
+
+            <div class="tool-tabs mb-6">
+                <button class="tab-button active" data-tab="between-dates" type="button">Days Between Dates</button>
+                <button class="tab-button" data-tab="add-subtract" type="button">Add/Subtract From Date</button>
+            </div>
+
+            <div class="calculator-section active" id="between-dates">
+                <div class="tool-workbench">
+                    <section class="tool-panel tool-panel--dark">
+                        <div class="tool-form">
+                            <div class="tool-field">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div class="tool-field">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate">
+                            </div>
+                            <button id="calculateDays" class="tool-button-alt" type="button">Calculate Difference</button>
+                        </div>
+                    </section>
+
+                    <section class="tool-sidepanel">
+                        <div id="daysResult" class="tool-card shell-card hidden">
+                            <h3 class="tool-card__title">Difference</h3>
+                            <p class="tool-card__copy">Read the exact span and the approximate calendar breakdown.</p>
+                            <div class="tool-summary-grid mt-4">
+                                <article class="tool-summary-card">
+                                    <span>Total Days</span>
+                                    <strong id="daysDifference">0</strong>
+                                </article>
+                                <article class="tool-summary-card">
+                                    <span>Weeks</span>
+                                    <strong id="weeksResult">0</strong>
+                                </article>
+                                <article class="tool-summary-card">
+                                    <span>Months</span>
+                                    <strong id="monthsResult">0</strong>
+                                </article>
+                            </div>
+                            <div class="tool-note mt-4">
+                                <h3>Approximate Years</h3>
+                                <p><span id="yearsResult">0</span> years</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="calculator-section hidden" id="add-subtract">
+                <div class="tool-workbench">
+                    <section class="tool-panel tool-panel--dark">
+                        <div class="tool-form">
+                            <div class="tool-field">
+                                <label for="baseDate">Base Date</label>
+                                <input type="date" id="baseDate">
+                            </div>
+                            <div class="tool-option-grid">
+                                <label class="tool-option">
+                                    <input type="radio" name="operation" value="add" checked>
+                                    <span><span>Add</span><small>Move the date forward.</small></span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="radio" name="operation" value="subtract">
+                                    <span><span>Subtract</span><small>Move the date backward.</small></span>
+                                </label>
+                            </div>
+                            <div class="tool-grid-2">
+                                <div class="tool-field">
+                                    <label for="years">Years</label>
+                                    <input type="number" id="years" value="0" min="0">
+                                </div>
+                                <div class="tool-field">
+                                    <label for="months">Months</label>
+                                    <input type="number" id="months" value="0" min="0" max="11">
+                                </div>
+                                <div class="tool-field">
+                                    <label for="weeks">Weeks</label>
+                                    <input type="number" id="weeks" value="0" min="0">
+                                </div>
+                                <div class="tool-field">
+                                    <label for="days">Days</label>
+                                    <input type="number" id="days" value="0" min="0">
+                                </div>
+                            </div>
+                            <button id="calculateNewDate" class="tool-button-alt" type="button">Calculate New Date</button>
+                        </div>
+                    </section>
+
+                    <section class="tool-sidepanel">
+                        <div id="dateResult" class="tool-card shell-card hidden">
+                            <h3 class="tool-card__title">Result Date</h3>
+                            <p class="tool-card__copy">The calculated date appears below.</p>
+                            <div class="tool-result-box mt-4">
+                                <strong id="resultDate" style="font-family: 'Syne', sans-serif; font-size: 2rem; letter-spacing: -0.05em;">-</strong>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/site-shell.js"></script>
     <script src="js/date-calculator.js"></script>
-    <script src="js/complete-setup.js"></script>
 </body>
 </html>

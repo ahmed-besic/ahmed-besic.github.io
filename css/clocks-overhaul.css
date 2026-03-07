@@ -1,0 +1,104 @@
+.clock-shell-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.clock-controls-card,
+.clock-board-card {
+    padding: 24px;
+}
+
+.clock-search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.clock-search-layout input,
+.clock-search-layout button,
+.clock-control-row button {
+    min-height: 52px;
+    border-radius: 16px;
+    font: inherit;
+}
+
+.clock-search-layout input {
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    padding: 0 16px;
+}
+
+.clock-search-layout button,
+.clock-control-row button {
+    border: 0;
+    font-weight: 700;
+}
+
+.clock-control-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.clock-control-row button {
+    padding: 0 16px;
+}
+
+.clock-intro-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.clock-intro-stats article {
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.clock-intro-stats strong {
+    display: block;
+    font-family: "Syne", sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: -0.04em;
+}
+
+.clock-intro-stats span {
+    color: rgba(248, 250, 252, 0.74);
+}
+
+@media (max-width: 820px) {
+    .clock-search-layout,
+    .clock-intro-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .clock-controls-card,
+    .clock-board-card {
+        padding: 18px;
+    }
+
+    .clock-search-layout {
+        gap: 10px;
+    }
+
+    .clock-search-layout button,
+    .clock-control-row button {
+        width: 100%;
+    }
+
+    .clock-control-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 420px) {
+    .clock-controls-card,
+    .clock-board-card {
+        padding: 16px;
+    }
+}

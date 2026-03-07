@@ -1,0 +1,466 @@
+.page-tool main {
+    display: grid;
+    gap: 24px;
+}
+
+.tool-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    max-width: 920px;
+    width: 100%;
+}
+
+.tool-hero__copy {
+    padding: clamp(26px, 4vw, 40px);
+}
+
+.tool-hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.tool-panel__title,
+.tool-section__title,
+.tool-card__title {
+    margin: 0;
+    font-family: "Syne", sans-serif;
+    letter-spacing: -0.04em;
+}
+
+.tool-panel__copy,
+.tool-card__copy,
+.tool-muted {
+    margin: 0;
+    color: var(--shell-muted);
+    line-height: 1.65;
+}
+
+.tool-workbench {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+    gap: 24px;
+}
+
+.tool-panel,
+.tool-sidepanel,
+.tool-result-panel,
+.tool-card {
+    padding: 24px;
+}
+
+.tool-panel--dark {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.94));
+    color: #f8fafc;
+    border-radius: var(--shell-radius-xl);
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+}
+
+.tool-panel__header,
+.tool-section__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.tool-panel__title,
+.tool-section__title {
+    font-size: 1.65rem;
+}
+
+.tool-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.tool-form,
+.tool-stack {
+    display: grid;
+    gap: 14px;
+}
+
+.tool-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.tool-field {
+    display: grid;
+    gap: 8px;
+}
+
+.tool-field label,
+.tool-option span,
+.tool-toggle-card span,
+.tool-inline-label {
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+
+.tool-panel--dark .tool-field label,
+.tool-panel--dark .tool-inline-label,
+.tool-panel--dark .tool-option span {
+    color: #f8fafc;
+}
+
+.tool-field input,
+.tool-field select,
+.tool-field textarea,
+.tool-input,
+.tool-select {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--shell-text);
+    font: inherit;
+}
+
+.tool-panel--dark .tool-field input,
+.tool-panel--dark .tool-field select,
+.tool-panel--dark .tool-input,
+.tool-panel--dark .tool-select {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+}
+
+.tool-panel--dark .tool-field input::placeholder,
+.tool-panel--dark .tool-field textarea::placeholder {
+    color: rgba(248, 250, 252, 0.42);
+}
+
+.tool-field input:focus,
+.tool-field select:focus,
+.tool-field textarea:focus,
+.tool-input:focus,
+.tool-select:focus {
+    outline: none;
+    border-color: rgba(29, 78, 216, 0.34);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14);
+}
+
+.tool-button,
+.tool-button-alt,
+.tool-button-soft {
+    appearance: none;
+    border: 0;
+    min-height: 52px;
+    padding: 0 18px;
+    border-radius: 16px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.tool-button {
+    color: #fffaf3;
+    background: linear-gradient(135deg, #0f766e, #1d4ed8);
+    box-shadow: 0 18px 32px rgba(29, 78, 216, 0.22);
+}
+
+.tool-button-alt {
+    color: #0f172a;
+    background: linear-gradient(135deg, #f8fafc, #fde68a);
+    box-shadow: 0 14px 28px rgba(245, 158, 11, 0.18);
+}
+
+.tool-button-soft {
+    color: var(--shell-text);
+    background: rgba(15, 23, 42, 0.06);
+}
+
+.tool-button:hover,
+.tool-button-alt:hover,
+.tool-button-soft:hover {
+    transform: translateY(-2px);
+}
+
+.tool-tabs,
+.tool-switch {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.06);
+}
+
+.tool-tabs .tab-button,
+.tool-switch .tab-button,
+.tool-tab-button {
+    min-height: 50px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.tool-tabs .tab-button.active,
+.tool-switch .tab-button.active,
+.tool-tab-button.active {
+    background: linear-gradient(135deg, #0f766e, #1d4ed8);
+    color: #fffaf3;
+    box-shadow: 0 14px 28px rgba(29, 78, 216, 0.18);
+}
+
+.random-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tool-option-grid,
+.tool-toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.tool-option,
+.tool-toggle-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.tool-panel--dark .tool-option {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tool-option input,
+.tool-toggle-card input {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+}
+
+.tool-option small,
+.tool-toggle-card small {
+    display: block;
+    margin-top: 4px;
+    line-height: 1.45;
+    color: var(--shell-muted);
+}
+
+.tool-panel--dark .tool-option small {
+    color: rgba(248, 250, 252, 0.58);
+}
+
+.tool-note {
+    padding: 18px;
+    border-radius: 20px;
+    background: linear-gradient(140deg, rgba(249, 115, 22, 0.1), rgba(15, 118, 110, 0.08));
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.tool-note h3,
+.tool-sidepanel h3,
+.tool-card h3 {
+    margin: 0 0 10px;
+    font-family: "Syne", sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: -0.03em;
+}
+
+.tool-chart {
+    position: relative;
+    min-height: 320px;
+    padding: 14px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.tool-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.tool-summary-card {
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.tool-summary-card strong {
+    display: block;
+    margin-top: 8px;
+    font-family: "Syne", sans-serif;
+    font-size: 1.45rem;
+    letter-spacing: -0.04em;
+}
+
+.tool-summary-card span {
+    color: var(--shell-muted);
+}
+
+.tool-result-box {
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.tool-result-box--dark {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.tool-link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+@media (max-width: 1100px) {
+    .tool-hero,
+    .tool-workbench {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 820px) {
+    .tool-grid-2,
+    .tool-summary-grid,
+    .tool-option-grid,
+    .tool-toggle-grid,
+    .tool-hero__metrics,
+    .tool-link-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-tool main {
+        gap: 18px;
+    }
+
+    .tool-hero,
+    .tool-workbench {
+        gap: 16px;
+    }
+
+    .tool-hero__copy,
+    .tool-panel,
+    .tool-sidepanel,
+    .tool-result-panel,
+    .tool-card {
+        padding: 18px;
+    }
+
+    .tool-panel__header,
+    .tool-section__header {
+        flex-direction: column;
+        align-items: start;
+        margin-bottom: 14px;
+    }
+
+    .tool-panel__title,
+    .tool-section__title {
+        font-size: 1.4rem;
+    }
+
+    .tool-pill {
+        font-size: 0.7rem;
+        padding: 8px 12px;
+    }
+
+    .tool-button,
+    .tool-button-alt,
+    .tool-button-soft {
+        width: 100%;
+    }
+
+    .tool-tabs,
+    .tool-switch {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 18px;
+    }
+
+    .random-tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-tabs .tab-button,
+    .tool-switch .tab-button,
+    .tool-tab-button {
+        min-height: 48px;
+        font-size: 0.92rem;
+    }
+
+    .tool-option,
+    .tool-toggle-card {
+        align-items: start;
+        min-height: 0;
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .tool-note,
+    .tool-chart,
+    .tool-summary-card,
+    .tool-result-box {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .tool-note h3,
+    .tool-sidepanel h3,
+    .tool-card h3 {
+        font-size: 1.08rem;
+    }
+
+    .tool-chart {
+        min-height: 260px;
+        padding: 10px;
+    }
+
+    .tool-summary-card strong {
+        font-size: 1.28rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .tool-hero__copy,
+    .tool-panel,
+    .tool-sidepanel,
+    .tool-result-panel,
+    .tool-card {
+        padding: 16px;
+    }
+
+    .tool-panel__title,
+    .tool-section__title {
+        font-size: 1.28rem;
+    }
+}

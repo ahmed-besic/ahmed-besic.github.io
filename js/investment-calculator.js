@@ -1,706 +1,508 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize variables to store chart instances
-    let growthChart = null;
-    let compareChart = null;
-    let lengthChart = null; // Add this to track the length chart instance
-    let currentScenarioData = null;
-    let scenarios = loadSavedScenarios();
-    
-    // Get UI elements
-    const calculateBtn = document.getElementById('calculate');
-    const tableViewBtn = document.getElementById('tableViewBtn');
-    const compareBtn = document.getElementById('compareBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const saveScenarioBtn = document.getElementById('saveScenario');
-    const loadScenarioBtn = document.getElementById('loadScenario');
-    const deleteScenarioBtn = document.getElementById('deleteScenario');
-    
-    // Add proper initialization of these selectors
-    // These elements might not exist when the previous code tries to access them
-    let chartTypeSelect = document.getElementById('chartType');
-    let showContributionsCheckbox = document.getElementById('showContributions');
-    let showInterestCheckbox = document.getElementById('showInterest');
-    let showInflationAdjustedCheckbox = document.getElementById('showInflationAdjusted');
-    
-    // Ensure these critical buttons are found
-    const calculateLengthBtn = document.getElementById('calculateLength');
-    const calculateRateBtn = document.getElementById('calculateRate');
+document.addEventListener('DOMContentLoaded', () => {
+    const STORAGE_KEY = 'investmentScenarios';
+    const MAX_LENGTH_YEARS = 100;
+    const MAX_RATE_SEARCH = 10;
 
-    // Set up event listeners for main calculator
-    calculateBtn.addEventListener('click', calculateInvestment);
-    saveScenarioBtn.addEventListener('click', saveScenario);
-    loadScenarioBtn.addEventListener('click', loadScenario);
-    deleteScenarioBtn.addEventListener('click', deleteScenario);
-    
-    // Only add event listeners if elements exist
-    if (chartTypeSelect) chartTypeSelect.addEventListener('change', updateCharts);
-    if (showContributionsCheckbox) showContributionsCheckbox.addEventListener('change', updateCharts);
-    if (showInterestCheckbox) showInterestCheckbox.addEventListener('change', updateCharts);
-    if (showInflationAdjustedCheckbox) showInflationAdjustedCheckbox.addEventListener('change', updateCharts);
-    
-    // Set up view tab switching
-    const viewButtons = [tableViewBtn, compareBtn, exportBtn];
-    const viewContents = [
-        document.getElementById('tableView'),
-        document.getElementById('compareView')
-    ];
-    
-    viewButtons.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
-            if (this === exportBtn) {
-                exportData();
-                return;
-            }
-            
-            viewButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            viewContents.forEach(content => content.classList.remove('active'));
-            if (index < viewContents.length) {
-                viewContents[index].classList.add('active');
-            }
-            
-            if (this === compareBtn) {
-                updateComparisonSelects();
-            }
-        });
-    });
-    
-    // Set up comparison select event listeners
-    document.getElementById('scenario1').addEventListener('change', updateComparisonChart);
-    document.getElementById('scenario2').addEventListener('change', updateComparisonChart);
-    
-    // Calculate on page load with default values
+    const elements = {
+        tabButtons: document.querySelectorAll('.tab-button'),
+        tabContents: document.querySelectorAll('.tab-content'),
+        calculate: document.getElementById('calculate'),
+        calculateLength: document.getElementById('calculateLength'),
+        calculateRate: document.getElementById('calculateRate'),
+        saveScenario: document.getElementById('saveScenario'),
+        loadScenario: document.getElementById('loadScenario'),
+        deleteScenario: document.getElementById('deleteScenario'),
+        scenarioName: document.getElementById('scenarioName'),
+        savedScenarios: document.getElementById('savedScenarios'),
+        chartType: document.getElementById('chartType'),
+        showContributions: document.getElementById('showContributions'),
+        showInterest: document.getElementById('showInterest'),
+        showInflationAdjusted: document.getElementById('showInflationAdjusted'),
+        tableViewBtn: document.getElementById('tableViewBtn'),
+        compareBtn: document.getElementById('compareBtn'),
+        exportBtn: document.getElementById('exportBtn'),
+        tableView: document.getElementById('tableView'),
+        compareView: document.getElementById('compareView'),
+        compareSummary: document.getElementById('compareSummary'),
+        scenario1: document.getElementById('scenario1'),
+        scenario2: document.getElementById('scenario2'),
+        growthCanvas: document.getElementById('growthChart'),
+        compareCanvas: document.getElementById('compareChart'),
+        lengthCanvas: document.getElementById('lengthChart'),
+        finalBalance: document.getElementById('finalBalance'),
+        totalContributions: document.getElementById('totalContributions'),
+        totalInterest: document.getElementById('totalInterest'),
+        inflationAdjusted: document.getElementById('inflationAdjusted'),
+        lengthResult: document.getElementById('lengthResult'),
+        lengthSummary: document.getElementById('lengthSummary'),
+        rateResult: document.getElementById('rateResult'),
+        rateSummary: document.getElementById('rateSummary')
+    };
+
+    const state = {
+        growthChart: null,
+        compareChart: null,
+        lengthChart: null,
+        currentScenario: null,
+        scenarios: loadSavedScenarios()
+    };
+
+    bindEvents();
+    activateTab('growthCalculator');
+    showView('table');
+    refreshSavedScenarioOptions();
+    refreshComparisonOptions();
     calculateInvestment();
-    updateSavedScenariosSelect();
-    
-    // Tab switching
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const tabId = button.getAttribute('data-tab');
-            
-            // Deactivate all tabs
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Activate the selected tab
-            button.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+
+    function bindEvents() {
+        elements.tabButtons.forEach((button) => {
+            button.addEventListener('click', () => activateTab(button.dataset.tab));
         });
-    });
 
-    // Make sure these event listeners are properly attached
-    if (calculateLengthBtn) {
-        calculateLengthBtn.addEventListener('click', calculateInvestmentLength);
-        console.log('Investment Length calculator button listener attached');
-    } else {
-        console.error('Calculate Length button not found in the DOM');
-    }
-    
-    if (calculateRateBtn) {
-        calculateRateBtn.addEventListener('click', calculateRequiredRate);
-        console.log('Required Rate calculator button listener attached');
-    } else {
-        console.error('Calculate Rate button not found in the DOM');
+        elements.calculate.addEventListener('click', calculateInvestment);
+        elements.calculateLength.addEventListener('click', calculateInvestmentLength);
+        elements.calculateRate.addEventListener('click', calculateRequiredRate);
+        elements.saveScenario.addEventListener('click', saveScenario);
+        elements.loadScenario.addEventListener('click', loadScenario);
+        elements.deleteScenario.addEventListener('click', deleteScenario);
+
+        elements.chartType.addEventListener('change', updateGrowthChart);
+        elements.showContributions.addEventListener('change', updateGrowthChart);
+        elements.showInterest.addEventListener('change', updateGrowthChart);
+        elements.showInflationAdjusted.addEventListener('change', updateGrowthChart);
+
+        elements.tableViewBtn.addEventListener('click', () => showView('table'));
+        elements.compareBtn.addEventListener('click', () => showView('compare'));
+        elements.exportBtn.addEventListener('click', exportData);
+
+        elements.scenario1.addEventListener('change', updateComparisonChart);
+        elements.scenario2.addEventListener('change', updateComparisonChart);
     }
 
-    // Main calculation function
+    function activateTab(tabId) {
+        elements.tabButtons.forEach((button) => {
+            button.classList.toggle('active', button.dataset.tab === tabId);
+        });
+
+        elements.tabContents.forEach((content) => {
+            content.classList.toggle('active', content.id === tabId);
+        });
+    }
+
+    function showView(viewName) {
+        const showingTable = viewName === 'table';
+        elements.tableViewBtn.classList.toggle('active', showingTable);
+        elements.compareBtn.classList.toggle('active', !showingTable);
+        elements.exportBtn.classList.remove('active');
+
+        elements.tableView.classList.toggle('active', showingTable);
+        elements.tableView.classList.toggle('hidden', !showingTable);
+        elements.compareView.classList.toggle('active', !showingTable);
+        elements.compareView.classList.toggle('hidden', showingTable);
+
+        if (!showingTable) {
+            refreshComparisonOptions();
+            updateComparisonChart();
+        }
+    }
+
     function calculateInvestment() {
-        // Get input values
-        const startingAmount = parseFloat(document.getElementById('startingAmount').value);
-        const returnRate = parseFloat(document.getElementById('returnRate').value) / 100;
-        const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
-        
-        // Get the new parameters
-        const years = parseInt(document.getElementById('years').value);
-        const compoundFrequency = parseInt(document.getElementById('compoundFrequency').value);
-        const contributionAmount = parseFloat(document.getElementById('contributionAmount').value);
-        const contributionFrequency = parseInt(document.getElementById('contributionFrequency').value);
-        const contributionTiming = document.querySelector('input[name="contributionTiming"]:checked').value;
+        const inputs = readGrowthInputs();
+        if (!inputs) {
+            return;
+        }
 
-        // Calculate the growth
+        state.currentScenario = buildGrowthScenario(inputs);
+        renderGrowthScenario(state.currentScenario);
+    }
+
+    function readGrowthInputs() {
+        const inputs = {
+            startingAmount: readNumber('startingAmount'),
+            returnRate: readNumber('returnRate'),
+            years: readInteger('years'),
+            compoundFrequency: readInteger('compoundFrequency'),
+            contributionAmount: readNumber('contributionAmount'),
+            contributionFrequency: readInteger('contributionFrequency'),
+            contributionTiming: document.querySelector('input[name="contributionTiming"]:checked')?.value || 'end',
+            inflationRate: readNumber('inflationRate')
+        };
+
+        if (
+            inputs.startingAmount < 0 ||
+            inputs.returnRate < 0 ||
+            inputs.years <= 0 ||
+            inputs.compoundFrequency <= 0 ||
+            inputs.contributionAmount < 0 ||
+            inputs.contributionFrequency <= 0 ||
+            inputs.inflationRate < 0
+        ) {
+            alert('Please enter valid non-negative values for all fields.');
+            return null;
+        }
+
+        return inputs;
+    }
+
+    function buildGrowthScenario(inputs) {
+        const years = Math.min(inputs.years, 100);
+        const compoundingPerYear = inputs.compoundFrequency;
+        const contributionPerYear = inputs.contributionFrequency;
+        const subPeriods = lcm(compoundingPerYear, contributionPerYear);
+        const subPeriodRate = Math.pow(1 + (inputs.returnRate / 100) / compoundingPerYear, compoundingPerYear / subPeriods) - 1;
+        const contributionEvery = subPeriods / contributionPerYear;
+        const contributionPerEvent = inputs.contributionAmount;
+
+        let balance = inputs.startingAmount;
+        let totalContributions = inputs.startingAmount;
+        let totalInterest = 0;
         const results = [];
-        let balance = startingAmount;
-        let totalContributions = startingAmount;
-        
-        // Calculate how many times to compound per year
-        const periodsPerYear = compoundFrequency;
-        const ratePerPeriod = returnRate / periodsPerYear;
-        
-        // Calculate contribution per period
-        const contributionsPerYear = contributionFrequency;
-        const contributionPerPeriod = contributionAmount / contributionsPerYear;
-        
-        // Track contributions and interest separately
-        let interestEarned = 0;
-        
-        for (let year = 1; year <= years; year++) {
+
+        for (let year = 1; year <= years; year += 1) {
             let yearlyContributions = 0;
             let yearlyInterest = 0;
-            
-            // For each period within the year
-            for (let period = 1; period <= periodsPerYear; period++) {
-                // If contribution at beginning of period, add it before calculating interest
-                if (contributionTiming === 'start') {
-                    // Check if we need to add a contribution this period
-                    const periodsPerContribution = periodsPerYear / contributionsPerYear;
-                    if (period % periodsPerContribution === 0) {
-                        balance += contributionPerPeriod;
-                        yearlyContributions += contributionPerPeriod;
-                        totalContributions += contributionPerPeriod;
-                    }
+
+            for (let step = 1; step <= subPeriods; step += 1) {
+                const isContributionStep = contributionPerEvent > 0 && step % contributionEvery === 0;
+
+                if (isContributionStep && inputs.contributionTiming === 'start') {
+                    balance += contributionPerEvent;
+                    yearlyContributions += contributionPerEvent;
+                    totalContributions += contributionPerEvent;
                 }
-                
-                // Add interest for this period
-                const periodInterest = balance * ratePerPeriod;
+
+                const periodInterest = balance * subPeriodRate;
                 balance += periodInterest;
                 yearlyInterest += periodInterest;
-                interestEarned += periodInterest;
-                
-                // If contribution at end of period, add it after calculating interest
-                if (contributionTiming === 'end') {
-                    // Check if we need to add a contribution this period
-                    const periodsPerContribution = periodsPerYear / contributionsPerYear;
-                    if (period % periodsPerContribution === 0) {
-                        balance += contributionPerPeriod;
-                        yearlyContributions += contributionPerPeriod;
-                        totalContributions += contributionPerPeriod;
-                    }
+                totalInterest += periodInterest;
+
+                if (isContributionStep && inputs.contributionTiming === 'end') {
+                    balance += contributionPerEvent;
+                    yearlyContributions += contributionPerEvent;
+                    totalContributions += contributionPerEvent;
                 }
             }
-            
-            // Adjust for inflation to show "real" value
-            // This correctly applies inflation once per year using the compounded inflation rate
-            // (1 + inflationRate)^year gives us the cumulative inflation effect up to this year
-            const inflationFactor = Math.pow(1 + inflationRate, year);
-            const inflationAdjusted = balance / inflationFactor;
-            
-            // Store the results for this year
+
+            const inflationAdjusted = balance / Math.pow(1 + inputs.inflationRate / 100, year);
             results.push({
                 year,
                 balance,
-                contributions: totalContributions,
-                interest: interestEarned,
+                totalContributions,
+                totalInterest,
                 yearlyContributions,
                 yearlyInterest,
                 inflationAdjusted
             });
         }
-        
-        // Store current scenario data
-        currentScenarioData = {
-            startingAmount,
-            returnRate: returnRate * 100,
-            compoundFrequency,
-            contributionAmount,
-            contributionTiming,
-            contributionFrequency,
-            years,
-            inflationRate: inflationRate * 100,
+
+        const finalYear = results[results.length - 1];
+
+        return {
+            name: '',
+            ...inputs,
             results,
-            totalContributions,
-            totalInterest: interestEarned,
-            finalBalance: balance,
-            inflationAdjustedFinal: results[results.length - 1].inflationAdjusted
+            finalBalance: finalYear.balance,
+            totalContributions: finalYear.totalContributions,
+            totalInterest: finalYear.totalInterest,
+            inflationAdjustedFinal: finalYear.inflationAdjusted
         };
-
-        // Display results
-        displayResults(currentScenarioData);
     }
 
-    // Display the calculation results
-    function displayResults(data) {
-        // Update summary values
-        document.getElementById('finalBalance').textContent = formatCurrency(data.finalBalance);
-        document.getElementById('totalContributions').textContent = formatCurrency(data.totalContributions);
-        document.getElementById('totalInterest').textContent = formatCurrency(data.totalInterest);
-        document.getElementById('inflationAdjusted').textContent = formatCurrency(data.inflationAdjustedFinal);
-        
-        // Update the table view
-        createResultsTable(data);
-        
-        // Update the chart
-        updateGrowthChart(data);
+    function renderGrowthScenario(scenario) {
+        elements.finalBalance.textContent = formatCurrency(scenario.finalBalance);
+        elements.totalContributions.textContent = formatCurrency(scenario.totalContributions);
+        elements.totalInterest.textContent = formatCurrency(scenario.totalInterest);
+        elements.inflationAdjusted.textContent = formatCurrency(scenario.inflationAdjustedFinal);
+
+        renderResultsTable(scenario);
+        updateGrowthChart();
     }
 
-    // Create and update the results table
-    function createResultsTable(data) {
-        const tableView = document.getElementById('tableView');
-        
-        // Clear previous table
-        tableView.innerHTML = '';
-        
-        // Create table container
-        const tableContainer = document.createElement('div');
-        tableContainer.className = 'table-container';
-        
-        // Create table
-        const table = document.createElement('table');
-        table.className = 'results-table';
-        
-        // Create table header
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        
-        const headers = [
-            'Year', 
-            'Balance', 
-            'Yearly Interest', 
-            'Total Interest', 
-            'Inflation-Adjusted'
-        ];
-        
-        headers.forEach(header => {
-            const th = document.createElement('th');
-            th.textContent = header;
-            headerRow.appendChild(th);
-        });
-        
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
-        
-        // Create table body
-        const tbody = document.createElement('tbody');
-        
-        data.results.forEach(yearData => {
-            const row = document.createElement('tr');
-            
-            // Year
-            const yearCell = document.createElement('td');
-            yearCell.textContent = yearData.year;
-            row.appendChild(yearCell);
-            
-            // Balance
-            const balanceCell = document.createElement('td');
-            balanceCell.textContent = formatCurrency(yearData.balance);
-            row.appendChild(balanceCell);
-            
-            // Yearly Interest
-            const yearlyInterestCell = document.createElement('td');
-            yearlyInterestCell.textContent = formatCurrency(yearData.yearlyInterest);
-            row.appendChild(yearlyInterestCell);
-            
-            // Total Interest
-            const totalInterestCell = document.createElement('td');
-            totalInterestCell.textContent = formatCurrency(yearData.interest);
-            row.appendChild(totalInterestCell);
-            
-            // Inflation-Adjusted Balance
-            const inflationCell = document.createElement('td');
-            inflationCell.textContent = formatCurrency(yearData.inflationAdjusted);
-            row.appendChild(inflationCell);
-            
-            tbody.appendChild(row);
-        });
-        
-        table.appendChild(tbody);
-        tableContainer.appendChild(table);
-        tableView.appendChild(tableContainer);
+    function renderResultsTable(scenario) {
+        const rows = scenario.results.map((yearData, index) => `
+            <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                <td class="px-4 py-3 text-center text-sm font-medium text-gray-900">${yearData.year}</td>
+                <td class="px-4 py-3 text-right text-sm text-gray-700">${formatCurrency(yearData.balance)}</td>
+                <td class="px-4 py-3 text-right text-sm text-gray-700">${formatCurrency(yearData.totalContributions)}</td>
+                <td class="px-4 py-3 text-right text-sm text-gray-700">${formatCurrency(yearData.yearlyInterest)}</td>
+                <td class="px-4 py-3 text-right text-sm text-gray-700">${formatCurrency(yearData.totalInterest)}</td>
+                <td class="px-4 py-3 text-right text-sm text-gray-700">${formatCurrency(yearData.inflationAdjusted)}</td>
+            </tr>
+        `).join('');
+
+        elements.tableView.innerHTML = `
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Year</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Balance</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Contributions</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Yearly Growth</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Total Growth</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Real Value</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">${rows}</tbody>
+                </table>
+            </div>
+        `;
     }
 
-    // Update the chart with investment data
-    function updateGrowthChart(data) {
-        const ctx = document.getElementById('growthChart').getContext('2d');
-        
-        // Destroy previous chart instance if it exists
-        if (growthChart) {
-            growthChart.destroy();
+    function updateGrowthChart() {
+        if (!state.currentScenario) {
+            return;
         }
-        
-        // Get chart settings
-        const chartType = chartTypeSelect ? chartTypeSelect.value : 'line';
-        const showContributions = showContributionsCheckbox ? showContributionsCheckbox.checked : true;
-        const showInterest = showInterestCheckbox ? showInterestCheckbox.checked : true;
-        const showInflationAdjusted = showInflationAdjustedCheckbox ? showInflationAdjustedCheckbox.checked : true;
-        
-        // Prepare data for charts
-        const years = data.results.map(item => item.year);
-        const balances = data.results.map(item => item.balance);
-        const inflationAdjusted = data.results.map(item => item.inflationAdjusted);
-        const contributions = data.results.map(item => item.contributions);
-        const interest = data.results.map(item => item.interest);
-        
-        // Handle different chart types
+
+        if (state.growthChart) {
+            state.growthChart.destroy();
+        }
+
+        const ctx = elements.growthCanvas.getContext('2d');
+        const chartType = elements.chartType.value;
+        const years = state.currentScenario.results.map((entry) => entry.year);
+        const balances = state.currentScenario.results.map((entry) => roundMoney(entry.balance));
+        const contributions = state.currentScenario.results.map((entry) => roundMoney(entry.totalContributions));
+        const growth = state.currentScenario.results.map((entry) => roundMoney(entry.totalInterest));
+        const inflationAdjusted = state.currentScenario.results.map((entry) => roundMoney(entry.inflationAdjusted));
+
         if (chartType === 'pie') {
-            // Create a pie chart showing the breakdown of the final values
-            const finalYear = data.results[data.results.length - 1];
-            const pieData = [];
-            
-            // Only add segments that are enabled
-            if (showContributions) {
-                pieData.push({
+            const pieParts = [];
+            const gainValue = state.currentScenario.finalBalance - state.currentScenario.totalContributions;
+
+            if (elements.showContributions.checked) {
+                pieParts.push({
                     label: 'Contributions',
-                    value: finalYear.contributions,
-                    color: 'rgba(75, 192, 192, 0.8)'
+                    value: Math.max(state.currentScenario.totalContributions, 0),
+                    color: 'rgba(59, 130, 246, 0.85)'
                 });
             }
-            
-            if (showInterest) {
-                pieData.push({
-                    label: 'Interest',
-                    value: finalYear.interest,
-                    color: 'rgba(153, 102, 255, 0.8)'
+
+            if (elements.showInterest.checked) {
+                pieParts.push({
+                    label: gainValue >= 0 ? 'Growth' : 'Loss',
+                    value: Math.abs(gainValue),
+                    color: gainValue >= 0 ? 'rgba(16, 185, 129, 0.85)' : 'rgba(239, 68, 68, 0.85)'
                 });
             }
-            
-            growthChart = new Chart(ctx, {
+
+            if (pieParts.length === 0) {
+                pieParts.push({
+                    label: 'Ending Balance',
+                    value: Math.max(state.currentScenario.finalBalance, 0),
+                    color: 'rgba(99, 102, 241, 0.85)'
+                });
+            }
+
+            state.growthChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: pieData.map(item => item.label),
+                    labels: pieParts.map((part) => part.label),
                     datasets: [{
-                        data: pieData.map(item => item.value),
-                        backgroundColor: pieData.map(item => item.color),
+                        data: pieParts.map((part) => part.value),
+                        backgroundColor: pieParts.map((part) => part.color),
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${context.label}: ${formatCurrency(value)} (${percentage}%)`;
-                                }
-                            }
-                        },
                         legend: {
                             position: 'bottom'
-                        }
-                    }
-                }
-            });
-            
-        } else if (chartType === 'bar') {
-            // Create a bar chart showing progression over time
-            // For bar chart we'll use fewer data points (every 5 years)
-            const filteredYears = [];
-            const filteredData = {
-                balance: [],
-                inflationAdjusted: [],
-                contributions: [],
-                interest: []
-            };
-            
-            // Filter to every 5 years or fewer points for better visualization
-            const step = Math.ceil(years.length / 10); // Show about 10 bars
-            for (let i = 0; i < years.length; i += step) {
-                filteredYears.push(years[i]);
-                filteredData.balance.push(balances[i]);
-                filteredData.inflationAdjusted.push(inflationAdjusted[i]);
-                filteredData.contributions.push(contributions[i]);
-                filteredData.interest.push(interest[i]);
-            }
-            
-            // Add the final year if not already included
-            if (filteredYears[filteredYears.length - 1] !== years[years.length - 1]) {
-                filteredYears.push(years[years.length - 1]);
-                filteredData.balance.push(balances[balances.length - 1]);
-                filteredData.inflationAdjusted.push(inflationAdjusted[inflationAdjusted.length - 1]);
-                filteredData.contributions.push(contributions[contributions.length - 1]);
-                filteredData.interest.push(interest[interest.length - 1]);
-            }
-            
-            // Build datasets array based on what's enabled
-            const datasets = [];
-            
-            if (showContributions) {
-                datasets.push({
-                    label: 'Contributions',
-                    data: filteredData.contributions,
-                    backgroundColor: 'rgba(75, 192, 192, 0.8)',
-                });
-            }
-            
-            if (showInterest) {
-                datasets.push({
-                    label: 'Interest',
-                    data: filteredData.interest,
-                    backgroundColor: 'rgba(153, 102, 255, 0.8)',
-                });
-            }
-            
-            if (!showContributions && !showInterest) {
-                // If neither contributions nor interest are shown, show total balance
-                datasets.push({
-                    label: 'Balance',
-                    data: filteredData.balance,
-                    backgroundColor: 'rgba(54, 162, 235, 0.8)',
-                });
-            }
-            
-            if (showInflationAdjusted) {
-                datasets.push({
-                    label: 'Inflation-Adjusted',
-                    data: filteredData.inflationAdjusted,
-                    backgroundColor: 'rgba(255, 206, 86, 0.8)',
-                    // If showing as a separate dataset in bar chart
-                    type: 'line',
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 2,
-                    fill: false
-                });
-            }
-            
-            growthChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: filteredYears,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Year'
-                            }
                         },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Amount ($)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + formatCurrency(context.raw);
+                                label(context) {
+                                    const total = context.dataset.data.reduce((sum, value) => sum + value, 0) || 1;
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return `${context.label}: ${formatCurrency(context.raw)} (${percentage}%)`;
                                 }
                             }
                         }
                     }
                 }
             });
-            
-        } else { // Default to line chart
-            // Build datasets array based on what's enabled
-            const datasets = [];
-            
-            // Always show total balance in line chart
-            datasets.push({
-                label: 'Balance',
-                data: balances,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 3,
-                fill: true
-            });
-            
-            if (showInflationAdjusted) {
-                datasets.push({
-                    label: 'Inflation-Adjusted',
-                    data: inflationAdjusted,
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 3,
-                    fill: true
-                });
-            }
-            
-            if (showContributions) {
-                datasets.push({
-                    label: 'Contributions',
-                    data: contributions,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 3,
-                    fill: true
-                });
-            }
-            
-            growthChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: years,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
 
-    // Calculate how long it will take to reach target amount
-    function calculateInvestmentLength() {
-        console.log('Investment Length calculation started');
-        
-        // Get input values
-        const startingAmount = parseFloat(document.getElementById('lengthStartingAmount').value);
-        const targetAmount = parseFloat(document.getElementById('targetAmount').value);
-        const returnRate = parseFloat(document.getElementById('lengthReturnRate').value) / 100;
-        const contributionAmount = parseFloat(document.getElementById('lengthContributionAmount').value);
-        const contributionFrequency = parseInt(document.getElementById('lengthContributionFrequency').value);
-        
-        // Debug values
-        console.log('Starting Amount:', startingAmount);
-        console.log('Target Amount:', targetAmount);
-        console.log('Return Rate:', returnRate);
-        console.log('Contribution Amount:', contributionAmount);
-        console.log('Contribution Frequency:', contributionFrequency);
-        
-        // Validate inputs
-        if (isNaN(startingAmount) || isNaN(targetAmount) || isNaN(returnRate) || isNaN(contributionAmount)) {
-            alert('Please enter valid values for all fields');
             return;
         }
-        
-        if (startingAmount >= targetAmount) {
-            document.getElementById('yearsToTarget').textContent = '0';
-            document.getElementById('lengthResult').style.display = 'block';
-            document.getElementById('lengthResult').classList.add('show');
-            return;
-        }
-        
-        // Calculate return rate per period based on contribution frequency
-        const periodsPerYear = contributionFrequency;
-        const ratePerPeriod = returnRate / periodsPerYear;
-        
-        // Calculate time to reach target (in periods)
-        let timeInPeriods;
-        let balance = startingAmount;
-        let projectionData = [];
-        
-        // If there are no contributions, use the simple compound interest formula
-        if (contributionAmount <= 0) {
-            // Formula: t = ln(FV/PV) / ln(1+r)
-            // where FV = future value (target), PV = present value (starting amount), r = rate per period, t = time periods
-            timeInPeriods = Math.log(targetAmount / startingAmount) / Math.log(1 + ratePerPeriod);
-        } else {
-            // Use iterative approach for contributions
-            let period = 0;
-            const maxIterations = 1200; // 100 years (practical limit)
-            
-            while (balance < targetAmount && period < maxIterations) {
-                balance = balance * (1 + ratePerPeriod) + contributionAmount;
-                period++;
-                
-                // Store data points for chart (yearly)
-                if (period % periodsPerYear === 0 || period === 1) {
-                    projectionData.push({
-                        year: period / periodsPerYear,
-                        balance: balance
-                    });
-                }
-            }
-            
-            timeInPeriods = period;
-        }
-        
-        // Convert to years with one decimal
-        const timeInYears = (timeInPeriods / periodsPerYear).toFixed(1);
-        
-        // Display result
-        console.log('Calculation completed:', timeInYears, 'years');
-        document.getElementById('yearsToTarget').textContent = timeInYears;
-        
-        // Make sure the result is visible
-        const resultElement = document.getElementById('lengthResult');
-        resultElement.style.display = 'block';
-        
-        // Add animation class
-        resultElement.classList.add('show');
-        
-        // Show projection chart
-        try {
-            updateLengthChart(startingAmount, targetAmount, parseFloat(timeInYears), contributionAmount, contributionFrequency);
-            console.log('Chart updated successfully');
-        } catch (error) {
-            console.error('Error updating chart:', error);
-        }
-    }
 
-    // Update chart with investment length projection data
-    function updateLengthChart(startingAmount, targetAmount, years, contributionAmount, contributionFrequency) {
-        const ctx = document.getElementById('lengthChart').getContext('2d');
-        
-        // Create yearly projection data
-        const data = [];
-        let balance = startingAmount;
-        const returnRate = parseFloat(document.getElementById('lengthReturnRate').value) / 100;
-        const periodsPerYear = contributionFrequency;
-        const ratePerPeriod = returnRate / periodsPerYear;
-        
-        // Add starting point
-        data.push({
-            x: 0,
-            y: startingAmount
+        const sourceYears = chartType === 'bar' ? sampleLabels(years, 12) : years;
+        const selectedIndexes = sourceYears.map((year) => years.indexOf(year));
+        const datasets = [];
+
+        const pick = (values) => selectedIndexes.map((index) => values[index]);
+
+        datasets.push({
+            label: 'Balance',
+            data: pick(balances),
+            borderColor: 'rgba(37, 99, 235, 1)',
+            backgroundColor: chartType === 'bar' ? 'rgba(37, 99, 235, 0.75)' : 'rgba(37, 99, 235, 0.15)',
+            borderWidth: 3,
+            fill: chartType !== 'bar',
+            tension: 0.25
         });
-        
-        // Calculate balance for each year
-        for (let year = 1; year <= Math.ceil(years); year++) {
-            // Simulate compounding for each period in the year
-            for (let period = 1; period <= periodsPerYear; period++) {
-                balance = balance * (1 + ratePerPeriod) + contributionAmount;
-            }
-            
-            data.push({
-                x: year,
-                y: balance
+
+        if (elements.showContributions.checked) {
+            datasets.push({
+                label: 'Contributions',
+                data: pick(contributions),
+                borderColor: 'rgba(14, 165, 233, 1)',
+                backgroundColor: chartType === 'bar' ? 'rgba(14, 165, 233, 0.75)' : 'rgba(14, 165, 233, 0.12)',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.2
             });
         }
-        
-        // Create chart
-        if (window.lengthChart instanceof Chart) {
-            window.lengthChart.destroy();
+
+        if (elements.showInterest.checked) {
+            datasets.push({
+                label: 'Growth',
+                data: pick(growth),
+                borderColor: 'rgba(16, 185, 129, 1)',
+                backgroundColor: chartType === 'bar' ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.12)',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.2
+            });
         }
-        
-        // Use lengthChart variable instead of window.lengthChart
-        if (lengthChart) {
-            lengthChart.destroy();
+
+        if (elements.showInflationAdjusted.checked) {
+            datasets.push({
+                label: 'Real Value',
+                data: pick(inflationAdjusted),
+                borderColor: 'rgba(245, 158, 11, 1)',
+                backgroundColor: chartType === 'bar' ? 'rgba(245, 158, 11, 0.75)' : 'rgba(245, 158, 11, 0.12)',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.2
+            });
         }
-        
-        lengthChart = new Chart(ctx, {
+
+        state.growthChart = new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: sourceYears,
+                datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback(value) {
+                                return formatCurrency(value);
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label(context) {
+                                const value = chartType === 'bar' ? context.raw : context.parsed.y;
+                                return `${context.dataset.label}: ${formatCurrency(value)}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function calculateInvestmentLength() {
+        const inputs = {
+            startingAmount: readNumber('lengthStartingAmount'),
+            targetAmount: readNumber('targetAmount'),
+            annualRate: readNumber('lengthReturnRate') / 100,
+            contributionAmount: readNumber('lengthContributionAmount'),
+            frequency: readInteger('lengthContributionFrequency')
+        };
+
+        if (
+            inputs.startingAmount < 0 ||
+            inputs.targetAmount <= 0 ||
+            inputs.contributionAmount < 0 ||
+            inputs.frequency <= 0
+        ) {
+            alert('Please enter valid values for the time-to-target calculator.');
+            return;
+        }
+
+        const projection = projectToTarget(inputs);
+        showResultCard(elements.lengthResult);
+
+        if (projection.reached) {
+            const yearsText = projection.years.toFixed(1);
+            elements.lengthSummary.innerHTML = `With the given parameters, it will take approximately <span id="yearsToTarget" class="text-2xl font-bold text-blue-600 px-2 bg-blue-50 rounded">${yearsText}</span> years to reach your target amount.`;
+        } else {
+            elements.lengthSummary.innerHTML = `With the current inputs, the target is not reached within <span class="text-2xl font-bold text-red-600 px-2 bg-red-50 rounded">${MAX_LENGTH_YEARS}+</span> years.`;
+        }
+
+        updateLengthChart(projection, inputs.targetAmount);
+    }
+
+    function projectToTarget(inputs) {
+        const maxPeriods = MAX_LENGTH_YEARS * inputs.frequency;
+        const periodRate = inputs.annualRate / inputs.frequency;
+        let balance = inputs.startingAmount;
+        const points = [{ x: 0, y: roundMoney(balance) }];
+
+        if (balance >= inputs.targetAmount) {
+            return { reached: true, years: 0, points };
+        }
+
+        for (let period = 1; period <= maxPeriods; period += 1) {
+            balance = balance * (1 + periodRate) + inputs.contributionAmount;
+            const yearMark = period / inputs.frequency;
+
+            if (period % inputs.frequency === 0 || balance >= inputs.targetAmount) {
+                points.push({
+                    x: yearMark,
+                    y: roundMoney(balance)
+                });
+            }
+
+            if (balance >= inputs.targetAmount) {
+                return { reached: true, years: yearMark, points };
+            }
+        }
+
+        return { reached: false, years: MAX_LENGTH_YEARS, points };
+    }
+
+    function updateLengthChart(projection, targetAmount) {
+        if (state.lengthChart) {
+            state.lengthChart.destroy();
+        }
+
+        const ctx = elements.lengthCanvas.getContext('2d');
+        const lastX = projection.points[projection.points.length - 1]?.x || MAX_LENGTH_YEARS;
+
+        state.lengthChart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Balance',
-                    data: data,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true
+                    label: 'Projected Balance',
+                    data: projection.points,
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.25
                 }, {
                     label: 'Target',
-                    data: [{ x: 0, y: targetAmount }, { x: years, y: targetAmount }],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderDash: [5, 5],
-                    pointRadius: 0
+                    data: [{ x: 0, y: targetAmount }, { x: lastX, y: targetAmount }],
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderDash: [6, 6],
+                    pointRadius: 0,
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -712,19 +514,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         title: {
                             display: true,
                             text: 'Years'
-                        },
-                        ticks: {
-                            stepSize: 1
                         }
                     },
                     y: {
                         beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Balance ($)'
-                        },
                         ticks: {
-                            callback: function(value) {
+                            callback(value) {
                                 return formatCurrency(value);
                             }
                         }
@@ -733,317 +528,445 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
+                            label(context) {
+                                return `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`;
                             }
                         }
                     }
                 }
             }
         });
-        
-        // For backward compatibility
-        window.lengthChart = lengthChart;
     }
 
-    // Calculate required return rate to reach target
     function calculateRequiredRate() {
-        console.log('Required Rate calculation started');
-        
-        // Get input values
-        const startingAmount = parseFloat(document.getElementById('rateStartingAmount').value);
-        const targetAmount = parseFloat(document.getElementById('rateTargetAmount').value);
-        const years = parseFloat(document.getElementById('investmentYears').value);
-        const contributionAmount = parseFloat(document.getElementById('rateContributionAmount').value);
-        const contributionFrequency = parseInt(document.getElementById('rateContributionFrequency').value);
-        
-        // Debug values
-        console.log('Starting Amount:', startingAmount);
-        console.log('Target Amount:', targetAmount);
-        console.log('Years:', years);
-        console.log('Contribution Amount:', contributionAmount);
-        console.log('Contribution Frequency:', contributionFrequency);
-        
-        // Validate inputs
-        if (isNaN(startingAmount) || isNaN(targetAmount) || isNaN(years) || isNaN(contributionAmount)) {
-            alert('Please enter valid values for all fields');
+        const inputs = {
+            startingAmount: readNumber('rateStartingAmount'),
+            targetAmount: readNumber('rateTargetAmount'),
+            years: readInteger('investmentYears'),
+            contributionAmount: readNumber('rateContributionAmount'),
+            frequency: readInteger('rateContributionFrequency')
+        };
+
+        if (
+            inputs.startingAmount < 0 ||
+            inputs.targetAmount <= 0 ||
+            inputs.years <= 0 ||
+            inputs.contributionAmount < 0 ||
+            inputs.frequency <= 0
+        ) {
+            alert('Please enter valid values for the return-rate calculator.');
             return;
         }
-        
-        if (startingAmount >= targetAmount) {
-            document.getElementById('requiredRate').textContent = '0%';
-            document.getElementById('rateResult').style.display = 'block';
-            document.getElementById('rateResult').classList.add('show');
+
+        if (inputs.startingAmount >= inputs.targetAmount) {
+            showResultCard(elements.rateResult);
+            elements.rateSummary.innerHTML = 'Your starting balance already meets or exceeds the target amount, so no additional return is required.';
             return;
         }
-        
-        let requiredRate;
-        
-        try {
-            // If there are no contributions, use the simple compound interest formula
-            if (contributionAmount <= 0) {
-                // Formula: r = (FV/PV)^(1/t) - 1
-                // where FV = future value (target), PV = present value (starting amount), t = time periods, r = rate per period
-                requiredRate = Math.pow(targetAmount / startingAmount, 1 / years) - 1;
-            } else {
-                // Use numerical approach for contributions (binary search)
-                requiredRate = findRateNumerically(startingAmount, targetAmount, years, contributionAmount, contributionFrequency);
-            }
-            
-            // Convert to percentage with two decimals
-            const ratePercentage = (requiredRate * 100).toFixed(2) + '%';
-            console.log('Calculated rate:', ratePercentage);
-            
-            // Display result
-            document.getElementById('requiredRate').textContent = ratePercentage;
-            
-            // Make sure the result is visible
-            const resultElement = document.getElementById('rateResult');
-            resultElement.style.display = 'block';
-            resultElement.classList.add('show');
-        } catch (error) {
-            console.error('Error calculating required rate:', error);
-            alert('An error occurred during calculation. Please check your inputs and try again.');
+
+        const requiredRate = findRequiredAnnualRate(inputs);
+        showResultCard(elements.rateResult);
+
+        if (requiredRate === null) {
+            elements.rateSummary.innerHTML = `The target is not reached even with an annual return rate above <span class="text-2xl font-bold text-red-600 px-2 bg-red-50 rounded">${(MAX_RATE_SEARCH * 100).toFixed(0)}%</span>. Increase the contribution, starting balance, or time horizon.`;
+            return;
         }
+
+        const rateText = `${(requiredRate * 100).toFixed(2)}%`;
+        elements.rateSummary.innerHTML = `To reach your target amount in the specified time, you need an annual return rate of <span id="requiredRate" class="text-2xl font-bold text-blue-600 px-2 bg-blue-50 rounded">${rateText}</span>.`;
     }
 
-    // Helper function for rate calculation using binary search
-    function findRateNumerically(startingAmount, targetAmount, years, contributionAmount, contributionFrequency) {
-        let minRate = -0.99; // Minimum rate (-99%)
-        let maxRate = 2.0;   // Maximum rate (200%)
-        let midRate;
-        const tolerance = 0.0001;
-        const maxIterations = 100;
-        let iteration = 0;
-        
-        while ((maxRate - minRate) > tolerance && iteration < maxIterations) {
-            midRate = (minRate + maxRate) / 2;
-            const balance = calculateBalanceWithRate(startingAmount, midRate, years, contributionAmount, contributionFrequency);
-            
-            if (Math.abs(balance - targetAmount) < tolerance * targetAmount) {
-                break; // Found a rate that's close enough
-            }
-            
-            if (balance < targetAmount) {
-                minRate = midRate; // Need a higher rate
-            } else {
-                maxRate = midRate; // Need a lower rate
-            }
-            
-            iteration++;
+    function findRequiredAnnualRate(inputs) {
+        const lowRate = -0.999;
+        let highRate = 0.1;
+        let highValue = futureValueWithRate(inputs, highRate);
+
+        if (Math.abs(highValue - inputs.targetAmount) < 0.01) {
+            return highRate;
         }
-        
-        return midRate;
+
+        while (highValue < inputs.targetAmount && highRate < MAX_RATE_SEARCH) {
+            highRate *= 2;
+            highValue = futureValueWithRate(inputs, highRate);
+        }
+
+        if (highValue < inputs.targetAmount) {
+            return null;
+        }
+
+        let left = lowRate;
+        let right = highRate;
+
+        for (let iteration = 0; iteration < 100; iteration += 1) {
+            const mid = (left + right) / 2;
+            const value = futureValueWithRate(inputs, mid);
+
+            if (Math.abs(value - inputs.targetAmount) < 0.01) {
+                return mid;
+            }
+
+            if (value < inputs.targetAmount) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        return (left + right) / 2;
     }
 
-    // Helper function for rate calculation
-    function calculateBalanceWithRate(startingAmount, annualRate, years, contributionAmount, contributionFrequency) {
-        const periodsPerYear = contributionFrequency;
-        const ratePerPeriod = annualRate / periodsPerYear;
-        const periods = years * periodsPerYear;
-        let balance = startingAmount;
-        
-        for (let i = 0; i < periods; i++) {
-            balance = balance * (1 + ratePerPeriod) + contributionAmount;
+    function futureValueWithRate(inputs, annualRate) {
+        const periods = inputs.years * inputs.frequency;
+        const periodRate = annualRate / inputs.frequency;
+        let balance = inputs.startingAmount;
+
+        for (let period = 0; period < periods; period += 1) {
+            balance = balance * (1 + periodRate) + inputs.contributionAmount;
         }
-        
+
         return balance;
     }
 
-    // Save current scenario
     function saveScenario() {
-        const scenarioName = document.getElementById('scenarioName').value.trim();
-        
+        const scenarioName = elements.scenarioName.value.trim();
+
         if (!scenarioName) {
-            alert('Please enter a name for this scenario');
+            alert('Enter a scenario name before saving.');
             return;
         }
-        
-        if (!currentScenarioData) {
-            alert('Please calculate an investment scenario first');
+
+        if (!state.currentScenario) {
+            alert('Calculate a scenario first.');
             return;
         }
-        
-        // Create a copy of the current scenario data and add the name
-        const scenarioToSave = { ...currentScenarioData, name: scenarioName };
-        
-        // Add to or update the scenarios object
-        scenarios[scenarioName] = scenarioToSave;
-        
-        // Save to localStorage
-        localStorage.setItem('investmentScenarios', JSON.stringify(scenarios));
-        
-        // Update the dropdown
-        updateSavedScenariosSelect();
-        
-        alert(`Scenario "${scenarioName}" has been saved`);
+
+        state.scenarios[scenarioName] = {
+            ...state.currentScenario,
+            name: scenarioName
+        };
+
+        persistScenarios();
+        refreshSavedScenarioOptions();
+        refreshComparisonOptions();
+        elements.savedScenarios.value = scenarioName;
     }
 
-    // Load a saved scenario
     function loadScenario() {
-        const selectElement = document.getElementById('savedScenarios');
-        const selectedScenario = selectElement.value;
-        
-        if (!selectedScenario) {
-            alert('Please select a scenario to load');
+        const scenarioName = elements.savedScenarios.value;
+        const scenario = state.scenarios[scenarioName];
+
+        if (!scenario) {
+            alert('Select a saved scenario to load.');
             return;
         }
-        
-        const scenarioData = scenarios[selectedScenario];
-        
-        if (!scenarioData) {
-            alert('Could not find the selected scenario');
-            return;
-        }
-        
-        // Update UI with scenario data
-        document.getElementById('startingAmount').value = scenarioData.startingAmount;
-        document.getElementById('returnRate').value = scenarioData.returnRate;
-        document.getElementById('years').value = scenarioData.years || 30; // Default if not present
-        document.getElementById('compoundFrequency').value = scenarioData.compoundFrequency || 12; // Default if not present
-        document.getElementById('contributionAmount').value = scenarioData.contributionAmount || 0; // Default if not present
-        document.getElementById('contributionFrequency').value = scenarioData.contributionFrequency || 12; // Default if not present
-        
-        // Set contribution timing radio button
-        if (scenarioData.contributionTiming) {
-            document.querySelector(`input[name="contributionTiming"][value="${scenarioData.contributionTiming}"]`).checked = true;
-        }
-        
-        document.getElementById('inflationRate').value = scenarioData.inflationRate;
-        
-        // Set current scenario data
-        currentScenarioData = scenarioData;
-        
-        // Display results
-        displayResults(scenarioData);
+
+        document.getElementById('startingAmount').value = scenario.startingAmount;
+        document.getElementById('returnRate').value = scenario.returnRate;
+        document.getElementById('years').value = scenario.years;
+        document.getElementById('compoundFrequency').value = scenario.compoundFrequency;
+        document.getElementById('contributionAmount').value = scenario.contributionAmount;
+        document.getElementById('contributionFrequency').value = scenario.contributionFrequency;
+        document.querySelector(`input[name="contributionTiming"][value="${scenario.contributionTiming}"]`).checked = true;
+        document.getElementById('inflationRate').value = scenario.inflationRate;
+        elements.scenarioName.value = scenarioName;
+
+        activateTab('growthCalculator');
+        showView('table');
+        calculateInvestment();
     }
 
-    // Delete a saved scenario
     function deleteScenario() {
-        const selectElement = document.getElementById('savedScenarios');
-        const selectedScenario = selectElement.value;
-        
-        if (!selectedScenario) {
-            alert('Please select a scenario to delete');
+        const scenarioName = elements.savedScenarios.value;
+
+        if (!scenarioName || !state.scenarios[scenarioName]) {
+            alert('Select a saved scenario to delete.');
             return;
         }
-        
-        // Remove from scenarios object
-        delete scenarios[selectedScenario];
-        
-        // Save updated scenarios to localStorage
-        localStorage.setItem('investmentScenarios', JSON.stringify(scenarios));
-        
-        // Update the dropdown
-        updateSavedScenariosSelect();
-        
-        alert(`Scenario "${selectedScenario}" has been deleted`);
+
+        delete state.scenarios[scenarioName];
+        persistScenarios();
+        refreshSavedScenarioOptions();
+        refreshComparisonOptions();
+        updateComparisonChart();
     }
 
-    // Export data to CSV
-    function exportData() {
-        if (!currentScenarioData || !currentScenarioData.results) {
-            alert('Please calculate an investment scenario first');
+    function refreshSavedScenarioOptions() {
+        const scenarioNames = Object.keys(state.scenarios).sort((a, b) => a.localeCompare(b));
+        elements.savedScenarios.innerHTML = '<option value="">-- Saved Scenarios --</option>';
+        scenarioNames.forEach((name) => {
+            elements.savedScenarios.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`);
+        });
+    }
+
+    function refreshComparisonOptions() {
+        const scenarioNames = Object.keys(state.scenarios).sort((a, b) => a.localeCompare(b));
+        const selected1 = elements.scenario1.value;
+        const selected2 = elements.scenario2.value;
+
+        elements.scenario1.innerHTML = '<option value="">Select Scenario 1</option>';
+        elements.scenario2.innerHTML = '<option value="">Select Scenario 2</option>';
+
+        scenarioNames.forEach((name) => {
+            const option = `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`;
+            elements.scenario1.insertAdjacentHTML('beforeend', option);
+            elements.scenario2.insertAdjacentHTML('beforeend', option);
+        });
+
+        if (state.scenarios[selected1]) {
+            elements.scenario1.value = selected1;
+        }
+
+        if (state.scenarios[selected2]) {
+            elements.scenario2.value = selected2;
+        }
+    }
+
+    function updateComparisonChart() {
+        const first = state.scenarios[elements.scenario1.value];
+        const second = state.scenarios[elements.scenario2.value];
+
+        if (state.compareChart) {
+            state.compareChart.destroy();
+            state.compareChart = null;
+        }
+
+        if (!first || !second) {
+            elements.compareSummary.textContent = 'Select two saved scenarios to compare.';
             return;
         }
-        
-        // Create CSV header
-        let csv = 'Year,Balance,Yearly Interest,Total Interest,Inflation-Adjusted\n';
-        
-        // Add data rows
-        currentScenarioData.results.forEach(year => {
-            csv += `${year.year},${year.balance},${year.yearlyInterest},${year.interest},${year.inflationAdjusted}\n`;
+
+        const labels = Array.from(
+            new Set([
+                ...first.results.map((entry) => entry.year),
+                ...second.results.map((entry) => entry.year)
+            ])
+        ).sort((a, b) => a - b);
+
+        const firstMap = new Map(first.results.map((entry) => [entry.year, roundMoney(entry.balance)]));
+        const secondMap = new Map(second.results.map((entry) => [entry.year, roundMoney(entry.balance)]));
+
+        state.compareChart = new Chart(elements.compareCanvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: first.name || elements.scenario1.value,
+                    data: labels.map((year) => firstMap.get(year) ?? null),
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    spanGaps: true
+                }, {
+                    label: second.name || elements.scenario2.value,
+                    data: labels.map((year) => secondMap.get(year) ?? null),
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    spanGaps: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback(value) {
+                                return formatCurrency(value);
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label(context) {
+                                return `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`;
+                            }
+                        }
+                    }
+                }
+            }
         });
-        
-        // Create download link
+
+        const winner = first.finalBalance >= second.finalBalance ? first : second;
+        const balanceGap = Math.abs(first.finalBalance - second.finalBalance);
+
+        elements.compareSummary.innerHTML = `
+            <div class="grid grid-cols-1 gap-4 text-left md:grid-cols-3">
+                <div class="rounded-lg bg-white p-4 shadow-sm">
+                    <p class="text-sm text-gray-500">Higher Ending Balance</p>
+                    <p class="mt-1 text-lg font-semibold text-gray-900">${escapeHtml(winner.name || (winner === first ? elements.scenario1.value : elements.scenario2.value))}</p>
+                    <p class="text-sm text-gray-600">${formatCurrency(winner.finalBalance)}</p>
+                </div>
+                <div class="rounded-lg bg-white p-4 shadow-sm">
+                    <p class="text-sm text-gray-500">Balance Gap</p>
+                    <p class="mt-1 text-lg font-semibold text-gray-900">${formatCurrency(balanceGap)}</p>
+                    <p class="text-sm text-gray-600">Difference at the final year.</p>
+                </div>
+                <div class="rounded-lg bg-white p-4 shadow-sm">
+                    <p class="text-sm text-gray-500">Growth Efficiency</p>
+                    <p class="mt-1 text-lg font-semibold text-gray-900">${formatPercent((winner.totalInterest / Math.max(winner.totalContributions, 1)) * 100)}</p>
+                    <p class="text-sm text-gray-600">Growth as a share of contributions.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function exportData() {
+        if (!state.currentScenario) {
+            alert('Calculate a scenario first.');
+            return;
+        }
+
+        const header = ['Year', 'Balance', 'Total Contributions', 'Yearly Growth', 'Total Growth', 'Inflation Adjusted'];
+        const rows = state.currentScenario.results.map((entry) => [
+            entry.year,
+            roundMoney(entry.balance),
+            roundMoney(entry.totalContributions),
+            roundMoney(entry.yearlyInterest),
+            roundMoney(entry.totalInterest),
+            roundMoney(entry.inflationAdjusted)
+        ]);
+        const csv = [header, ...rows].map((row) => row.join(',')).join('\n');
+
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'investment_data.csv');
-        link.style.visibility = 'hidden';
+        link.href = url;
+        link.download = 'investment-scenario.csv';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     }
 
-    // Update comparison selects
-    function updateComparisonSelects() {
-        const scenarioNames = Object.keys(scenarios);
-        const scenario1Select = document.getElementById('scenario1');
-        const scenario2Select = document.getElementById('scenario2');
-        
-        // Clear current options
-        scenario1Select.innerHTML = '<option value="">Select Scenario 1</option>';
-        scenario2Select.innerHTML = '<option value="">Select Scenario 2</option>';
-        
-        // Add options for each scenario
-        scenarioNames.forEach(name => {
-            scenario1Select.innerHTML += `<option value="${name}">${name}</option>`;
-            scenario2Select.innerHTML += `<option value="${name}">${name}</option>`;
-        });
-    }
-
-    // Update chart comparing two scenarios
-    function updateComparisonChart() {
-        const scenario1Name = document.getElementById('scenario1').value;
-        const scenario2Name = document.getElementById('scenario2').value;
-        
-        if (!scenario1Name || !scenario2Name) {
-            return;
-        }
-        
-        // Get scenario data
-        const scenario1 = scenarios[scenario1Name];
-        const scenario2 = scenarios[scenario2Name];
-        
-        if (!scenario1 || !scenario2) {
-            alert('Could not find one of the selected scenarios');
-            return;
-        }
-        
-        // TODO: Implement comparison chart
-        alert('Comparison chart feature is coming soon');
-    }
-
-    // Update saved scenarios select dropdown
-    function updateSavedScenariosSelect() {
-        const selectElement = document.getElementById('savedScenarios');
-        const scenarioNames = Object.keys(scenarios);
-        
-        // Clear current options
-        selectElement.innerHTML = '<option value="">-- Saved Scenarios --</option>';
-        
-        // Add options for each scenario
-        scenarioNames.forEach(name => {
-            selectElement.innerHTML += `<option value="${name}">${name}</option>`;
-        });
-    }
-
-    // Load saved scenarios from localStorage
     function loadSavedScenarios() {
-        const savedScenarios = localStorage.getItem('investmentScenarios');
-        return savedScenarios ? JSON.parse(savedScenarios) : {};
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) {
+                return {};
+            }
+
+            const parsed = JSON.parse(raw);
+            return Object.entries(parsed).reduce((accumulator, [name, value]) => {
+                const normalized = normalizeScenario(name, value);
+                if (normalized) {
+                    accumulator[name] = normalized;
+                }
+                return accumulator;
+            }, {});
+        } catch (_error) {
+            return {};
+        }
     }
 
-    // Format currency values
+    function normalizeScenario(name, value) {
+        if (!value || typeof value !== 'object') {
+            return null;
+        }
+
+        const normalizedInputs = {
+            startingAmount: numberOr(value.startingAmount, 1000),
+            returnRate: numberOr(value.returnRate, 7),
+            years: integerOr(value.years, 30),
+            compoundFrequency: integerOr(value.compoundFrequency, 12),
+            contributionAmount: numberOr(value.contributionAmount, 100),
+            contributionFrequency: integerOr(value.contributionFrequency, 12),
+            contributionTiming: value.contributionTiming === 'start' ? 'start' : 'end',
+            inflationRate: numberOr(value.inflationRate, 2.5)
+        };
+
+        return {
+            ...buildGrowthScenario(normalizedInputs),
+            name: value.name || name
+        };
+    }
+
+    function persistScenarios() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.scenarios));
+    }
+
+    function showResultCard(element) {
+        element.classList.remove('hidden');
+        element.classList.add('show');
+    }
+
+    function readNumber(id) {
+        return numberOr(document.getElementById(id).value, 0);
+    }
+
+    function readInteger(id) {
+        return integerOr(document.getElementById(id).value, 0);
+    }
+
+    function numberOr(value, fallback) {
+        const parsed = Number.parseFloat(value);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    function integerOr(value, fallback) {
+        const parsed = Number.parseInt(value, 10);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    function roundMoney(value) {
+        return Math.round(value * 100) / 100;
+    }
+
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function lcm(a, b) {
+        return Math.abs(a * b) / gcd(a, b);
+    }
+
+    function sampleLabels(values, maxItems) {
+        if (values.length <= maxItems) {
+            return values;
+        }
+
+        const step = Math.ceil(values.length / maxItems);
+        const sampled = [];
+
+        for (let index = 0; index < values.length; index += step) {
+            sampled.push(values[index]);
+        }
+
+        if (sampled[sampled.length - 1] !== values[values.length - 1]) {
+            sampled.push(values[values.length - 1]);
+        }
+
+        return sampled;
+    }
+
     function formatCurrency(value) {
-        return new Intl.NumberFormat('en-US', { 
-            style: 'currency', 
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(value);
     }
 
-    // Add updateCharts function to handle chart updates
-    function updateCharts() {
-        if (currentScenarioData) {
-            updateGrowthChart(currentScenarioData);
-        }
+    function formatPercent(value) {
+        return `${value.toFixed(1)}%`;
     }
 
-    // Calculate investment on page load with default values
-    calculateInvestment();
-    updateSavedScenariosSelect();
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 });

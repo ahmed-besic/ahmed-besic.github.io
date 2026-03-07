@@ -1,0 +1,646 @@
+.page-investment-overhaul .invest-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    margin-bottom: 26px;
+    max-width: 920px;
+    width: 100%;
+}
+
+.page-investment-overhaul .invest-hero__intro {
+    padding: clamp(28px, 4vw, 40px);
+}
+
+.page-investment-overhaul .invest-hero__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page-investment-overhaul .invest-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.page-investment-overhaul .hero-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.page-investment-overhaul .hero-action--primary {
+    color: #fffaf3;
+    background: linear-gradient(135deg, #0f766e, #1d4ed8);
+    box-shadow: 0 18px 32px rgba(29, 78, 216, 0.22);
+}
+
+.page-investment-overhaul .hero-action--secondary {
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.page-investment-overhaul .invest-workbench {
+    display: grid;
+    grid-template-columns: minmax(0, 0.94fr) minmax(380px, 1.06fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.page-investment-overhaul .workbench-panel {
+    padding: 24px;
+}
+
+.page-investment-overhaul .workbench-panel--dark {
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.94));
+    color: #f8fafc;
+    border-radius: var(--shell-radius-xl);
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+}
+
+.page-investment-overhaul .panel-heading {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.page-investment-overhaul .panel-heading h2,
+.page-investment-overhaul .results-panel__header h2 {
+    margin: 0;
+    font-family: "Syne", sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: -0.04em;
+}
+
+.page-investment-overhaul .panel-heading p,
+.page-investment-overhaul .results-panel__header p,
+.page-investment-overhaul .panel-subcopy {
+    margin: 8px 0 0;
+    color: rgba(248, 250, 252, 0.68);
+    line-height: 1.65;
+}
+
+.page-investment-overhaul .panel-chip {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.page-investment-overhaul .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.06);
+    margin-bottom: 22px;
+}
+
+.page-investment-overhaul .tab-button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: rgba(248, 250, 252, 0.72);
+    min-height: 52px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.page-investment-overhaul .tab-button:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.page-investment-overhaul .tab-button.active {
+    color: #0f172a;
+    background: linear-gradient(135deg, #f8fafc, #dbeafe);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.28);
+}
+
+.page-investment-overhaul .tab-content {
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 22px;
+}
+
+.page-investment-overhaul .tab-content h3,
+.page-investment-overhaul .calculator-heading {
+    margin: 0 0 6px;
+    font-family: "Syne", sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+}
+
+.page-investment-overhaul .calculator-copy {
+    margin: 0 0 20px;
+    color: rgba(248, 250, 252, 0.68);
+    line-height: 1.6;
+}
+
+.page-investment-overhaul .form-stack {
+    display: grid;
+    gap: 14px;
+}
+
+.page-investment-overhaul .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.page-investment-overhaul .field {
+    display: grid;
+    gap: 8px;
+}
+
+.page-investment-overhaul .field label,
+.page-investment-overhaul .check-card span,
+.page-investment-overhaul .radio-card__title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: inherit;
+}
+
+.page-investment-overhaul .field input,
+.page-investment-overhaul .field select {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+    font: inherit;
+}
+
+.page-investment-overhaul .field select option {
+    color: #0f172a;
+}
+
+.page-investment-overhaul .field input::placeholder {
+    color: rgba(248, 250, 252, 0.4);
+}
+
+.page-investment-overhaul .field input:focus,
+.page-investment-overhaul .field select:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.52);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+}
+
+.page-investment-overhaul .radio-grid,
+.page-investment-overhaul .control-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.page-investment-overhaul .radio-card,
+.page-investment-overhaul .check-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-investment-overhaul .radio-card input,
+.page-investment-overhaul .check-card input {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    accent-color: #60a5fa;
+}
+
+.page-investment-overhaul .radio-card__copy small,
+.page-investment-overhaul .check-card small {
+    display: block;
+    margin-top: 4px;
+    color: rgba(248, 250, 252, 0.58);
+    line-height: 1.4;
+}
+
+.page-investment-overhaul .action-button,
+.page-investment-overhaul .view-btn,
+.page-investment-overhaul .scenario-action {
+    appearance: none;
+    border: 0;
+    min-height: 52px;
+    border-radius: 16px;
+    padding: 0 18px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+
+.page-investment-overhaul .action-button {
+    color: #0f172a;
+    background: linear-gradient(135deg, #f8fafc, #fde68a);
+    box-shadow: 0 16px 28px rgba(245, 158, 11, 0.18);
+}
+
+.page-investment-overhaul .scenario-bar {
+    margin-top: 18px;
+    padding: 20px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: grid;
+    gap: 14px;
+}
+
+.page-investment-overhaul .scenario-bar__row,
+.page-investment-overhaul .results-toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.page-investment-overhaul .scenario-bar input,
+.page-investment-overhaul .scenario-bar select,
+.page-investment-overhaul .compare-selects select {
+    flex: 1 1 220px;
+    min-height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 0 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+    font: inherit;
+}
+
+.page-investment-overhaul .scenario-action {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.page-investment-overhaul .scenario-action--danger {
+    background: rgba(220, 38, 38, 0.18);
+}
+
+.page-investment-overhaul .workbench-panel--light {
+    display: grid;
+    gap: 18px;
+}
+
+.page-investment-overhaul .analytics-card {
+    padding: 24px;
+}
+
+.page-investment-overhaul .analytics-card__top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.page-investment-overhaul .analytics-card__top h2 {
+    margin: 0;
+    font-family: "Syne", sans-serif;
+    font-size: 1.65rem;
+    letter-spacing: -0.04em;
+}
+
+.page-investment-overhaul .analytics-card__top p,
+.page-investment-overhaul .insight-panel p {
+    margin: 8px 0 0;
+    color: var(--shell-muted);
+    line-height: 1.65;
+}
+
+.page-investment-overhaul .chart-select {
+    min-width: 160px;
+}
+
+.page-investment-overhaul .chart-select select,
+.page-investment-overhaul .compare-selects select {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid var(--shell-border);
+    border-radius: 16px;
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.84);
+    color: var(--shell-text);
+    font: inherit;
+}
+
+.page-investment-overhaul .chart-choices {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.page-investment-overhaul .check-card {
+    background: #f7f6f2;
+    border-color: rgba(15, 23, 42, 0.05);
+}
+
+.page-investment-overhaul .check-card small {
+    color: var(--shell-muted);
+}
+
+.page-investment-overhaul .chart-canvas {
+    position: relative;
+    min-height: 380px;
+    border-radius: 24px;
+    background:
+        linear-gradient(180deg, rgba(29, 78, 216, 0.06), rgba(15, 118, 110, 0.02)),
+        #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 14px;
+}
+
+.page-investment-overhaul .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.page-investment-overhaul .metric-card {
+    padding: 20px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.82));
+    border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.page-investment-overhaul .metric-card span {
+    display: block;
+    color: var(--shell-muted);
+    font-size: 0.92rem;
+}
+
+.page-investment-overhaul .metric-card strong {
+    display: block;
+    margin-top: 10px;
+    font-family: "Syne", sans-serif;
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+    letter-spacing: -0.05em;
+}
+
+.page-investment-overhaul .insight-panel {
+    padding: 22px;
+    border-radius: 24px;
+    background:
+        linear-gradient(150deg, rgba(249, 115, 22, 0.1), rgba(15, 118, 110, 0.1)),
+        rgba(255, 250, 243, 0.82);
+}
+
+.page-investment-overhaul .insight-panel h3 {
+    margin: 0;
+    font-family: "Syne", sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: -0.04em;
+}
+
+.page-investment-overhaul .results-panel {
+    margin-top: 24px;
+    padding: 26px;
+}
+
+.page-investment-overhaul .results-panel__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.page-investment-overhaul .results-panel__header p {
+    color: var(--shell-muted);
+}
+
+.page-investment-overhaul .view-btn {
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--shell-text);
+}
+
+.page-investment-overhaul .view-btn.active {
+    background: linear-gradient(135deg, #0f766e, #1d4ed8);
+    color: #ffffff;
+    box-shadow: 0 18px 32px rgba(29, 78, 216, 0.22);
+}
+
+.page-investment-overhaul .view-content {
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.68);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    padding: 18px;
+}
+
+.page-investment-overhaul #tableView table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.page-investment-overhaul #tableView th,
+.page-investment-overhaul #tableView td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.page-investment-overhaul .compare-selects {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.page-investment-overhaul .compare-canvas {
+    position: relative;
+    min-height: 360px;
+    padding: 14px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    margin-bottom: 18px;
+}
+
+.page-investment-overhaul #compareSummary {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.82));
+    border-radius: 22px;
+}
+
+.page-investment-overhaul #lengthResult,
+.page-investment-overhaul #rateResult {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.page-investment-overhaul #lengthResult.show,
+.page-investment-overhaul #rateResult.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1160px) {
+    .page-investment-overhaul .invest-workbench {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 860px) {
+    .page-investment-overhaul .field-grid,
+    .page-investment-overhaul .chart-choices,
+    .page-investment-overhaul .metric-grid,
+    .page-investment-overhaul .hero-panel__grid,
+    .page-investment-overhaul .radio-grid,
+    .page-investment-overhaul .control-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-investment-overhaul .tab-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .page-investment-overhaul .results-panel__header,
+    .page-investment-overhaul .analytics-card__top,
+    .page-investment-overhaul .panel-heading {
+        flex-direction: column;
+        align-items: start;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-investment-overhaul .invest-hero {
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .page-investment-overhaul .invest-hero__intro,
+    .page-investment-overhaul .workbench-panel,
+    .page-investment-overhaul .analytics-card,
+    .page-investment-overhaul .results-panel,
+    .page-investment-overhaul .metric-card,
+    .page-investment-overhaul .insight-panel,
+    .page-investment-overhaul .tab-content,
+    .page-investment-overhaul .scenario-bar {
+        padding: 18px;
+    }
+
+    .page-investment-overhaul .invest-hero__actions {
+        flex-direction: column;
+    }
+
+    .page-investment-overhaul .hero-action,
+    .page-investment-overhaul .action-button,
+    .page-investment-overhaul .view-btn,
+    .page-investment-overhaul .scenario-action {
+        width: 100%;
+    }
+
+    .page-investment-overhaul .tab-bar {
+        padding: 8px;
+        gap: 8px;
+        border-radius: 18px;
+    }
+
+    .page-investment-overhaul .tab-button {
+        min-height: 48px;
+        font-size: 0.92rem;
+    }
+
+    .page-investment-overhaul .radio-card,
+    .page-investment-overhaul .check-card {
+        align-items: start;
+        min-height: 0;
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .page-investment-overhaul .scenario-bar__row,
+    .page-investment-overhaul .results-toolbar,
+    .page-investment-overhaul .compare-selects {
+        flex-direction: column;
+    }
+
+    .page-investment-overhaul .scenario-bar input,
+    .page-investment-overhaul .scenario-bar select,
+    .page-investment-overhaul .compare-selects select {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .page-investment-overhaul .chart-select {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .page-investment-overhaul .chart-canvas {
+        min-height: 280px;
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .page-investment-overhaul .compare-canvas {
+        min-height: 280px;
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .page-investment-overhaul #compareSummary {
+        padding: 16px;
+    }
+
+    .page-investment-overhaul #lengthResult .field-grid {
+        gap: 12px;
+    }
+
+    .page-investment-overhaul .tool-card,
+    .page-investment-overhaul .shell-card {
+        border-radius: 20px;
+    }
+
+    .page-investment-overhaul #tableView th,
+    .page-investment-overhaul #tableView td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        white-space: nowrap;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .page-investment-overhaul .invest-hero__intro,
+    .page-investment-overhaul .workbench-panel,
+    .page-investment-overhaul .analytics-card,
+    .page-investment-overhaul .results-panel,
+    .page-investment-overhaul .metric-card,
+    .page-investment-overhaul .insight-panel,
+    .page-investment-overhaul .tab-content,
+    .page-investment-overhaul .scenario-bar {
+        padding: 16px;
+    }
+
+    .page-investment-overhaul .panel-heading h2,
+    .page-investment-overhaul .results-panel__header h2,
+    .page-investment-overhaul .analytics-card__top h2 {
+        font-size: 1.4rem;
+    }
+
+    .page-investment-overhaul .metric-card strong {
+        font-size: 1.3rem;
+    }
+}
