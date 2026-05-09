@@ -12,7 +12,12 @@ const footerLinks = [
     <span class="footer-copy">&copy; {year} Ahmed Bešić</span>
     <div class="footer-links">
       {footerLinks.map((link) => (
-        <a href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+        <a
+          href={link.href}
+          aria-label={`Open ${link.label}`}
+          target={link.href.startsWith('http') ? '_blank' : undefined}
+          rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        >
           <img src={link.icon} alt="" class="footer-icon" width="16" height="16" loading="lazy" />
           {link.label}
         </a>
