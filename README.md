@@ -2,7 +2,7 @@
 ### Full-Stack Software Developer
 
 <p align="left">
-  <a href="https://github.com/theknight22"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-theknight22-181717?style=for-the-badge&logo=github" /></a>
+  <a href="https://github.com/ahmed-besic"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-ahmed--besic-181717?style=for-the-badge&logo=github" /></a>
   <a href="https://linkedin.com/in/ahmed-besic"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-ahmed--besic-0A66C2?style=for-the-badge&logo=linkedin" /></a>
   <a href="mailto:ahmed.besic2000@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-Contact_Me-EA4335?style=for-the-badge&logo=gmail&logoColor=white" /></a>
 </p>
@@ -90,5 +90,5 @@ Built an end-to-end ETL workflow with Azure Data Factory, Azure Functions, Snowf
 ## Connect
 
 - LinkedIn: [linkedin.com/in/ahmed-besic](https://linkedin.com/in/ahmed-besic)
-- GitHub: [github.com/theknight22](https://github.com/theknight22)
+- GitHub: [github.com/ahmed-besic](https://github.com/ahmed-besic)
 - Email: [ahmed.besic2000@gmail.com](mailto:ahmed.besic2000@gmail.com)
