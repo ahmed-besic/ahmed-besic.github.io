@@ -117,9 +117,15 @@ const projects = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1rem;
+    perspective: 1000px;
   }
 
   .project-card {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --sheen-opacity: 0;
+    --nx: 0;
+    --ny: 0;
     position: relative;
     min-height: 270px;
     display: flex;
@@ -131,30 +137,51 @@ const projects = [
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 1.35rem;
-    transition: all var(--transition);
+    transform: translateY(0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 90ms linear, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
     color: var(--text-primary);
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.12) 28%, rgba(255, 255, 255, 0.04) 52%, transparent 74%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 32%, transparent 62%);
+    opacity: var(--sheen-opacity);
+    transition: opacity 120ms ease;
+    mix-blend-mode: normal;
   }
 
   .project-card::before {
     content: '';
     position: absolute;
-    inset: 0 0 auto;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-    opacity: 0;
-    transition: opacity var(--transition);
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset calc(var(--nx) * 14px) calc(var(--ny) * 14px) 30px rgba(0, 0, 0, 0.56);
+    opacity: 1;
+    transition: box-shadow 90ms linear;
   }
 
   .project-card:hover {
     background: #111111;
-    border-color: var(--border-light);
-    transform: translateY(-3px);
+    border-color: var(--border);
+    transform: translateY(-5px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
     color: var(--text-primary);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  }
+
+  .project-card:hover::after {
+    opacity: var(--sheen-opacity);
   }
 
   .project-card:hover::before {
-    opacity: 1;
+    box-shadow: inset calc(var(--nx) * 14px) calc(var(--ny) * 14px) 30px rgba(0, 0, 0, 0.56);
   }
 
   .project-top {
@@ -223,13 +250,20 @@ const projects = [
   }
 
   .project-tag {
+    --pill-depth-x: 0px;
+    --pill-depth-y: 0px;
     font-size: 0.7rem;
     font-weight: 500;
     padding: 0.22rem 0.55rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.045);
     border-radius: 100px;
+    transform: translate3d(var(--pill-depth-x), var(--pill-depth-y), -3px);
+    box-shadow:
+      inset calc(var(--nx) * -8px) calc(var(--ny) * -8px) 10px rgba(255, 255, 255, 0.13),
+      inset calc(var(--nx) * 8px) calc(var(--ny) * 8px) 13px rgba(0, 0, 0, 0.62);
+    transition: transform 90ms linear, box-shadow 140ms ease;
   }
 
   @media (max-width: 768px) {
@@ -245,6 +279,98 @@ const projects = [
 
     .project-card {
       min-height: auto;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .projects-grid {
+      perspective: none;
+    }
+
+    .project-card {
+      transform: none;
+      transition: border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .project-card::after {
+      display: none;
+    }
+
+    .project-card::before {
+      display: none;
+    }
+
+    .project-tag {
+      transform: none;
+      transition: box-shadow 140ms ease;
     }
   }
 </style>
+
+<script>
+  const setupProjectTilt = () => {
+    const cards = document.querySelectorAll('.project-card');
+    const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!canTilt || reducedMotion) return;
+
+    cards.forEach((card) => {
+      if (card.dataset.tiltReady === 'true') return;
+      card.dataset.tiltReady = 'true';
+
+      let frame = 0;
+
+      const updateTilt = (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const px = x / rect.width;
+        const py = y / rect.height;
+        const rotateY = (px - 0.5) * 14;
+        const rotateX = (0.5 - py) * 14;
+
+        card.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`);
+        card.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`);
+        const nx = Math.max(-1, Math.min(1, rotateY / 14));
+        const ny = Math.max(-1, Math.min(1, -rotateX / 14));
+        const topLeftTilt = Math.max(0.4, (-nx + -ny) * 2.2);
+        const tiltStrength = Math.min(1, (Math.abs(rotateX) + Math.abs(rotateY)) / 30);
+        const sheen = Math.min(0.58, topLeftTilt * tiltStrength * 1.9);
+        card.style.setProperty('--sheen-opacity', sheen.toFixed(3));
+        card.style.setProperty('--nx', nx.toFixed(3));
+        card.style.setProperty('--ny', ny.toFixed(3));
+        card.style.setProperty('--pill-depth-x', `${(-rotateY * 0.6).toFixed(2)}px`);
+        card.style.setProperty('--pill-depth-y', `${(rotateX * 0.6).toFixed(2)}px`);
+      };
+
+      const onMove = (event) => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => updateTilt(event));
+      };
+
+      const onLeave = () => {
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+        card.style.setProperty('--sheen-opacity', '0');
+        card.style.setProperty('--nx', '0');
+        card.style.setProperty('--ny', '0');
+        card.style.setProperty('--pill-depth-x', '0px');
+        card.style.setProperty('--pill-depth-y', '0px');
+      };
+
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      card.addEventListener('pointermove', onMove);
+      card.addEventListener('pointerleave', onLeave);
+    });
+  };
+
+  setupProjectTilt();
+  document.addEventListener('astro:page-load', setupProjectTilt);
+</script>
