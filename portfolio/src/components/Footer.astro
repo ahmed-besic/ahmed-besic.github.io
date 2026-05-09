@@ -1,0 +1,70 @@
+---
+const year = new Date().getFullYear();
+const footerLinks = [
+  { label: 'GitHub', href: 'https://github.com/theknight22', icon: 'https://svgl.app/library/github_dark.svg' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/ahmed-besic', icon: 'https://svgl.app/library/linkedin.svg' },
+  { label: 'Email', href: 'mailto:ahmed.besic2000@gmail.com', icon: 'https://svgl.app/library/gmail.svg' },
+];
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span class="footer-copy">&copy; {year} Ahmed Bešić</span>
+    <div class="footer-links">
+      {footerLinks.map((link) => (
+        <a href={link.href} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+          <img src={link.icon} alt="" class="footer-icon" width="16" height="16" loading="lazy" />
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .footer-links a:hover {
+    color: var(--text-primary);
+  }
+
+  .footer-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+    }
+  }
+</style>

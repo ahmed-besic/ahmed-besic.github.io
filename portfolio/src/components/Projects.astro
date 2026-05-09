@@ -1,0 +1,250 @@
+---
+const projects = [
+  {
+    title: 'CBAMReady',
+    typeI18n: 'projects.type.cbam',
+    descI18n: 'projects.desc.cbam',
+    description: 'CBAM compliance SaaS for manufacturers exporting to the EU. Track embedded emissions, manage product passports, and prepare quarterly reporting in one system.',
+    url: 'https://cbam-ba.app/',
+    tags: ['React', 'Astro', 'Convex', 'SaaS'],
+    type: 'Compliance platform',
+  },
+  {
+    title: 'Virtual Classroom',
+    typeI18n: 'projects.type.classroom',
+    descI18n: 'projects.desc.classroom',
+    description: 'Live teaching platform with HD video, collaborative whiteboard, PDF worksheet overlays, and gamification tools built for online educators.',
+    url: 'https://work-classroom.vercel.app/',
+    tags: ['React', 'Convex', 'Daily.co'],
+    type: 'Education tool',
+  },
+  {
+    title: 'Svadba Galerija',
+    typeI18n: 'projects.type.svadba',
+    descI18n: 'projects.desc.svadba',
+    description: 'Real-time wedding photo-sharing app. Guests upload photos that instantly sync to a shared gallery for seamless event coverage.',
+    url: 'https://svadba-upload.vercel.app/',
+    tags: ['React', 'Convex', 'Real-time'],
+    type: 'Event gallery',
+  },
+  {
+    title: 'Trivia Night',
+    typeI18n: 'projects.type.trivia',
+    descI18n: 'projects.desc.trivia',
+    description: 'Real-time multiplayer quiz game. Enter a code to join, or host your own game with live score tracking.',
+    url: 'https://trivia-igra.vercel.app/',
+    tags: ['React', 'WebSockets', 'Multiplayer'],
+    type: 'Multiplayer game',
+  },
+  {
+    title: 'Nacrtaj i Pogodi',
+    typeI18n: 'projects.type.crtaj',
+    descI18n: 'projects.desc.crtaj',
+    description: 'Multiplayer drawing and guessing game for 2–8 players. Draw on mobile, guess in real-time.',
+    url: 'https://crtaj.vercel.app/',
+    tags: ['React', 'Canvas', 'Multiplayer'],
+    type: 'Party game',
+  },
+  {
+    title: 'ZenZone',
+    typeI18n: 'projects.type.zen',
+    descI18n: 'projects.desc.zen',
+    description: 'Wellness and recovery platform providing a dedicated space for rest and recuperation resources.',
+    url: 'https://zen-zone-besic.vercel.app/',
+    tags: ['React', 'Next.js'],
+    type: 'Wellness app',
+  },
+];
+---
+
+<section id="projects">
+  <div class="container fade-in">
+    <div class="projects-heading">
+      <div>
+        <p class="section-label" data-i18n="projects.label">Projects</p>
+        <h2 class="section-title" data-i18n="projects.title">Things I've built</h2>
+      </div>
+      <p class="projects-intro" data-i18n="projects.intro">
+        A selection of shipped apps across SaaS, education, real-time collaboration, and multiplayer experiences.
+      </p>
+    </div>
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-card">
+          <div class="project-top">
+            <span class="project-type" data-i18n={project.typeI18n}>{project.type}</span>
+            <span class="project-icon" aria-hidden="true">&#8599;</span>
+          </div>
+          <div class="project-header">
+            <h3 class="project-title">{project.title}</h3>
+          </div>
+          <p class="project-desc" data-i18n={project.descI18n}>{project.description}</p>
+          <div class="project-tags">
+            {project.tags.map((tag) => (
+              <span class="project-tag">{tag}</span>
+            ))}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #projects {
+    border-top: 1px solid var(--border);
+  }
+
+  .projects-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .projects-heading .section-title {
+    margin-bottom: 0;
+  }
+
+  .projects-intro {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+
+  .project-card {
+    position: relative;
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0) 12%),
+      #0e0e0e;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.35rem;
+    transition: all var(--transition);
+    color: var(--text-primary);
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .project-card:hover {
+    background: #111111;
+    border-color: var(--border-light);
+    transform: translateY(-3px);
+    color: var(--text-primary);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .project-card:hover::before {
+    opacity: 1;
+  }
+
+  .project-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-type {
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.7rem;
+  }
+
+  .project-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: all var(--transition);
+  }
+
+  .project-card:hover .project-icon {
+    color: var(--accent);
+    border-color: rgba(79, 156, 247, 0.35);
+    background: var(--accent-dim);
+    transform: translate(2px, -2px);
+  }
+
+  .project-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .project-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.22rem 0.55rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 100px;
+  }
+
+  @media (max-width: 768px) {
+    .projects-heading {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card {
+      min-height: auto;
+    }
+  }
+</style>

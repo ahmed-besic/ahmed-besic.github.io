@@ -1,0 +1,329 @@
+---
+const skillGroups = [
+  {
+    label: 'Languages',
+    i18n: 'skills.group.languages',
+    items: [
+      { name: 'C/C++', icon: 'https://svgl.app/library/c-plusplus.svg' },
+      { name: 'TypeScript', icon: 'https://svgl.app/library/typescript.svg' },
+      { name: 'JavaScript', icon: 'https://svgl.app/library/javascript.svg' },
+      { name: 'HTML/CSS', icon: 'https://svgl.app/library/html5.svg' },
+      { name: 'Python', icon: 'https://svgl.app/library/python.svg' },
+      { name: 'Go', icon: 'https://svgl.app/library/golang_dark.svg' },
+      { name: 'SQL', icon: '' },
+      { name: 'Java', icon: 'https://svgl.app/library/java.svg' },
+    ],
+  },
+  {
+    label: 'Frameworks',
+    i18n: 'skills.group.frameworks',
+    items: [
+      { name: 'Tailwind CSS', icon: 'https://svgl.app/library/tailwindcss.svg' },
+      { name: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+      { name: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+      { name: 'Node.js', icon: 'https://svgl.app/library/nodejs.svg' },
+      { name: 'Convex', icon: 'https://svgl.app/library/convex.svg' },
+      { name: 'Three.js', icon: 'https://svgl.app/library/threejs-dark.svg' },
+      { name: 'dbt', icon: '' },
+    ],
+  },
+  {
+    label: 'Cloud & DevOps',
+    i18n: 'skills.group.cloud',
+    items: [
+      { name: 'AWS (S3, EC2, RDS)', icon: 'https://svgl.app/library/aws_dark.svg' },
+      { name: 'Azure (ADF, Functions, Blob)', icon: 'https://svgl.app/library/azure.svg' },
+      { name: 'Git', icon: 'https://svgl.app/library/git.svg' },
+      { name: 'GitHub Actions', icon: '' },
+    ],
+  },
+  {
+    label: 'Databases',
+    i18n: 'skills.group.databases',
+    items: [
+      { name: 'Snowflake', icon: '' },
+      { name: 'PostgreSQL', icon: 'https://svgl.app/library/postgresql.svg' },
+      { name: 'MongoDB', icon: 'https://svgl.app/library/mongodb-icon-dark.svg' },
+      { name: 'SQL Server', icon: 'https://svgl.app/library/sql-server.svg' },
+    ],
+  },
+  {
+    label: 'Platforms & Tools',
+    i18n: 'skills.group.platforms',
+    items: [
+      { name: 'Shopify', icon: 'https://svgl.app/library/shopify.svg' },
+      { name: 'WordPress', icon: 'https://svgl.app/library/wordpress.svg' },
+      { name: 'Etsy', icon: '' },
+      { name: 'Amazon PPC Automation', icon: '' },
+    ],
+  },
+];
+---
+
+<section id="skills">
+  <div class="container fade-in">
+    <div class="skills-header">
+      <div>
+        <p class="section-label" data-i18n="skills.label">Skills</p>
+        <h2 class="section-title" data-i18n="skills.title">Technical toolkit</h2>
+      </div>
+      <p class="skills-intro" data-i18n="skills.intro">
+        A practical stack for building full-stack products, automation workflows, commerce systems,
+        and data-backed web applications.
+      </p>
+    </div>
+
+    <div class="skills-board" aria-label="Technical skills grouped by category" data-i18n-aria-label="skills.boardLabel">
+      {skillGroups.map((group, index) => (
+        <section class="skill-row" aria-labelledby={`skill-group-${index}`}>
+          <div class="skill-row-heading">
+            <span class="skill-index">{String(index + 1).padStart(2, '0')}</span>
+            <h3 id={`skill-group-${index}`} class="skill-group-label" data-i18n={group.i18n}>{group.label}</h3>
+          </div>
+          <ul class="skill-list">
+            {group.items.map((item) => (
+              <li class="skill-item">
+                {item.icon ? (
+                  <img src={item.icon} alt="" class="skill-icon" width="16" height="16" loading="lazy" />
+                ) : (
+                  <span class="skill-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
+                )}
+                <span class="skill-name" aria-label={item.name} style={`--char-count: ${Array.from(item.name).length}`}>
+                  {Array.from(item.name).map((char, charIndex) => (
+                    <span class="skill-char" style={`--char-index: ${charIndex}`}>{char === ' ' ? '\u00A0' : char}</span>
+                  ))}
+                  <span class="skill-cursor" aria-hidden="true"></span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #skills {
+    border-top: 1px solid var(--border);
+  }
+
+  .skills-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .skills-intro {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .skills-board {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skills-board::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 16% 10%, rgba(79, 156, 247, 0.12), transparent 30%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: auto, 72px 100%;
+    opacity: 0.35;
+  }
+
+  .skill-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 2rem;
+    padding: 1.35rem 0;
+    border-bottom: 1px solid var(--border);
+    content-visibility: auto;
+    contain-intrinsic-size: 92px;
+  }
+
+  .skill-row:last-child {
+    border-bottom: 0;
+  }
+
+  .skill-row-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+
+  .skill-index {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .skill-group-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .skill-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 34px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 0.78rem;
+    background: rgba(17, 17, 17, 0.78);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text-secondary);
+    transition: border-color var(--transition), color var(--transition), background var(--transition), transform var(--transition);
+  }
+
+  .skill-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .skill-name {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.78rem;
+    line-height: 1;
+    padding-right: 0.72ch;
+  }
+
+  .skill-char {
+    display: inline-block;
+    width: 1ch;
+    transition: color var(--transition);
+  }
+
+  .skill-cursor {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    width: 0.5rem;
+    height: 1rem;
+    border: 0;
+    background: var(--accent);
+    box-shadow: 0 0 14px rgba(79, 156, 247, 0.36);
+    opacity: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .skill-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.58rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .skill-item:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: rgba(79, 156, 247, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .skill-item:hover .skill-char {
+    animation: terminal-type 1ms linear both;
+    animation-delay: calc(var(--char-index) * 57ms);
+  }
+
+  .skill-item:hover .skill-cursor {
+    opacity: 1;
+    animation:
+      terminal-cursor-move calc(var(--char-count, 12) * 57ms) steps(var(--char-count, 12), end) both,
+      terminal-cursor 900ms steps(1, end) infinite;
+  }
+
+  @keyframes terminal-type {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+      color: var(--accent);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      color: var(--text-primary);
+    }
+  }
+
+  @keyframes terminal-cursor-move {
+    0% {
+      transform: translateX(0) translateY(-50%);
+    }
+
+    100% {
+      transform: translateX(calc(var(--char-count, 12) * 1ch)) translateY(-50%);
+    }
+  }
+
+  @keyframes terminal-cursor {
+    0%,
+    45% {
+      opacity: 1;
+    }
+
+    46%,
+    100% {
+      opacity: 0.25;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .skills-header,
+    .skill-row {
+      grid-template-columns: 1fr;
+    }
+
+    .skills-header {
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-row {
+      gap: 0.85rem;
+      padding: 1.2rem 0;
+    }
+
+    .skills-board::before {
+      background-size: auto, 48px 100%;
+    }
+  }
+</style>

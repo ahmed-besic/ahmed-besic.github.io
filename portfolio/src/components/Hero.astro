@@ -1,0 +1,638 @@
+---
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/theknight22', icon: 'https://svgl.app/library/github_dark.svg' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/ahmed-besic', icon: 'https://svgl.app/library/linkedin.svg' },
+  { label: 'Email', href: 'mailto:ahmed.besic2000@gmail.com', icon: 'https://svgl.app/library/gmail.svg' },
+];
+
+const featuredProjects = [
+  {
+    title: 'CBAMReady',
+    description: 'CBAM compliance SaaS for manufacturers exporting to the EU. Track emissions, manage product passports, prepare quarterly reporting.',
+    url: 'https://cbam-ba.app/',
+    tags: ['React', 'Astro', 'Convex', 'SaaS'],
+  },
+  {
+    title: 'Virtual Classroom',
+    description: 'Live teaching platform with HD video, collaborative whiteboard, PDF overlays, and gamification tools.',
+    url: 'https://work-classroom.vercel.app/',
+    tags: ['React', 'Convex', 'Daily.co'],
+  },
+  {
+    title: 'ZenZone',
+    description: 'Wellness and recovery platform providing a dedicated space for rest and recuperation resources.',
+    url: 'https://zen-zone-besic.vercel.app/',
+    tags: ['React', 'Next.js', 'Convex'],
+  },
+];
+
+const gridColumns = 22;
+const gridRows = 12;
+const gridSegments = 4;
+---
+
+<section id="hero" class="hero" style="--mouse-x: 25%; --mouse-y: 52%; --tilt-x: 0deg; --tilt-y: 0deg;">
+  <div class="hero-bg" aria-hidden="true">
+    <canvas
+      class="hero-grid"
+      data-columns={gridColumns}
+      data-rows={gridRows}
+      data-segments={gridSegments}
+    ></canvas>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-left fade-in">
+      <div class="photo-wrapper">
+        <img src="Ppic.webp" alt="Ahmed Bešić" class="profile-img" />
+      </div>
+      <div class="hero-text">
+        <p class="hero-greeting" data-i18n="hero.greeting">Hello, I'm</p>
+        <h1 class="hero-name">Ahmed Bešić</h1>
+        <p class="hero-title" data-i18n="hero.title">Full-Stack Software Developer</p>
+        <p class="hero-desc" data-i18n="hero.desc">Building scalable React/Next.js and Python applications. Turning business requirements into production-ready solutions for international clients.</p>
+        <p class="connect-label" data-i18n="hero.connect">Connect via:</p>
+        <div class="hero-socials">
+          {socials.map((s) => (
+            <a href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined} rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined} class="social-link" aria-label={s.label}>
+              <img src={s.icon} alt="" class="social-icon" width="20" height="20" loading="lazy" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="hero-right fade-in">
+      <div class="featured-grid">
+        {featuredProjects.map((project) => (
+          <a href={project.url} target="_blank" rel="noopener noreferrer" class="featured-card">
+            <div class="featured-top">
+              <h3 class="featured-title">{project.title}</h3>
+              <span class="featured-arrow">&#8599;</span>
+            </div>
+            <div class="featured-tags">
+              {project.tags.map((tag) => (
+                <span class="featured-tag">{tag}</span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+      <a href="#projects" class="view-all-btn" data-i18n="hero.viewAll">View All Projects</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const canvas = document.querySelector<HTMLCanvasElement>('.hero-grid');
+  const ctx = canvas?.getContext('2d');
+
+  if (hero && canvas && ctx) {
+    const columns = Number(canvas.dataset.columns);
+    const rows = Number(canvas.dataset.rows);
+    const segments = Number(canvas.dataset.segments);
+    const pointer = { x: 0, y: 0, active: false };
+    let rect = canvas.getBoundingClientRect();
+    let dpr = 1;
+    let animationFrame = 0;
+    let influence = 0;
+    let targetInfluence = 0;
+    let pieces: Array<{
+      x1: number;
+      y1: number;
+      x2: number;
+      y2: number;
+      cx: number;
+      cy: number;
+      scatterX: number;
+      scatterY: number;
+      scatterRotate: number;
+    }> = [];
+
+    const random = (x: number, y: number, seed: number) => {
+      const value = Math.sin(x * 12.9898 + y * 78.233 + seed * 37.719) * 43758.5453;
+      return value - Math.floor(value);
+    };
+
+    const isVisibleSegment = (
+      x1: number,
+      y1: number,
+      x2: number,
+      y2: number,
+      width: number,
+      height: number,
+      margin = 180
+    ) => {
+      const minX = Math.min(x1, x2);
+      const maxX = Math.max(x1, x2);
+      const minY = Math.min(y1, y2);
+      const maxY = Math.max(y1, y2);
+
+      return maxX >= -margin && minX <= width + margin && maxY >= -margin && minY <= height + margin;
+    };
+
+    const project = (x: number, y: number, width: number, height: number) => {
+      const gridWidth = width * 1.7;
+      const gridHeight = height * 1.08;
+      const originX = width * 0.6;
+      const originY = height * 0.08;
+      const localX = x * gridWidth;
+      const localY = y * gridHeight;
+      const skewX = 0.1763269807;
+      const diagonalSkew = -1;
+      const scaleY = 0.82;
+
+      return {
+        x: originX + localX + localY * (skewX + diagonalSkew),
+        y: originY + localY * scaleY,
+      };
+    };
+
+    const buildPieces = () => {
+      rect = canvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const width = rect.width;
+      const height = rect.height;
+      const nextPieces: typeof pieces = [];
+
+      for (let row = 0; row < rows; row += 1) {
+        for (let col = 0; col < columns - 1; col += 1) {
+          for (let segment = 0; segment < segments; segment += 1) {
+            const startX = (col + segment / segments) / (columns - 1);
+            const endX = (col + (segment + 1) / segments) / (columns - 1);
+            const y = row / (rows - 1);
+            const start = project(startX, y, width, height);
+            const end = project(endX, y, width, height);
+            const cx = (start.x + end.x) / 2;
+            const cy = (start.y + end.y) / 2;
+
+            if (!isVisibleSegment(start.x, start.y, end.x, end.y, width, height)) {
+              continue;
+            }
+
+            nextPieces.push({
+              x1: start.x,
+              y1: start.y,
+              x2: end.x,
+              y2: end.y,
+              cx,
+              cy,
+              scatterX: (random(cx, cy, 1) - 0.5) * 44,
+              scatterY: (random(cx, cy, 2) - 0.5) * 44,
+              scatterRotate: (random(cx, cy, 3) - 0.5) * 240,
+            });
+          }
+        }
+      }
+
+      for (let col = 0; col < columns; col += 1) {
+        for (let row = 0; row < rows - 1; row += 1) {
+          for (let segment = 0; segment < segments; segment += 1) {
+            const x = col / (columns - 1);
+            const startY = (row + segment / segments) / (rows - 1);
+            const endY = (row + (segment + 1) / segments) / (rows - 1);
+            const start = project(x, startY, width, height);
+            const end = project(x, endY, width, height);
+            const cx = (start.x + end.x) / 2;
+            const cy = (start.y + end.y) / 2;
+
+            if (!isVisibleSegment(start.x, start.y, end.x, end.y, width, height)) {
+              continue;
+            }
+
+            nextPieces.push({
+              x1: start.x,
+              y1: start.y,
+              x2: end.x,
+              y2: end.y,
+              cx,
+              cy,
+              scatterX: (random(cx, cy, 4) - 0.5) * 44,
+              scatterY: (random(cx, cy, 5) - 0.5) * 44,
+              scatterRotate: (random(cx, cy, 6) - 0.5) * 240,
+            });
+          }
+        }
+      }
+
+      pieces = nextPieces;
+    };
+
+    const drawLine = (
+      piece: (typeof pieces)[number],
+      force: number,
+      alpha: number
+    ) => {
+      const dx = piece.cx - pointer.x;
+      const dy = piece.cy - pointer.y;
+      const angle = Math.atan2(dy, dx);
+      const outwardPush = force * 58;
+      const pushX = Math.cos(angle) * outwardPush + piece.scatterX * force;
+      const pushY = Math.sin(angle) * outwardPush + piece.scatterY * force;
+      const rotation = (piece.scatterRotate * force * Math.PI) / 180;
+      const centerX = piece.cx + pushX;
+      const centerY = piece.cy + pushY;
+      const cos = Math.cos(rotation);
+      const sin = Math.sin(rotation);
+      const startX = piece.x1 - piece.cx;
+      const startY = piece.y1 - piece.cy;
+      const endX = piece.x2 - piece.cx;
+      const endY = piece.y2 - piece.cy;
+
+      ctx.beginPath();
+      ctx.moveTo(centerX + startX * cos - startY * sin, centerY + startX * sin + startY * cos);
+      ctx.lineTo(centerX + endX * cos - endY * sin, centerY + endX * sin + endY * cos);
+      ctx.strokeStyle = `rgba(107, 176, 255, ${alpha})`;
+      ctx.stroke();
+    };
+
+    const drawGrid = () => {
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = 'rgba(79, 156, 247, 0.28)';
+      ctx.shadowBlur = 7;
+
+      pieces.forEach((piece) => {
+        const distance = influence > 0.01
+          ? Math.hypot(piece.cx - pointer.x, piece.cy - pointer.y)
+          : Infinity;
+        const force = Math.max(0, 1 - distance / 170) * influence;
+        const drawMargin = 220;
+        if (
+          !pointer.active &&
+          (piece.cx < -drawMargin ||
+            piece.cx > rect.width + drawMargin ||
+            piece.cy < -drawMargin ||
+            piece.cy > rect.height + drawMargin)
+        ) {
+          return;
+        }
+
+        const distanceFade = Math.max(0, Math.min(1, 1 - piece.cy / (rect.height * 0.98)));
+        const bottomFade = Math.max(0.2, Math.min(1, piece.cy / (rect.height * 0.18)));
+        const alpha = (0.28 + force * 0.5) * (0.3 + distanceFade * 0.7) * bottomFade;
+
+        drawLine(piece, force, alpha);
+      });
+    };
+
+    const render = () => {
+      influence += (targetInfluence - influence) * 0.18;
+
+      if (targetInfluence === 0 && influence < 0.01) {
+        influence = 0;
+        animationFrame = 0;
+        drawGrid();
+        return;
+      }
+
+      drawGrid();
+      animationFrame = window.requestAnimationFrame(render);
+    };
+
+    const startRender = () => {
+      if (!animationFrame) {
+        animationFrame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const heroRect = hero.getBoundingClientRect();
+      rect = canvas.getBoundingClientRect();
+      const x = ((event.clientX - heroRect.left) / heroRect.width) * 100;
+      const y = ((event.clientY - heroRect.top) / heroRect.height) * 100;
+      const tiltX = ((y - 50) / 50) * -1.6;
+      const tiltY = ((x - 50) / 50) * 1.6;
+
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+      pointer.active = true;
+      targetInfluence = 1;
+
+      hero.style.setProperty('--mouse-x', `${x}%`);
+      hero.style.setProperty('--mouse-y', `${y}%`);
+      hero.style.setProperty('--tilt-x', `${tiltX}deg`);
+      hero.style.setProperty('--tilt-y', `${tiltY}deg`);
+
+      startRender();
+    };
+
+    const handlePointerLeave = () => {
+      pointer.active = false;
+      targetInfluence = 0;
+      hero.style.setProperty('--tilt-x', '0deg');
+      hero.style.setProperty('--tilt-y', '0deg');
+      startRender();
+    };
+
+    const updateCanvasRect = () => {
+      rect = canvas.getBoundingClientRect();
+    };
+
+    buildPieces();
+    drawGrid();
+
+    hero.addEventListener('pointermove', handlePointerMove);
+    hero.addEventListener('pointerleave', handlePointerLeave);
+    window.addEventListener('resize', buildPieces);
+    window.addEventListener('scroll', updateCanvasRect, { passive: true });
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 64px;
+    background: var(--bg-primary);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0 0 1px;
+    z-index: 0;
+    overflow: hidden;
+    contain: paint;
+    pointer-events: none;
+  }
+
+  .hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+      linear-gradient(135deg, rgba(79, 156, 247, 0.04), transparent 42%, rgba(107, 176, 255, 0.04));
+    opacity: 0.45;
+  }
+
+  .hero-grid {
+    position: absolute;
+    left: 0;
+    bottom: -12%;
+    width: 100%;
+    height: 90%;
+    mask-image: linear-gradient(to top, black 0%, black 72%, rgba(0, 0, 0, 0.48) 78%, transparent 100%);
+    opacity: 1;
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-origin: 50% 100%;
+    transition: transform 120ms ease-out;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    flex: 1;
+    margin-right: 60px;
+    max-width: 520px;
+  }
+
+  .photo-wrapper {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-greeting {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-name {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .connect-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-socials {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    transition: all var(--transition);
+  }
+
+  .social-link:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .social-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-right {
+    flex: 1;
+    max-width: 420px;
+    transform: translateX(80px) translateY(30px);
+  }
+
+  .featured-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .featured-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: rgba(12, 16, 20, 0.144);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.15rem;
+    transition: all var(--transition);
+    color: var(--text-primary);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .featured-card:hover {
+    background: rgba(16, 22, 28, 0.5);
+    border-color: rgba(107, 176, 255, 0.34);
+    color: var(--text-primary);
+  }
+
+  .featured-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .featured-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .featured-arrow {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+  }
+
+  .featured-card:hover .featured-arrow {
+    color: var(--accent);
+  }
+
+  .featured-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .featured-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    background: rgba(79, 156, 247, 0.16);
+    color: #82baff;
+    border: 1px solid rgba(107, 176, 255, 0.24);
+    border-radius: 100px;
+  }
+
+  .view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    padding: 0.8rem 1.5rem;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all var(--transition);
+    text-align: center;
+  }
+
+  .view-all-btn:hover {
+    background: var(--accent-hover);
+    color: var(--bg-primary);
+  }
+
+  @media (max-width: 768px) {
+    .hero-bg::before {
+      background:
+        linear-gradient(135deg, rgba(79, 156, 247, 0.08), transparent 45%);
+    }
+
+    .hero-grid {
+      mask-image: linear-gradient(to top, transparent 0%, black 20%, black 74%, transparent 100%);
+      opacity: 0.58;
+    }
+
+    .hero-inner {
+      flex-direction: column;
+      gap: 2.5rem;
+      padding: 2rem 0;
+    }
+
+    .hero-left {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-right: 0;
+      max-width: 100%;
+    }
+
+    .hero-name {
+      font-size: 2.25rem;
+    }
+
+    .photo-wrapper {
+      width: 140px;
+      height: 140px;
+    }
+
+    .hero-socials {
+      justify-content: center;
+    }
+
+    .hero-right {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .featured-grid {
+      padding: 0 0.35rem;
+    }
+
+    .view-all-btn {
+      display: flex;
+      width: fit-content;
+      margin: 0 auto;
+    }
+  }
+</style>

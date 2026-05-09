@@ -1,0 +1,131 @@
+---
+---
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="#hero" class="logo">Ahmed B.</a>
+    <div class="lang-switcher" role="group" aria-label="Language switcher">
+      <span class="lang-indicator" data-lang-indicator aria-hidden="true"></span>
+      <button class="lang-btn" data-lang-button data-lang="en" aria-label="Switch to English">EN</button>
+      <button class="lang-btn" data-lang-button data-lang="bs" aria-label="Switch to Bosnian">BS</button>
+      <button class="lang-btn" data-lang-button data-lang="de" aria-label="Switch to German">DE</button>
+    </div>
+  </div>
+</header>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&display=swap');
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Unbounded', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    grid-column: 2;
+    justify-self: center;
+  }
+
+  .logo:hover {
+    color: var(--accent);
+  }
+
+  .lang-switcher {
+    grid-column: 3;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.22rem;
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02) 34%),
+      rgba(12, 12, 12, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    backdrop-filter: blur(14px);
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 10px 25px rgba(0, 0, 0, 0.28);
+  }
+
+  .lang-indicator {
+    position: absolute;
+    top: 0.22rem;
+    left: 0.22rem;
+    width: 38px;
+    height: calc(100% - 0.44rem);
+    border-radius: 999px;
+    background: linear-gradient(145deg, rgba(95, 172, 255, 0.88), rgba(61, 140, 230, 0.88));
+    box-shadow:
+      0 6px 14px rgba(59, 138, 231, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 0;
+  }
+
+  .lang-btn {
+    position: relative;
+    z-index: 1;
+    border: 0;
+    background: transparent;
+    color: rgba(229, 233, 241, 0.7);
+    padding: 0.35rem 0.62rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    min-width: 38px;
+    transition: color 220ms ease, transform var(--transition);
+  }
+
+  .lang-btn:hover {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .lang-btn.is-active {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.32);
+  }
+
+  .lang-btn:active {
+    transform: translateY(1px);
+  }
+
+  @media (max-width: 768px) {
+    .header-inner {
+      grid-template-columns: auto 1fr;
+    }
+
+    .logo {
+      font-size: 0.98rem;
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .lang-switcher {
+      grid-column: 2;
+      justify-self: end;
+    }
+  }
+</style>
